@@ -21,7 +21,8 @@ Tahmin ~22 iş günü; her fazın sonunda "Notlar" doldurulur ve sonraki fazlar 
 | 4 | Harita ve bina bulma | ✅ Tamamlandı | Telefonda ve masaüstünde: mahalle aranıyor, harita gidiyor, ayak izine tıklanınca bina seçiliyor, ayak izi yoksa nokta seçiliyor; S1'deki 10 ilçe merkezinde uygulamanın gösterdiği SS, `spike/S1` değerleriyle ±0,001 aynı; ağ panelinde taban harita dışında üçüncü taraf isteği yok |
 | 5 | Form | ✅ Tamamlandı | 11 soru Şekil A.1 tabanlı SVG çizimlerle; yığma/çelik/prefabrik ve 8+ kat kapsam dışı mesajına düşüyor; her soruda "Bilmiyorum"; cevaplar `localStorage`'da, "Temizle" siliyor; klavye ve ekran okuyucuyla doldurulabiliyor (`fixing-accessibility` bulgusuz) |
 | 6 | Sonuç, rapor ve bilgi sayfaları | ✅ Tamamlandı | Sonuç kartı (bant, aralık, kalem kalem katkı, belirsizlik, isabet notu); TDTH SDS girişi adım adım rehberle; yazdırma görünümü A4'te okunur PDF; Yöntem ve isabet, Veri ve lisanslar, Hakkında/feragat sayfaları; `gorsel-dogrulama` 4 genişlik × tema çıkış 0; Playwright duman testi uçtan uca geçiyor |
-| 7 | Yayın | 🔄 Devam Ediyor | `yayin-oncesi` çıkış 0 ya da her bulgu kararlı; `fixing-metadata` geçti; Scryne'ın açık onayıyla repo public ve GitHub Pages'te canlı; canlı adreste 10 S1 noktasından biriyle uçtan uca rapor alındı |
+| 6.5 | İkinci il paketi | ⏳ Bekliyor | İl Scryne'la seçildi; boru hattı o il için paketi üretiyor (iki kez aynı sha256); S1 benzeri TDTH karşılaştırması o ilde ≥ 5 noktada yapıldı ve bant (0,72–1,25) geçerli ya da yeniden ölçüldü; uygulama il seçiyor, arama ve harita iki ilde çalışıyor; Manisa'ya özgü metinler bölgeden okunuyor |
+| 7 | Yayın (koşullu) | ⏳ Bekliyor | Koşul: Faz 6.5 bitti (Scryne'ın kararı, 2026-09-30: yalnız Manisa'yı gösteren site yayına çıkmaz). `yayin-oncesi` çıkış 0 ya da her bulgu kararlı; `fixing-metadata` geçti; Scryne'ın açık onayıyla repo public ve GitHub Pages'te canlı; canlı adreste 10 S1 noktasından biriyle uçtan uca rapor alındı |
 | 8 | Gerçek kullanım | ⏳ Bekliyor | Proje-Fikri'deki "bitti = kullanıldı" cümlesi gerçekleşti (Scryne'ın seçtiği ≥ 5 kişi yardımsız rapor aldı, sonucu öncelik olarak doğru okudu); bulgular roadmap'e işlendi |
 | 9 | TDTH ızgarası entegrasyonu (tetiklemeli) | ⏳ Bekliyor | Tetik: AFAD CIMER başvurusu olumlu döner. Resmî grid paketlenir, K-5 bandı Manisa'da kalkar, S1 karşılaştırması yeniden koşulur |
 | 10 | Yığma binalar, RYTEİE Ek-A.2.2 (koşullu) | ⏳ Bekliyor | Koşul: Faz 8'de kapsam dışı mesajı kullanıcıların önemli bir kısmını geri çeviriyor. Yığma yöntemi motor + form + test olarak eklendi |
@@ -188,6 +189,15 @@ Faz 9–11 olaya bağlıdır; hook bunları "sıradaki iş" saymaz.
   - Faz 7'ye: `vite.config` `base` (Pages alt yolu) ayarlanınca bilgi sayfası bağlantıları `BASE_URL` ile çalışıyor;
     favicon yolu `/favicon.svg` mutlak, `fixing-metadata`'da ele alınmalı.
 
+### Faz 6.5: İkinci il paketi (~2–3 gün + Scryne'ın TDTH okumaları)
+- **Neden:** Scryne 2026-09-30'da yayını erteledi: public repo ve site yalnız Manisa'yı gösterirse konum ipucu olur;
+  ikinci bir il eklenince Manisa ürünün bölgelerinden biri olur.
+- **İşler:** il seçimi (Scryne); `pipeline` o il için (EFEHR alan sorgusu, Microsoft quadkey'leri, OSM); S1 bandının o
+  ilde geçerliliği için Scryne'dan ≥ 5 TDTH okuması (e-Devlet); `bolgeler.json`'a kayıt ve arayüzde il seçimi;
+  metinlerdeki "Manisa" ifadelerinin bölge kaydından okunması (K-3 zaten bölgeden bağımsız kod istiyor).
+- **Bitti Kriteri:** tablodaki satır.
+- **Notlar:**
+
 ### Faz 7: Yayın (~1 gün)
 - **İşler:** MapTiler anahtarı GitHub Actions değişkeni `VITE_MAPTILER_ANAHTARI` olarak derlemeye; MapTiler
   panelinde origin kısıtı (`scryne.github.io`) yabancı origin'le denenir. `yayin-oncesi` (git geçmişi, commit kimlikleri noreply, kişisel veri, belge meta verisi;
@@ -207,6 +217,11 @@ Faz 9–11 olaya bağlıdır; hook bunları "sıradaki iş" saymaz.
     pazar araştırmasında bir rakip proje anlatılırken geçen üniversite adı (`docs/arastirma/03`, geçmişte de var)
     → Scryne'ın kararı.
   - `spike/S1/veri` izleniyor (ESHM20, CC BY, testler okuyor); S3/S4 verisi ve `docs/arastirma/kaynak` git dışında.
+  - Scryne'ın kararları (2026-09-30): (1) araştırma notundaki üniversite adı çıkarıldı ve geçmiş `git filter-repo
+    --sensitive-data-removal --replace-text` ile yeniden yazıldı, `main` force push edildi, eski Dependabot dalı
+    silindi (PR #1 kapandı). Kalan: GitHub'ın salt okunur `refs/pull/1/head` ve `refs/pull/2/head` referansları eski
+    commit'leri tutuyor → public yapmadan önce GitHub Support'tan silinmesi ya da repoyu temiz geçmişle yeniden açmak
+    gerekir. (2) Yayın ikinci il paketine kadar ertelendi → Faz 6.5. (3) Hazırlık hazır bekliyor.
 
 ### Faz 8: Gerçek kullanım (~3–4 gün, takvim olarak daha uzun)
 - **İşler:** Scryne 5+ kişi seçer; her biri kendi cihazından, yardım almadan bir binayı değerlendirir; sonra tek
