@@ -1,0 +1,104 @@
+// Değerlendirme yalnız bu tarayıcıda saklanır (K-1): seçilen bina, cevaplar, kalınan adım. "Temizle" siler.
+// Okunan kayıt güvenilmez sayılır: tanınmayan alan ya da değer atılır, kayıt bozuksa hiç yokmuş gibi davranılır.
+import type { Secim } from '@/harita/tipler'
+import type { BinaCokgeni } from '@/veri/parca'
+import { KUSURLAR } from '@/yontem/ryteie'
+import { ADIMLAR, bosTaslak, type Taslak } from './taslak'
+
+export const KAYIT_ANAHTARI = 'yapirisk:degerlendirme:v1'
+
+export interface Kayit {
+  secim: Secim | null
+  taslak: Taslak
+  /** ADIMLAR içindeki konum; ADIMLAR.length = özet. */
+  adim: number
+}
+
+const BILMIYORUM = 'bilmiyorum'
+const secenek =
+  <T extends string | number | boolean>(...izinli: T[]) =>
+  (x: unknown): T | 'bilmiyorum' | undefined =>
+    x === BILMIYORUM || izinli.includes(x as T) ? (x as T | 'bilmiyorum') : undefined
+
+const alanlar = {
+  malzeme: secenek('betonarme', 'yigma', 'celik', 'prefabrik'),
+  sistem: secenek('BAC', 'BACP'),
+  kalite: secenek('iyi', 'orta', 'kotu'),
+  nizam: secenek('ayrik', 'bitisik', 'kosede'),
+  katSeviyesi: secenek('ayni', 'farkli'),
+  zemin: secenek('ZA', 'ZB', 'ZC', 'ZD', 'ZE'),
+  donem: secenek('once-1975', '1975-1997', '1998-2006', '2007-2018', '2019-sonra'),
+} as const
+const varYok = secenek(true, false)
+
+const nesne = (x: unknown): Record<string, unknown> =>
+  typeof x === 'object' && x !== null && !Array.isArray(x) ? (x as Record<string, unknown>) : {}
+
+export function taslakDogrula(x: unknown): Taslak {
+  const ham = nesne(x)
+  const t: Taslak = bosTaslak()
+  for (const [ad, dogrula] of Object.entries(alanlar)) {
+    const d = dogrula(ham[ad])
+    if (d !== undefined) Object.assign(t, { [ad]: d })
+  }
+  if (ham.kat === '8+' || (Number.isInteger(ham.kat) && (ham.kat as number) >= 1 && (ham.kat as number) <= 7))
+    t.kat = ham.kat as Taslak['kat']
+  const kusurlar = nesne(ham.kusurlar)
+  for (const k of KUSURLAR) {
+    const d = varYok(kusurlar[k])
+    if (d !== undefined) t.kusurlar[k] = d
+  }
+  return t
+}
+
+const koordinat = (x: unknown): x is [number, number] =>
+  Array.isArray(x) && x.length === 2 && x.every((n) => typeof n === 'number' && Number.isFinite(n))
+
+function secimDogrula(x: unknown): Secim | null {
+  const s = nesne(x)
+  if (!koordinat(s.merkez)) return null
+  if (s.tip === 'nokta') return { tip: 'nokta', merkez: s.merkez }
+  const cokgenGecerli =
+    Array.isArray(s.cokgen) &&
+    s.cokgen.every((halka) => Array.isArray(halka) && halka.length >= 4 && halka.every(koordinat))
+  if (s.tip === 'bina' && typeof s.anahtar === 'string' && cokgenGecerli)
+    return { tip: 'bina', anahtar: s.anahtar, merkez: s.merkez, cokgen: s.cokgen as BinaCokgeni }
+  return null
+}
+
+/** Tarayıcı depolaması gizli pencerede ya da engelliyken hata fırlatabilir; o zaman kayıt yokmuş gibi. */
+function depo(): Storage | null {
+  try {
+    return window.localStorage
+  } catch {
+    return null
+  }
+}
+
+export function kayitOku(): Kayit | null {
+  try {
+    const metin = depo()?.getItem(KAYIT_ANAHTARI)
+    if (!metin) return null
+    const ham = nesne(JSON.parse(metin))
+    const adim = Number.isInteger(ham.adim) ? Math.min(Math.max(ham.adim as number, 0), ADIMLAR.length) : 0
+    return { secim: secimDogrula(ham.secim), taslak: taslakDogrula(ham.taslak), adim }
+  } catch {
+    return null
+  }
+}
+
+export function kayitYaz(k: Kayit) {
+  try {
+    depo()?.setItem(KAYIT_ANAHTARI, JSON.stringify(k))
+  } catch {
+    // Kota dolu ya da depolama kapalı: değerlendirme bu oturumda sürer, yalnız kalıcı olmaz.
+  }
+}
+
+export function kayitSil() {
+  try {
+    depo()?.removeItem(KAYIT_ANAHTARI)
+  } catch {
+    // Depolama kapalıysa silinecek bir şey de yok.
+  }
+}

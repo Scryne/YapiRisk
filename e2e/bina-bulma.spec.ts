@@ -161,11 +161,11 @@ test("uydu katmanı yalnız açılınca MapTiler'a istek atar; logo ve not gör�
 
   await dugme.click()
   await expect(dugme).toHaveAttribute('aria-pressed', 'true')
-  await expect(page.getByRole('link', { name: 'MapTiler' })).toBeVisible()
+  await expect(page.getByRole('link', { name: 'MapTiler', exact: true })).toBeVisible()
   await expect(page.getByText('baktığınız bölge MapTiler')).toBeVisible()
   await expect.poll(() => maptiler.length, { timeout: 15_000 }).toBeGreaterThan(0)
   await expect(page.getByRole('alert')).toHaveCount(0)
 
   await dugme.click()
-  await expect(page.getByRole('link', { name: 'MapTiler' })).toBeHidden()
+  await expect(page.getByRole('link', { name: 'MapTiler', exact: true })).toBeHidden()
 })

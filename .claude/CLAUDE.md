@@ -66,6 +66,8 @@ değiştirilmez. Kanonik roadmap `docs/Roadmap.md` dışında bir dosyaysa `stat
     `font-display` ağırlık/aile çakışması üretiyor → token'lar `scripts/tokens.mjs` ile YAML'dan üretilir.
   - shadcn artık `cn` paketinden import ediyor; özel `text-<token>` sınıflarını renk sanıp boyutu siliyor →
     `@/lib/utils`'teki yapılandırılmış `cn` kullanılır, oxlint `"cn"` importunu yasaklar (`shadcn add` sonrası düzelt).
+  - shadcn `Button` `type` vermez: `<form>` içinde `submit` olur, radyoda Enter ilk düğmeyi ("Haritaya dön") tetikledi →
+    form içindeki gönderme dışı her düğmeye `type="button"`.
   - `document.fonts.check()` font hiç tanımlı değilse de `true` döner → font testi yüklenen yüzlere bakar.
   - OSM'de Manisa'da "mahalle" adlı çöp `place` düğümleri var → mahalle dizininde ele.
   - TDTH değerleri yalnız e-Devlet ile, Scryne'ın elinden alınır (Raporlama → DD-2 → zemin → Değerleri

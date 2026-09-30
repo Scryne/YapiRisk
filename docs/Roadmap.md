@@ -19,7 +19,7 @@ Tahmin ~22 iş günü; her fazın sonunda "Notlar" doldurulur ve sonraki fazlar 
 | 2 | Puan motoru | ✅ Tamamlandı | `src/yontem/` RYTEİE Tablo A.1–A.4, Tablo A.2 bölge, TBDY Fs/F1, S1 bandı, "bilmiyorum" aralığı ve K-12 bantları; Vitest resmî tablo hücrelerini ve spike'la eşdeğerliği (ACI-133'teki 154 binanın PP'si Python ile birebir) geçiyor |
 | 3 | Veri boru hattı | ✅ Tamamlandı | `pipeline/` tek komutla `public/data/manisa/` üretiyor: tehlike ızgarası, ayak izi parçaları, mahalle dizini, `dogrulama.json`, `kaynak.json` (sürüm, lisans, sha256); iki kez çalıştırınca aynı sha256; `public/data/LISANSLAR.md` |
 | 4 | Harita ve bina bulma | ✅ Tamamlandı | Telefonda ve masaüstünde: mahalle aranıyor, harita gidiyor, ayak izine tıklanınca bina seçiliyor, ayak izi yoksa nokta seçiliyor; S1'deki 10 ilçe merkezinde uygulamanın gösterdiği SS, `spike/S1` değerleriyle ±0,001 aynı; ağ panelinde taban harita dışında üçüncü taraf isteği yok |
-| 5 | Form | ⏳ Bekliyor | 11 soru Şekil A.1 tabanlı SVG çizimlerle; yığma/çelik/prefabrik ve 8+ kat kapsam dışı mesajına düşüyor; her soruda "Bilmiyorum"; cevaplar `localStorage`'da, "Temizle" siliyor; klavye ve ekran okuyucuyla doldurulabiliyor (`fixing-accessibility` bulgusuz) |
+| 5 | Form | ✅ Tamamlandı | 11 soru Şekil A.1 tabanlı SVG çizimlerle; yığma/çelik/prefabrik ve 8+ kat kapsam dışı mesajına düşüyor; her soruda "Bilmiyorum"; cevaplar `localStorage`'da, "Temizle" siliyor; klavye ve ekran okuyucuyla doldurulabiliyor (`fixing-accessibility` bulgusuz) |
 | 6 | Sonuç, rapor ve bilgi sayfaları | ⏳ Bekliyor | Sonuç kartı (bant, aralık, kalem kalem katkı, belirsizlik, isabet notu); TDTH SDS girişi adım adım rehberle; yazdırma görünümü A4'te okunur PDF; Yöntem ve isabet, Veri ve lisanslar, Hakkında/feragat sayfaları; `gorsel-dogrulama` 4 genişlik × tema çıkış 0; Playwright duman testi uçtan uca geçiyor |
 | 7 | Yayın | ⏳ Bekliyor | `yayin-oncesi` çıkış 0 ya da her bulgu kararlı; `fixing-metadata` geçti; Scryne'ın açık onayıyla repo public ve GitHub Pages'te canlı; canlı adreste 10 S1 noktasından biriyle uçtan uca rapor alındı |
 | 8 | Gerçek kullanım | ⏳ Bekliyor | Proje-Fikri'deki "bitti = kullanıldı" cümlesi gerçekleşti (Scryne'ın seçtiği ≥ 5 kişi yardımsız rapor aldı, sonucu öncelik olarak doğru okudu); bulgular roadmap'e işlendi |
@@ -130,7 +130,31 @@ Faz 9–11 olaya bağlıdır; hook bunları "sıradaki iş" saymaz.
   malzeme ve kat (kapsam ayıklama) → sistem → kusurlar (yumuşak kat en görünür, K-6) → zemin; `ux-writing` ile
   soru metinleri; isteğe bağlı yapım yılı (puana girmez, K-10).
 - **Bitti Kriteri:** tablodaki satır.
-- **Notlar:**
+- **Notlar:** (2026-09-30)
+  - 13 adım, her adımda tek soru: malzeme, kat (kapsam ayıklama) → perde → yumuşak kat (kusurların ilki, K-6) →
+    kalite → düşey düzensizlik → ağır çıkma → plan düzensizliği → kısa kolon → nizam (bitişikse döşeme hizası aynı
+    adımda) → eğim → zemin sınıfı → isteğe bağlı yapım dönemi (K-10, puana girmez). Sonda özet: her cevap
+    değiştirilebilir, ön sonuç (bant + PP aralığı) motordan.
+  - Çizimler `src/form/cizimler.tsx`: Şekil A.1 (ek s. 32–33) yeniden çizildi, tek renk, taralı dolgu / dolu perde
+    (K-14). Kalite, zemin ve dönem sorularında Şekil A.1'de de çizim yok; metinle.
+  - Karar: **kat sorusunda "Bilmiyorum" yok.** Motor tabloyu kat grubuyla seçer, bilinmeyen kat 1–7 arasındaki her
+    grubu açar ve sonuç anlamsız genişler; kat binaya bakarak sayılabilir, çizimli örnek (eğimli arazi, gömülü bodrum)
+    var. Diğer 12 soruda var.
+  - Karar: **malzeme "Bilmiyorum" → betonarme varsayılır**, özette ve sonuçta yazılır (Türkiye'de apartmanların
+    çoğu betonarme; kapsam dışına atmak kullanıcıyı boşa çevirirdi). Faz 8'de bu seçimin oranı izlenir.
+  - Kayıt: `localStorage` `yapirisk:degerlendirme:v1` (seçim + cevaplar + adım), okunan kayıt doğrulanır, bozuksa
+    yok sayılır, depolama kapalıysa sessizce oturum içinde kalır. "Temizle" onay penceresiyle (AlertDialog) siler.
+  - Erişilebilirlik (`fixing-accessibility`): yerel radyo grupları (`fieldset`/`legend`), ok tuşları + Enter = İleri,
+    adım değişince odak soru başlığına, form kapanınca devam düğmesine; hata `role=alert` + `aria-invalid`; radyo adı
+    kısa etiket, açıklama `aria-describedby`. Ekran okuyucu erişilebilirlik ağacıyla doğrulandı (gerçek NVDA/TalkBack
+    ile denenmedi → Faz 8'de bir kullanıcıyla).
+  - Doğrulama: Vitest 133/133 (taslak → motor, kapsam, kayıt doğrulama, e2e cevap setinin motor değeri);
+    Playwright 18/18, iki tekrarda 36/36 (klavyeyle 13 adım → PP −10 … 20 yüksek öncelik; yığma ve 8+ kat kapsam
+    dışı; yeniden açınca kaldığı adım; Temizle). Ekran görüntüsü 390/768/1280, `gorsel-dogrulama` çıkış 0.
+  - Tuzak: shadcn `Button` `type` vermez → form içinde varsayılan `submit`; radyoda Enter "Haritaya dön"ü
+    tetikliyordu. Form içindeki her düğmeye `type="button"` (CLAUDE.md'ye yazıldı).
+  - Faz 6'ya: özetteki ön sonuç kutusu sonuç kartına dönüşecek (katkı tablosu, belirsiz kalemler, desenli bant,
+    yapım dönemi notu, malzeme varsayımı). Telefonda form paneli 78dvh; harita üstte görünür kalıyor.
 
 ### Faz 6: Sonuç, rapor ve bilgi sayfaları (~4 gün)
 - **İşler:** sonuç kartı (DESIGN.md: bant başlıkta, puan değil); TDTH rehberi (S1'de Scryne'ın izlediği akış:

@@ -2,6 +2,11 @@ import { Crosshair, LoaderCircle, MousePointerClick, Satellite } from 'lucide-re
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { MahalleArama } from '@/arama/MahalleArama'
 import { Button } from '@/components/ui/button'
+import { Form } from '@/form/Form'
+import { kayitOku, kayitSil, kayitYaz } from '@/form/kayit'
+import { TemizleDugmesi } from '@/form/TemizleDugmesi'
+import { ADIMLAR, bosMu, bosTaslak, type Taslak } from '@/form/taslak'
+import { cn } from '@/lib/utils'
 import { baglantiOku } from '@/harita/baglanti'
 import { geometriIcinde } from '@/harita/geometri'
 import { BINA_YAKINLIGI, type HaritaHedefi, type Secim } from '@/harita/tipler'
@@ -21,8 +26,19 @@ const KONUM_YAKINLIGI = 17
 
 export default function App() {
   const [yukleme, setYukleme] = useState<Yukleme>({ durum: 'yukleniyor' })
-  const [secim, setSecim] = useState<Secim | null>(null)
-  const [hedef, setHedef] = useState<HaritaHedefi | null>(null)
+  // Önceki ziyaretten kalan değerlendirme (yalnız bu tarayıcıda, K-1).
+  const [ilkKayit] = useState(kayitOku)
+  const [secim, setSecim] = useState<Secim | null>(ilkKayit?.secim ?? null)
+  const [taslak, setTaslak] = useState<Taslak>(ilkKayit?.taslak ?? bosTaslak())
+  const [adim, setAdim] = useState(ilkKayit?.adim ?? 0)
+  const [formda, setFormda] = useState(false)
+  // Form kapanınca (Haritaya dön, Temizle) odak kaldırılan düğmede kalmasın: devam düğmesine ya da başlığa.
+  const [odakIstegi, setOdakIstegi] = useState(0)
+  const devamRef = useRef<HTMLButtonElement>(null)
+  const bulBaslikRef = useRef<HTMLHeadingElement>(null)
+  const [hedef, setHedef] = useState<HaritaHedefi | null>(() =>
+    ilkKayit?.secim ? { merkez: ilkKayit.secim.merkez, yakinlik: KONUM_YAKINLIGI, sira: 1 } : null,
+  )
   const [noktaModu, setNoktaModu] = useState(false)
   const [yakinlik, setYakinlik] = useState(0)
   const [bosTiklama, setBosTiklama] = useState(false)
@@ -68,6 +84,29 @@ export default function App() {
       iptal = true
     }
   }, [])
+
+  // Değerlendirme değiştikçe tarayıcıya yazılır; boşsa kayıt tutulmaz.
+  useEffect(() => {
+    if (secim === null && adim === 0 && bosMu(taslak)) kayitSil()
+    else kayitYaz({ secim, taslak, adim })
+  }, [secim, taslak, adim])
+
+  useEffect(() => {
+    if (odakIstegi) (devamRef.current ?? bulBaslikRef.current)?.focus()
+  }, [odakIstegi])
+
+  const haritaya = () => {
+    setFormda(false)
+    setOdakIstegi((n) => n + 1)
+  }
+
+  const temizle = () => {
+    kayitSil()
+    setSecim(null)
+    setTaslak(bosTaslak())
+    setAdim(0)
+    haritaya()
+  }
 
   const paket = yukleme.durum === 'hazir' ? yukleme.paket : null
   const hazir = paket !== null
@@ -155,8 +194,12 @@ export default function App() {
 
       <aside
         ref={panelRef}
-        aria-label="Bina bulma"
-        className="absolute inset-x-0 bottom-0 z-10 max-h-[48dvh] overflow-y-auto rounded-t-lg border border-b-0 border-border bg-surface px-4 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] supports-[backdrop-filter]:bg-glass supports-[backdrop-filter]:backdrop-blur-md md:top-4 md:bottom-auto md:left-4 md:max-h-[calc(100dvh-2rem)] md:w-[23rem] md:rounded-lg md:border-b"
+        aria-label={formda ? 'Değerlendirme' : 'Bina bulma'}
+        className={cn(
+          'absolute inset-x-0 bottom-0 z-10 overflow-y-auto rounded-t-lg border border-b-0 border-border bg-surface px-4 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] supports-[backdrop-filter]:bg-glass supports-[backdrop-filter]:backdrop-blur-md md:top-4 md:bottom-auto md:left-4 md:max-h-[calc(100dvh-2rem)] md:w-[23rem] md:rounded-lg md:border-b',
+          // Telefonda form sabit yükseklikte: adımlar arasında panel ve harita merkezi zıplamasın.
+          formda ? 'flex h-[78dvh] flex-col pb-0 md:h-auto' : 'max-h-[48dvh]',
+        )}
       >
         <header className="flex items-baseline justify-between gap-3">
           <h1 className="text-headline">YapiRisk</h1>
@@ -175,9 +218,25 @@ export default function App() {
           </p>
         )}
 
-        {paket && (
+        {paket && formda && (
+          <div className="mt-2 flex flex-1 flex-col">
+            <Form
+              taslak={taslak}
+              adim={adim}
+              ss={ss}
+              onTaslak={setTaslak}
+              onAdim={setAdim}
+              onHaritaya={haritaya}
+              onTemizle={temizle}
+            />
+          </div>
+        )}
+
+        {paket && !formda && (
           <div className="mt-4 flex flex-col gap-3">
-            <h2 className="text-label text-balance">1. Binanızı bulun</h2>
+            <h2 ref={bulBaslikRef} tabIndex={-1} className="text-label text-balance outline-none">
+              1. Binanızı bulun
+            </h2>
             <MahalleArama
               kayitlar={paket.mahalleler}
               bolgeAdi={paket.kayit.ad}
@@ -222,6 +281,22 @@ export default function App() {
 
             {secim && (
               <SecimKarti secim={secim} bolgeAdi={paket.kayit.ad} ss={ss} onKaldir={() => setSecim(null)} />
+            )}
+
+            {secim && ss !== null && (
+              <>
+                <h2 className="mt-1 text-label text-balance">2. Binanızı tanımlayın</h2>
+                <Button ref={devamRef} className="h-11" onClick={() => setFormda(true)}>
+                  {bosMu(taslak)
+                    ? 'Sorulara başla'
+                    : adim >= ADIMLAR.length
+                      ? 'Cevaplarımı göster'
+                      : `Sorulara devam et (${adim + 1} / ${ADIMLAR.length})`}
+                </Button>
+              </>
+            )}
+            {!bosMu(taslak) && (
+              <TemizleDugmesi onTemizle={temizle} className="h-11 justify-start self-start" />
             )}
           </div>
         )}
