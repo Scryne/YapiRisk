@@ -17,7 +17,7 @@ Tahmin ~22 iş günü; her fazın sonunda "Notlar" doldurulur ve sonraki fazlar 
 | --- | --- | --- | --- |
 | 1 | İskelet ve sağlık | ✅ Tamamlandı | Repo GitHub'da (private); CI (lint + typecheck + test + build + boru hattı testi) varsayılan dalda yeşil; `.github/dependabot.yml` (npm + uv); `npm run dev` boş kabuğu açıyor; DESIGN.md token'ları frontmatter'da ve lint geçiyor |
 | 2 | Puan motoru | ✅ Tamamlandı | `src/yontem/` RYTEİE Tablo A.1–A.4, Tablo A.2 bölge, TBDY Fs/F1, S1 bandı, "bilmiyorum" aralığı ve K-12 bantları; Vitest resmî tablo hücrelerini ve spike'la eşdeğerliği (ACI-133'teki 154 binanın PP'si Python ile birebir) geçiyor |
-| 3 | Veri boru hattı | ⏳ Bekliyor | `pipeline/` tek komutla `public/data/manisa/` üretiyor: tehlike ızgarası, ayak izi parçaları, mahalle dizini, `dogrulama.json`, `kaynak.json` (sürüm, lisans, sha256); iki kez çalıştırınca aynı sha256; `public/data/LISANSLAR.md` |
+| 3 | Veri boru hattı | ✅ Tamamlandı | `pipeline/` tek komutla `public/data/manisa/` üretiyor: tehlike ızgarası, ayak izi parçaları, mahalle dizini, `dogrulama.json`, `kaynak.json` (sürüm, lisans, sha256); iki kez çalıştırınca aynı sha256; `public/data/LISANSLAR.md` |
 | 4 | Harita ve bina bulma | ⏳ Bekliyor | Telefonda ve masaüstünde: mahalle aranıyor, harita gidiyor, ayak izine tıklanınca bina seçiliyor, ayak izi yoksa nokta seçiliyor; S1'deki 10 ilçe merkezinde uygulamanın gösterdiği SS, `spike/S1` değerleriyle ±0,001 aynı; ağ panelinde taban harita dışında üçüncü taraf isteği yok |
 | 5 | Form | ⏳ Bekliyor | 11 soru Şekil A.1 tabanlı SVG çizimlerle; yığma/çelik/prefabrik ve 8+ kat kapsam dışı mesajına düşüyor; her soruda "Bilmiyorum"; cevaplar `localStorage`'da, "Temizle" siliyor; klavye ve ekran okuyucuyla doldurulabiliyor (`fixing-accessibility` bulgusuz) |
 | 6 | Sonuç, rapor ve bilgi sayfaları | ⏳ Bekliyor | Sonuç kartı (bant, aralık, kalem kalem katkı, belirsizlik, isabet notu); TDTH SDS girişi adım adım rehberle; yazdırma görünümü A4'te okunur PDF; Yöntem ve isabet, Veri ve lisanslar, Hakkında/feragat sayfaları; `gorsel-dogrulama` 4 genişlik × tema çıkış 0; Playwright duman testi uçtan uca geçiyor |
@@ -84,7 +84,22 @@ Faz 9–11 olaya bağlıdır; hook bunları "sıradaki iş" saymaz.
   `dogrulama.py` (ACI-133 → n, AUC'ler, bant başına ağır hasar oranı), `kaynak.json`, `LISANSLAR.md`.
   Overpass ana sunucusu 504 verebiliyor (S4): yedek sunucu listesi.
 - **Bitti Kriteri:** tablodaki satır.
-- **Notlar:**
+- **Notlar:** (2026-09-30)
+  - Tek komut: `cd pipeline && uv run python -m yapirisk_pipeline manisa` (ilk koşu ~10 dk). Ham indirmeler
+    `pipeline/.onbellek/` (git dışı); üç koşuda 3.676 çıktı dosyasının sha256'sı aynı.
+  - Çıktılar: tehlike ızgarası 16×23 (il sınırı + 0,15° pay), 474.953 bina / 3.669 z14 parçası / 14,5 MB (S4 ile
+    aynı sayı), 1.246 mahalle/köy (388 + 858; 52 "mahalle" adlı çöp kayıt elendi; S4'teki 18 örneğin 18'i var),
+    `sinir.json`, `bolgeler.json`, `dogrulama.json`, bölge başına `kaynak.json`, `LISANSLAR.md` (CDLA metni dahil).
+  - Puan tabloları tek kaynak: pipeline `src/yontem/*.json`'u okur; Python puanı aynı ACI-133 fikstürüyle test
+    ediliyor (462 karşılaştırma). Doğrulama S3'ün AUC'lerini birebir üretti (RYTEİE 0,691/0,697/0,695, kat 0,700,
+    Hassan–Sozen 0,760).
+  - **Faz 6 için bulgu:** bant başına ağır hasar oranı, kötü uç tehlikeyle: perde verisiyle yüksek 2/2, orta
+    %77 (31), düşük %61 (121); BAÇ varsayımıyla yüksek %84 (32), orta %60 (122). Yön tutarlı (PP düştükçe oran
+    artıyor) ama örneklem hasar keşfi için seçilmiş (%65 ağır hasar) ve Maraş sarsıntısı tasarım düzeyinin çok
+    üstünde; "düşük öncelik" güvenli demek değil. Yöntem sayfası ve sonuç kartı bunu açıkça yazmalı.
+  - ESHM20 model alanı Suriye sınırında bitiyor: Maraş doğrulama ızgarasında 73 boş hücre. Doğrulamada boş hücreye
+    izin var (bilineer yalnız köşeleri dolu hücrede); istemci paketinde ızgara tam olmak zorunda.
+  - EFEHR `imt` biçimi `SA[0.20s]`, `SA[1.00s]` (`SA(0.2)` boş döner).
 
 ### Faz 4: Harita ve bina bulma (~4–5 gün)
 - **İşler:** önce `frontend-sistemi` sırası (DESIGN.md → `frontend-design` + `design-taste` → `baseline-ui`).

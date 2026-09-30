@@ -34,3 +34,6 @@ spike/S4/veri/
 # Test çıktıları
 playwright-report/
 test-results/
+
+# Boru hattı ham indirme önbelleği (lisanslı ham veri dahil; yeniden indirilebilir)
+pipeline/.onbellek/

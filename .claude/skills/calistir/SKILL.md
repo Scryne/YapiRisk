@@ -9,6 +9,9 @@ description: YapiRisk'i yerelde başlatma, durdurma ve duman testi tarifi. "Uygu
 - **Üretim önizlemesi:** `npm run build && npm run preview -- --port 4173 --strictPort` → http://localhost:4173.
 - **Duman testi:** `npm run test:e2e` (Playwright önizlemeyi kendisi başlatır; masaüstü + Pixel 7).
   İlk kurulumda `npx playwright install chromium`.
+- **Veri paketi:** `cd pipeline && PYTHONIOENCODING=utf-8 uv run python -m yapirisk_pipeline manisa` (ilk çalıştırma
+  ~10 dk: EFEHR SA sorguları 70–120 sn, Microsoft ~220 MB; arka planda koş). Ham dosyalar `pipeline/.onbellek/`,
+  ikinci çalıştırma ağa çıkmaz ve bayt bayt aynı çıktıyı verir. Tazelemek için ilgili önbellek dosyasını sil.
 - **Tüm yerel CI:** `npm run ci`; pipeline: `cd pipeline && uv run ruff check . && uv run pytest`.
 - **Durdurma (Windows):** arka planda başlatılan Vite'ı PowerShell ile kapat:
   `Get-CimInstance Win32_Process -Filter "Name='node.exe'" | ? { $_.CommandLine -match 'vite.*<port>' } | % { Stop-Process -Id $_.ProcessId -Force }`

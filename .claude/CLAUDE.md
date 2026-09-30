@@ -44,6 +44,10 @@ değiştirilmez. Kanonik roadmap `docs/Roadmap.md` dışında bir dosyaysa `stat
   - EFEHR `/v1/maps` nokta sorgusu noktayı değil 10×10 ızgarayı döndürür → `/v1/maps/area` kullan;
     SA sorguları 70–120 sn sürer (arka planda çalıştır).
   - Overpass ana sunucusu 504 verebiliyor → `https://overpass.private.coffee/api/interpreter` yedeği.
+  - EFEHR `imt` parametresi `SA[0.20s]` / `SA[1.00s]` biçiminde; `SA(0.2)` hata vermeden boş liste döner. ESHM20
+    model alanı Suriye sınırında bitiyor (Maraş ızgarasında boş hücre).
+  - `du` 3.669 küçük parçayı küme boyutuyla 22 MB gösteriyor; gerçek toplam 14,5 MB (`find -printf %s`).
+  - Windows konsolunda Python çıktısında Türkçe bozuluyorsa `PYTHONIOENCODING=utf-8`; dosyalar UTF-8'dir.
   - Bash `while read` ile dosyadan URL okurken `\r` ve son satırda newline eksikliği satır kaybettirdi →
     `tr -d '\r'`, dosyayı `\n` ile bitir.
   - Windows'ta `design.md` komutu (npx ya da npm bin) kökteki `DESIGN.md` dosyasını açmaya çalışıp asılı kalıyor
