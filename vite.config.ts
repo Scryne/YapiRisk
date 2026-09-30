@@ -5,6 +5,8 @@ import { defineConfig } from 'vite'
 
 // https://vite.dev/config/
 export default defineConfig({
+  // GitHub Pages proje sitesi alt yolda yayınlanır (.github/workflows/pages.yml); yerelde kök.
+  base: process.env.YAPIRISK_TABAN ?? '/',
   plugins: [react(), tailwindcss()],
   // MapLibre worker'ı ES modülü olarak yüklenir ({ type: 'module' }).
   worker: { format: 'es' },

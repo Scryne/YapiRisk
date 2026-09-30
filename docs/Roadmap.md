@@ -21,7 +21,7 @@ Tahmin ~22 iş günü; her fazın sonunda "Notlar" doldurulur ve sonraki fazlar 
 | 4 | Harita ve bina bulma | ✅ Tamamlandı | Telefonda ve masaüstünde: mahalle aranıyor, harita gidiyor, ayak izine tıklanınca bina seçiliyor, ayak izi yoksa nokta seçiliyor; S1'deki 10 ilçe merkezinde uygulamanın gösterdiği SS, `spike/S1` değerleriyle ±0,001 aynı; ağ panelinde taban harita dışında üçüncü taraf isteği yok |
 | 5 | Form | ✅ Tamamlandı | 11 soru Şekil A.1 tabanlı SVG çizimlerle; yığma/çelik/prefabrik ve 8+ kat kapsam dışı mesajına düşüyor; her soruda "Bilmiyorum"; cevaplar `localStorage`'da, "Temizle" siliyor; klavye ve ekran okuyucuyla doldurulabiliyor (`fixing-accessibility` bulgusuz) |
 | 6 | Sonuç, rapor ve bilgi sayfaları | ✅ Tamamlandı | Sonuç kartı (bant, aralık, kalem kalem katkı, belirsizlik, isabet notu); TDTH SDS girişi adım adım rehberle; yazdırma görünümü A4'te okunur PDF; Yöntem ve isabet, Veri ve lisanslar, Hakkında/feragat sayfaları; `gorsel-dogrulama` 4 genişlik × tema çıkış 0; Playwright duman testi uçtan uca geçiyor |
-| 7 | Yayın | ⏳ Bekliyor | `yayin-oncesi` çıkış 0 ya da her bulgu kararlı; `fixing-metadata` geçti; Scryne'ın açık onayıyla repo public ve GitHub Pages'te canlı; canlı adreste 10 S1 noktasından biriyle uçtan uca rapor alındı |
+| 7 | Yayın | 🔄 Devam Ediyor | `yayin-oncesi` çıkış 0 ya da her bulgu kararlı; `fixing-metadata` geçti; Scryne'ın açık onayıyla repo public ve GitHub Pages'te canlı; canlı adreste 10 S1 noktasından biriyle uçtan uca rapor alındı |
 | 8 | Gerçek kullanım | ⏳ Bekliyor | Proje-Fikri'deki "bitti = kullanıldı" cümlesi gerçekleşti (Scryne'ın seçtiği ≥ 5 kişi yardımsız rapor aldı, sonucu öncelik olarak doğru okudu); bulgular roadmap'e işlendi |
 | 9 | TDTH ızgarası entegrasyonu (tetiklemeli) | ⏳ Bekliyor | Tetik: AFAD CIMER başvurusu olumlu döner. Resmî grid paketlenir, K-5 bandı Manisa'da kalkar, S1 karşılaştırması yeniden koşulur |
 | 10 | Yığma binalar, RYTEİE Ek-A.2.2 (koşullu) | ⏳ Bekliyor | Koşul: Faz 8'de kapsam dışı mesajı kullanıcıların önemli bir kısmını geri çeviriyor. Yığma yöntemi motor + form + test olarak eklendi |
@@ -194,7 +194,19 @@ Faz 9–11 olaya bağlıdır; hook bunları "sıradaki iş" saymaz.
   `spike/S*/veri` ve `docs/arastirma/kaynak` gitignore'da mı), `fixing-metadata`, Scryne'dan açık onay → repo
   public + Pages; canlı adreste duman testi.
 - **Bitti Kriteri:** tablodaki satır.
-- **Notlar:**
+- **Notlar:** (2026-09-30, hazırlık; yayın Scryne'ın onayını bekliyor)
+  - `fixing-metadata`: 4 sayfada başlık biçimi, açıklama, canonical, Open Graph + Twitter kartı (`public/og.png`,
+    1200×630, Şekil A.1 dilinde), apple-touch-icon, theme-color. Adres `https://scryne.github.io/YapiRisk/`.
+  - `vite.config` `base` = `YAPIRISK_TABAN` (yerelde `/`); `/YapiRisk/` ile derlenip önizlendi: harita, veri paketi,
+    bilgi sayfaları, `data/LISANSLAR.md` 4xx'siz, konsol hatasız.
+  - `.github/workflows/pages.yml`: repo private iken iş atlanır; public olunca her push'ta derleyip dağıtır.
+    `VITE_MAPTILER_ANAHTARI` Actions **değişkeni** olarak okunur (Scryne ekleyecek; MapTiler panelinde origin
+    `scryne.github.io`).
+  - `yayin-oncesi` (`--gecmis`): yüksek bulgu 0, sır 0, commit kimlikleri hep noreply. Orta bulgular: "Manisa"
+    (ürünün kapsamı, kodda ve veride zorunlu), TKGM kurumsal e-postası ve `uv.lock` hash'i (yanlış pozitif),
+    pazar araştırmasında bir rakip proje anlatılırken geçen üniversite adı (`docs/arastirma/03`, geçmişte de var)
+    → Scryne'ın kararı.
+  - `spike/S1/veri` izleniyor (ESHM20, CC BY, testler okuyor); S3/S4 verisi ve `docs/arastirma/kaynak` git dışında.
 
 ### Faz 8: Gerçek kullanım (~3–4 gün, takvim olarak daha uzun)
 - **İşler:** Scryne 5+ kişi seçer; her biri kendi cihazından, yardım almadan bir binayı değerlendirir; sonra tek

@@ -22,7 +22,7 @@ test('kabuk açılıyor, font yerelden yükleniyor, konsol hatası yok, dış is
   })
 
   await page.goto('/')
-  await expect(page).toHaveTitle('YapiRisk')
+  await expect(page).toHaveTitle('YapiRisk · Deprem riski ön değerlendirmesi')
   await expect(page.getByRole('heading', { level: 1, name: 'YapiRisk' })).toBeVisible()
 
   // Türkçe glifler latin-ext yüzünü tetikler; yüklenen yüzlerde IBM Plex Sans olmalı.

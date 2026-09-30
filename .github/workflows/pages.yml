@@ -1,0 +1,43 @@
+name: Pages
+
+# Site GitHub Pages'e yalnız repo public iken dağıtılır (K-11); private iken iş atlanır.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  dagit:
+    if: ${{ !github.event.repository.private }}
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.dagitim.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+        env:
+          # Proje sitesi alt yolda: https://scryne.github.io/YapiRisk/
+          YAPIRISK_TABAN: /YapiRisk/
+          # K-16: anahtar Actions değişkeninde; MapTiler panelinde origin scryne.github.io ile kısıtlı.
+          VITE_MAPTILER_ANAHTARI: ${{ vars.VITE_MAPTILER_ANAHTARI }}
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+      - id: dagitim
+        uses: actions/deploy-pages@v5
