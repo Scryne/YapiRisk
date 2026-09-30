@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import {
   araDeger,
@@ -11,6 +12,7 @@ import {
   sdsAraligi,
   tehlike,
   tehlikeBolgesi,
+  type Izgara,
   type Zemin,
 } from './tehlike'
 import { csvOku, efehrIzgara } from './test-yardim'
@@ -186,11 +188,11 @@ describe('SDS aralığı', () => {
 })
 
 describe('tehlike()', () => {
-  it('ESHM20: SS bandı SS/1,25 … SS/0,72, kötü uç yüksek SDS', () => {
+  it('ESHM20: SS bandı SS/üst oran … SS/alt oran, kötü uç yüksek SDS', () => {
     const t = tehlike({ kaynak: 'eshm20', ss: 0.722, zemin: 'ZC' })
     expect(t.ssAraligi![0]).toBeCloseTo(0.722 / S1_BANDI.ustOran, 12)
     expect(t.ssAraligi![1]).toBeCloseTo(0.722 / S1_BANDI.altOran, 12)
-    expect(t.sdsAraligi[0]).toBeCloseTo(sds(0.722 / 1.25, 'ZC'), 12)
+    expect(t.sdsAraligi[0]).toBeCloseTo(sds(0.722 / S1_BANDI.ustOran, 'ZC'), 12)
     expect(t.sdsAraligi[1]).toBeCloseTo(sds(0.722 / 0.72, 'ZC'), 12)
     expect([t.bolgeKotu, t.bolgeIyi]).toEqual(['I', 'III'])
   })
@@ -218,5 +220,34 @@ describe('tehlike()', () => {
       bolgeKotu: 'I',
       bolgeIyi: 'I',
     })
+  })
+})
+
+describe('S1 İzmir: 10 AFAD TDTH raporu (DD-2, ZC), bölge paketindeki ESHM20 ızgarasıyla', () => {
+  const raporlar = csvOku('spike/S1/izmir-tdth-okumalar.csv')
+  const { izgaralar } = JSON.parse(readFileSync('public/data/izmir/tehlike-eshm20.json', 'utf8')) as {
+    izgaralar: { SS: Izgara }
+  }
+  const sira = ['I', 'II', 'III', 'IV']
+
+  it('10 okuma var; her raporda SDS ve SD1, SS ve S1 ile tutarlı (okuma hatası yok)', () => {
+    expect(raporlar).toHaveLength(10)
+    for (const r of raporlar) {
+      expect(Math.abs(sds(Number(r.SS), 'ZC') - Number(r.SDS_ZC)), r.ilce).toBeLessThanOrEqual(0.001 + 1e-9)
+      expect(Math.abs(sd1(Number(r.S1), 'ZC') - Number(r.SD1_ZC)), r.ilce).toBeLessThanOrEqual(0.001 + 1e-9)
+    }
+  })
+
+  it('TDTH SS her noktada bandın içinde; TDTH bölgesi kötü ve iyi uç arasında', () => {
+    for (const r of raporlar) {
+      const ss = bilineer(izgaralar.SS, Number(r.enlem), Number(r.boylam))
+      const oran = ss / Number(r.SS)
+      expect(oran, r.ilce).toBeGreaterThanOrEqual(S1_BANDI.altOran)
+      expect(oran, r.ilce).toBeLessThanOrEqual(S1_BANDI.ustOran)
+      const t = tehlike({ kaynak: 'eshm20', ss, zemin: 'ZC' })
+      const gercek = sira.indexOf(tehlikeBolgesi(Number(r.SDS_ZC), 'ZC'))
+      expect(gercek, r.ilce).toBeGreaterThanOrEqual(sira.indexOf(t.bolgeKotu))
+      expect(gercek, r.ilce).toBeLessThanOrEqual(sira.indexOf(t.bolgeIyi))
+    }
   })
 })

@@ -11,10 +11,10 @@ export type ZeminCevabi = Zemin | 'bilmiyorum'
 export const BILINMEYEN_ZEMIN_ADAYLARI: readonly Zemin[] = ['ZC', 'ZD', 'ZE']
 
 /**
- * S1 (Manisa, 10 ilçe merkezi): SS_ESHM20 / SS_TDTH oranı 0,72 … 1,25 arasında ölçüldü.
- * Gerçek SS ∈ [SS_ESHM20 / 1,25 ; SS_ESHM20 / 0,72].
+ * S1: SS_ESHM20 / SS_TDTH oranı Manisa'da (10 ilçe merkezi) 0,72 … 1,25, İzmir'de (10 ilçe merkezi) 0,81 … 1,34
+ * ölçüldü; bant iki ilin 20 ölçümünü kapsar. Gerçek SS ∈ [SS_ESHM20 / 1,34 ; SS_ESHM20 / 0,72].
  */
-export const S1_BANDI = { altOran: 0.72, ustOran: 1.25 } as const
+export const S1_BANDI = { altOran: 0.72, ustOran: 1.34 } as const
 
 /** Düzenli enlem/boylam ızgarası; `degerler[i][j]` = `enlemler[i]`, `boylamlar[j]` (ikisi de artan). */
 export interface Izgara {

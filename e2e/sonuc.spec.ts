@@ -142,7 +142,7 @@ test('bilgi sayfaları: panelden açılıyor, sayılar veri dosyalarıyla aynı'
   expect(hatalar).toEqual([])
 })
 
-test('ikinci il: İzmir mahallesi aranıyor, tehlike İzmir ızgarasından, fark notu ölçülmediğini söylüyor', async ({
+test('ikinci il: İzmir mahallesi aranıyor, tehlike İzmir ızgarasından, fark notu İzmir ölçümünü gösteriyor', async ({
   page,
   baseURL,
 }) => {
@@ -161,7 +161,7 @@ test('ikinci il: İzmir mahallesi aranıyor, tehlike İzmir ızgarasından, fark
   await page.getByRole('button', { name: 'Sorulara başla' }).click()
   await doldur(page, KUSURSUZ_4_KAT)
   await expect(page.getByTestId('sonuc-karti')).toContainText(
-    'Bu ilde AFAD’la karşılaştırma henüz yapılmadı; aralık Manisa’da ölçülen farktan geliyor',
+    'AFAD’ın resmî değeriyle farkı İzmir’de 10 noktada ölçüldü ve aralığa katıldı',
   )
   await page.emulateMedia({ media: 'print' })
   await expect(page.getByRole('article')).toContainText('İzmir')

@@ -21,8 +21,8 @@ Tahmin ~22 iş günü; her fazın sonunda "Notlar" doldurulur ve sonraki fazlar 
 | 4 | Harita ve bina bulma | ✅ Tamamlandı | Telefonda ve masaüstünde: mahalle aranıyor, harita gidiyor, ayak izine tıklanınca bina seçiliyor, ayak izi yoksa nokta seçiliyor; S1'deki 10 ilçe merkezinde uygulamanın gösterdiği SS, `spike/S1` değerleriyle ±0,001 aynı; ağ panelinde taban harita dışında üçüncü taraf isteği yok |
 | 5 | Form | ✅ Tamamlandı | 11 soru Şekil A.1 tabanlı SVG çizimlerle; yığma/çelik/prefabrik ve 8+ kat kapsam dışı mesajına düşüyor; her soruda "Bilmiyorum"; cevaplar `localStorage`'da, "Temizle" siliyor; klavye ve ekran okuyucuyla doldurulabiliyor (`fixing-accessibility` bulgusuz) |
 | 6 | Sonuç, rapor ve bilgi sayfaları | ✅ Tamamlandı | Sonuç kartı (bant, aralık, kalem kalem katkı, belirsizlik, isabet notu); TDTH SDS girişi adım adım rehberle; yazdırma görünümü A4'te okunur PDF; Yöntem ve isabet, Veri ve lisanslar, Hakkında/feragat sayfaları; `gorsel-dogrulama` 4 genişlik × tema çıkış 0; Playwright duman testi uçtan uca geçiyor |
-| 6.5 | İkinci il paketi | 🔄 Devam Ediyor | İl Scryne'la seçildi; boru hattı o il için paketi üretiyor (iki kez aynı sha256); S1 benzeri TDTH karşılaştırması o ilde ≥ 5 noktada yapıldı ve bant (0,72–1,25) geçerli ya da yeniden ölçüldü; uygulama il seçiyor, arama ve harita iki ilde çalışıyor; Manisa'ya özgü metinler bölgeden okunuyor |
-| 7 | Yayın (koşullu) | ⏳ Bekliyor | Koşul: Faz 6.5 bitti (Scryne'ın kararı, 2026-09-30: yalnız Manisa'yı gösteren site yayına çıkmaz). `yayin-oncesi` çıkış 0 ya da her bulgu kararlı; `fixing-metadata` geçti; Scryne'ın açık onayıyla repo public ve GitHub Pages'te canlı; canlı adreste 10 S1 noktasından biriyle uçtan uca rapor alındı |
+| 6.5 | İkinci il paketi | ✅ Tamamlandı | İl Scryne'la seçildi; boru hattı o il için paketi üretiyor (iki kez aynı sha256); S1 benzeri TDTH karşılaştırması o ilde ≥ 5 noktada yapıldı ve bant (0,72–1,25) geçerli ya da yeniden ölçüldü; uygulama il seçiyor, arama ve harita iki ilde çalışıyor; Manisa'ya özgü metinler bölgeden okunuyor |
+| 7 | Yayın | ⏳ Bekliyor | Faz 6.5 bitti (Scryne'ın kararı, 2026-09-30: yalnız Manisa'yı gösteren site yayına çıkmaz). `yayin-oncesi` çıkış 0 ya da her bulgu kararlı; `fixing-metadata` geçti; Scryne'ın açık onayıyla repo public ve GitHub Pages'te canlı; canlı adreste 10 S1 noktasından biriyle uçtan uca rapor alındı |
 | 8 | Gerçek kullanım | ⏳ Bekliyor | Proje-Fikri'deki "bitti = kullanıldı" cümlesi gerçekleşti (Scryne'ın seçtiği ≥ 5 kişi yardımsız rapor aldı, sonucu öncelik olarak doğru okudu); bulgular roadmap'e işlendi |
 | 9 | TDTH ızgarası entegrasyonu (tetiklemeli) | ⏳ Bekliyor | Tetik: AFAD CIMER başvurusu olumlu döner. Resmî grid paketlenir, K-5 bandı Manisa'da kalkar, S1 karşılaştırması yeniden koşulur |
 | 10 | Yığma binalar, RYTEİE Ek-A.2.2 (koşullu) | ⏳ Bekliyor | Koşul: Faz 8'de kapsam dışı mesajı kullanıcıların önemli bir kısmını geri çeviriyor. Yığma yöntemi motor + form + test olarak eklendi |
@@ -206,8 +206,11 @@ Faz 9–11 olaya bağlıdır; hook bunları "sıradaki iş" saymaz.
     ızgarasından okunur. Kodda il adı yok (K-3): sayfa metinleri ve "AFAD farkı nerede ölçüldü" notu `bolgeler.json`
     (`tdthNokta`) kayıtlarından.
   - e2e 26/26 (İzmir: arama → nokta → sonuç notu "Bu ilde AFAD'la karşılaştırma henüz yapılmadı").
-  - **Kalan:** Scryne'ın 10 TDTH okuması (`spike/S1/izmir-tdth-okumalar.csv`) → oranlar, bant İzmir'de geçerli mi;
-    sonra `bolgeler.py` `tdth_nokta=10` ve Yöntem sayfasındaki S1 cümlesine İzmir sonucu.
+  - TDTH (Scryne, 10 rapor): okumalar SDS/SD1 tutarlılığıyla denetlendi. ESHM20/TDTH oranı 0,81–1,34 (ort. 0,98);
+    güvensiz yön sınırı 0,72 tuttu, üst oran Konak'ta 1,25'i aştı → `S1_BANDI` 0,72–1,34 (iki il, 20 nokta). TDTH
+    bölgesi 10 noktada da uygulamanın aralığında; yalnız ESHM20 Torbalı'da bölgeyi güvensiz yönde kaydırırdı.
+    Ayrıntı `spike/S1/README.md`. Manisa'nın e2e örneği −10 … 20 → −10 … 40 (elverişli uç bölge II).
+  - Kapanış: Vitest 163, pipeline 13, e2e 26/26; İzmir kaydı `tdthNokta: 10`, sonuç notu "İzmir'de 10 noktada ölçüldü".
 
 ### Faz 7: Yayın (~1 gün)
 - **İşler:** MapTiler anahtarı GitHub Actions değişkeni `VITE_MAPTILER_ANAHTARI` olarak derlemeye; MapTiler

@@ -76,7 +76,7 @@ describe('taslak → motor girdisi', () => {
   })
 })
 
-it('e2e/form.spec.ts cevap seti, Manisa merkezi (38,614; 27,4303): PP −10 … 20, yüksek öncelik', () => {
+it('e2e/form.spec.ts cevap seti, Manisa merkezi (38,614; 27,4303): PP −10 … 40, yüksek öncelik', () => {
   const t = tamCevaplar(
     dolu({
       sistem: 'bilmiyorum',
@@ -93,7 +93,7 @@ it('e2e/form.spec.ts cevap seti, Manisa merkezi (38,614; 27,4303): PP −10 … 
   }
   const ss = bilineer(izgaralar.SS, 38.614, 27.4303)
   const d = degerlendir(t.cevaplar, { kaynak: 'eshm20', ss, zemin: t.zemin })
-  expect([d.kotu.pp, d.iyi.pp, d.bant.bant]).toEqual([-10, 20, 'yuksek'])
+  expect([d.kotu.pp, d.iyi.pp, d.bant.bant]).toEqual([-10, 40, 'yuksek'])
 })
 
 describe('kayıt (localStorage)', () => {

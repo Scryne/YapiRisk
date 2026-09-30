@@ -78,3 +78,23 @@ kuzeyden (Bergama, Aliağa) batıya (Çeşme, Seferihisar), merkezden (Konak, Bo
 **Okuma (Scryne, e-Devlet):** Manisa'daki akışın aynısı: tdth.afad.gov.tr → Raporlama → koordinat → **DD-2** →
 zemin **ZC** → Değerleri Hesapla. Rapordan SS, S1, PGA, PGV, SDS, SD1 CSV'nin boş sütunlarına (SDS → `SDS_ZC`,
 SD1 → `SD1_ZC`). Sonra `karsilastir.py` Manisa'daki gibi oranları ve bölge değişimlerini çıkarır.
+
+**İzmir sonucu (2026-09-30; Scryne 10 raporu e-Devlet ile aldı, DD-2, ZC; ESHM20 İzmir bölge paketinin ızgarasından):**
+
+| İlçe | SS TDTH | SS ESHM20 | oran | SDS_ZC TDTH → bölge | ESHM20 → bölge |
+| --- | --- | --- | --- | --- | --- |
+| Konak | 1,126 | 1,505 | 1,337 | 1,351 → I | I |
+| Bornova | 1,103 | 1,258 | 1,141 | 1,324 → I | I |
+| Bergama | 1,038 | 0,904 | 0,871 | 1,246 → I | I |
+| Aliağa | 1,144 | 1,045 | 0,914 | 1,373 → I | I |
+| Çeşme | 0,966 | 0,940 | 0,973 | 1,159 → I | I |
+| Seferihisar | 1,114 | 1,195 | 1,073 | 1,337 → I | I |
+| Torbalı | 0,863 | 0,695 | 0,806 | 1,036 → I | **II** (güvensiz yön) |
+| Tire | 0,769 | 0,683 | 0,888 | 0,923 → II | II |
+| Ödemiş | 0,677 | 0,621 | 0,917 | 0,832 → II | II |
+| Beydağ | 0,753 | 0,676 | 0,898 | 0,904 → II | II |
+
+Oran ortalaması 0,98 (0,81–1,34). Okuma denetimi: 10 raporda SDS ve SD1, SS ve S1'den TBDY ZC katsayısıyla
+±0,0005 tutuyor. **Karar:** güvensiz yön sınırı (0,72) İzmir'de de tuttu; üst oran Konak'ta 1,25'i aştı (güvenli yön)
+→ bant iki ilin 20 ölçümünü kapsayacak şekilde 0,72–1,34 (`S1_BANDI`). Öncelik bandı kötü uçtan seçildiği için
+hiçbir sonuç değişmez; yalnız PP aralığının elverişli ucu genişler. Vitest: `tehlike.test.ts` "S1 İzmir".

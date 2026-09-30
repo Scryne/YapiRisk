@@ -4,6 +4,7 @@ import type { ReactNode } from 'react'
 import { BantRozeti } from '@/sonuc/BantRozeti'
 import { ondalik, TEKIL_BINA_KAYDI } from '@/sonuc/metinler'
 import type { Bant } from '@/yontem/bant'
+import { S1_BANDI } from '@/yontem/tehlike'
 import { useJson } from './json'
 import { Bolum, Sayfa, Tablo } from './Sayfa'
 
@@ -90,10 +91,13 @@ export function Yontem() {
           olarak Avrupa modelini (ESHM20) kullanır.
         </p>
         <p>
-          İki modeli Manisa’daki 10 ilçe merkezinde karşılaştırdık: ESHM20’nin S<sub>S</sub> değeri
-          AFAD’ınkinin ortalama <Sayi>0,89</Sayi> katı, en az <Sayi>0,72</Sayi>, en çok <Sayi>1,25</Sayi> katı
-          çıktı; 10 noktanın 3’ünde tehlike bölgesi değişiyordu. Bu fark sonuca aralık olarak eklenir. AFAD
-          raporundaki S<sub>S</sub> değerini girerseniz aralık kalkar.
+          İki modeli Manisa ve İzmir’de 10’ar ilçe merkezinde, toplam 20 noktada karşılaştırdık: ESHM20’nin S
+          <sub>S</sub> değeri AFAD’ınkinin en az <Sayi>{iki.format(S1_BANDI.altOran)}</Sayi>, en çok{' '}
+          <Sayi>{iki.format(S1_BANDI.ustOran)}</Sayi> katı çıktı (ortalama Manisa’da <Sayi>0,89</Sayi>,
+          İzmir’de <Sayi>0,98</Sayi>). Yalnız ESHM20’ye bakılsaydı 20 noktanın 4’ünde tehlike bölgesi AFAD’a
+          göre daha düşük tehlikeli bir bölgeye düşerdi. YapiRisk bu yüzden ESHM20 değerini bu oran aralığıyla
+          bir aralığa açar; 20 noktanın hepsinde AFAD’ın değeri aralığın içinde kaldı. AFAD raporundaki S
+          <sub>S</sub> değerini girerseniz aralık kalkar.
         </p>
         <p>
           Zemin katsayısı Türkiye Bina Deprem Yönetmeliği (2018) Tablo 2.1’den gelir. Zemin sınıfını
