@@ -1,0 +1,12 @@
+dist
+node_modules
+package-lock.json
+public/data
+src/styles/tokens.css
+playwright-report
+test-results
+docs
+spike
+pipeline
+DESIGN.md
+*.md
