@@ -1,153 +1,147 @@
 ---
 proje: YapiRisk
 created: 2026-09-29
+modified: 2026-09-30
 type: proje-fikri
-status: taslak
+status: denetlendi
 ---
 # YapiRisk — Proje Fikri
 
 **Köken:** Fikir 2026-09-29'daki İP konu seçimi oturumunda Aria'dan çıktı ("Bina Deprem Riski Ön
-Değerlendirme", GES teklif aracının yedeği olarak). Scryne okul projesine almadı, kişisel proje olarak
-yapıyor. Orijinal tarif: konum işaretlenir → AFAD tehlike haritasından değer çekilir → bina yaşı, kat,
-yapı türüyle birleşip standart bir yöntemle risk puanı çıkar. O gün açık kalan soru: "AFAD verisi
-sorgulanabilir mi?" Cevap aşağıda: **hayır, otomatik olarak değil.**
+Değerlendirme", GES teklif aracının yedeği). Scryne okul projesine almadı, kişisel proje olarak yapıyor.
+Orijinal tarif: konum işaretlenir → AFAD tehlike haritasından değer çekilir → bina bilgileriyle
+birleşip standart bir yöntemle puan çıkar. Araştırma ve dört spike bu tarifin iki varsayımını değiştirdi
+(AFAD verisi otomatik alınamıyor, "standart yöntem" resmî RYTEİE Ek-A çıktı).
 
-Araştırma (2026-09-29, dört kol) ham haliyle `docs/arastirma/` altında; kaynak URL'leri orada.
+Kaynaklar: `docs/arastirma/01–07` (ham araştırma), `spike/S1–S4` (ölçümler). Denetim: 2026-09-30.
 
 ## Problem
 
-Türkiye'de bir binanın deprem riskini öğrenmenin resmî yolu, lisanslı kuruluşa riskli yapı tespiti
-yaptırmak: 23.000–100.000 TL, haftalar sürer, sonucu yıkım sürecini başlatabilir. Maliklerin çoğu bu
-yüzden hiç başlamıyor. Arada, "binam öncelikli mi, profesyonele gitmeli miyim?" sorusuna kaynaklı ve
-dürüst cevap veren bir ön değerlendirme katmanı işe yarar.
+Türkiye'de bir binanın deprem riskini öğrenmenin resmî yolu lisanslı kuruluşa riskli yapı tespiti
+yaptırmak: 23.000–100.000 TL, haftalar sürer, sonucu yıkım sürecini başlatabilir. Maliklerin çoğu bu yüzden
+hiç başlamıyor. "Binam öncelikli mi, profesyonele gitmeli miyim?" sorusuna kaynaklı ve dürüst cevap veren
+bir ön değerlendirme katmanı işe yarar.
 
-Bu katman boş değil (bkz. Rakipler), ama mevcut araçların ortak zaafları var: yöntemleri kapalı ya da
-ABD'nin FEMA-154'ünden uyarlanmış, TBDY-2018 tehlike değerlerine kalibre değil, isabetleri gerçek
-hasar verisiyle ölçülüp yayımlanmamış. En yaygın bireysel araç (Başarsoft DepremRiskim) iOS'ta 3,0/5,
-2023'ten beri güncellenmemiş.
+Bu katman boş değil (bkz. Rakipler), ama mevcut araçların yöntemleri kapalı ya da FEMA-154 uyarlaması,
+TBDY-2018 tehlike değerlerine bağlı değil, isabetleri ölçülüp yayımlanmamış. ÇŞB'nin kendi 2025 rehberi de
+hızlı yöntemlerin Maraş verisiyle kalibre edilip doğruluk oranlarının ölçülmesini ve maliklerin web/mobil
+uygulamayla veri girmesini öneriyor.
 
-Manisa bağlamı: Akhisar 2020 (305 ağır hasarlı yapı), Sındırgı 2025 (Manisa'da 105 bina ağır
-hasarlı/yıkık). 15 Eylül 2026 Manisa İRAP çalıştayı: incelenen ~15 bin yapının %38'i yüksek riskli,
-Şehzadeler'de ~%60. TMMOB İMO Manisa (Ağu 2026): şeffaf, güncel bir yapı stoku envanteri yok.
+Manisa bağlamı: Akhisar 2020 (305 ağır hasarlı yapı), Sındırgı 2025 (Manisa'da 105 bina ağır hasarlı/yıkık),
+Manisa İRAP (15.09.2026): incelenen ~15 bin yapının %38'i yüksek riskli, Şehzadeler'de ~%60.
 
 ## Hedef Kullanıcı
 
-- **v1: birey.** Kendi oturduğu, alacağı ya da kiralayacağı binayı merak eden malik/kiracı. Ücretsiz.
-- **v2: B2B ön eleme.** Emlak değerleme ofisleri, kentsel dönüşüm firmaları, emlakçılar: onlarca
-  adresi "profesyonel inceleme önceliği"ne göre sıralamak. Araştırmadaki tek gerçek boşluk bu (toplu
-  giriş; TDTH'de API yok, her adres tek tek e-Devlet sorgusu). **Talep kanıtsız**; v1 sonrası Manisa/Ege'de
-  3–5 ofisle görüşülerek ölçülür. Talep çıkmazsa v2 yapılmaz.
+- **v1: birey.** Manisa'da oturduğu, alacağı ya da kiralayacağı betonarme binayı merak eden malik/kiracı. Ücretsiz.
+- **v2 (koşullu): B2B ön eleme.** Değerleme ve kentsel dönüşüm ofisleri için toplu giriş. Talep kanıtsız;
+  v1 bittikten sonra Manisa/Ege'de 3–5 ofisle görüşülür, talep çıkmazsa yapılmaz.
 
-## Araştırmanın fikri değiştirdiği yerler
+## Ne yapar (v1)
 
-| Orijinal varsayım | Bulgu | Karar önerisi |
-| --- | --- | --- |
-| Tehlike değeri AFAD TDTH'den otomatik çekilir | TDTH'de API, WMS ya da indirilebilir grid yok; e-Devlet girişi zorunlu. Otomasyonu e-Devlet kimlik doğrulamasını aşmak demek | Otomatik değer: **ESHM20** (EFEHR REST API, CC BY 4.0). Resmî değer: kullanıcı TDTH'den okuduğu PGA'yı isterse elle girer, rapor ikisini ayırır. EFEHR 30.09.2026'da yeni platforma geçiyor, spike S1 |
-| Bina yaşı/kat otomatik gelebilir | TKGM otomatik sorguyu ve ticari kullanımı yasaklıyor; OSM'de `start_date` Türkiye'de 666 bina, `building:levels` ~%3 | Yaş ve kat **kullanıcıdan**. Ayak izi (haritada bina seçimi) Microsoft GlobalMLBuildingFootprints'ten (Türkiye 5,8 M, CDLA Permissive 2.0) |
-| "Standart bir yöntem" var | **Var ve resmî: RYTEİE 2019 Ek-A** (09-30, ÇŞB 2025 "Hızlı Deprem Güvenliği Değerlendirme Yöntemleri" belgesinden; `docs/arastirma/05`). Dışarıdan gözlenebilen 8 olumsuzluk parametresi + kat sayısı + yapısal sistem, taban puanı doğrudan **TBDY SDS + zemin sınıfı**na bağlı, tüm tablolar elde. Yönetmelik kaydı: bölgesel önceliklendirme içindir, "tekil binada risk değerlendirme amaçlı kullanılamaz". Sucuoğlu–Yazgan–Yakut tabloları da elde (tehlikeden bağımsız, 3–6 kat) | K-4: temel RYTEİE Ek-A, çapraz kontrol Sucuoğlu–Yazgan–Yakut. Işık vd. uyarlamasına gerek kalmadı |
-| Çıktı "risk puanı" | 6306'ya göre riskli yapı tespitini yalnız lisanslı kuruluş yapar. İBB bile kendi aracına "ön değerlendirmedir, 6306 kapsamında değildir" yazıyor. En iyi bilinen model bile AUC ~0,81 | Çıktı sayısal hüküm değil, **3–5 bantlı "profesyonel inceleme önceliği"**; "riskli/güvenli" kelimesi yok. Yeni bina bile "güvenli" etiketi almaz (2023'te 2018 sonrası 100 RC bina çöktü) |
-| ML/yapay zekâ farkı | Etiket (gözlenmiş hasar) tek depreme bağlı; kullanıcı 38 özellik bilmez; "yapay zekâ ile bina riski" iddiası zaten dolu (BEUN, Bursa, StructurAI+) | v1 **kural tabanlı**, her kalemin katkısı raporda görünür. ML yalnız doğrulama tarafında kıyas olarak |
+Kullanıcı mahallesini arar, haritada binasına tıklar, görsel yardımlı kısa bir formu doldurur. Araç RYTEİE
+2019 Ek-A yöntemiyle performans puanını hesaplar ve **3 bantlı "profesyonel inceleme önceliği"** verir; her
+girdinin puana katkısını, belirsizliği ve yöntemin ölçülmüş isabetini gösterir; kaynaklı bir rapor üretir ve
+lisanslı kuruluşa başvuru yolunu anlatır. "Riskli/güvenli" hükmü vermez.
 
-**LLM/TypeSafe notu:** Puanlama hesap ve kuraldır, kodun işi. Hasar tahmini "dünyanın ne yapacağı"
-sorusudur; Jev'in zayıf olduğu eksen (ScryneQuant K-074…077). v1'de LLM yok.
+## Fark
 
-## Fark (neden mevcut araçlardan farklı)
-
-1. **Açık yöntem:** hangi makalenin hangi tablosu, her girdinin puana katkısı raporda.
-2. **TBDY-2018'e bağlı tehlike:** taban puan konumun SDS'i ve zemin sınıfından (RYTEİE Ek-A), il bazında sabit değil.
-3. **Ölçülmüş isabet:** skor 2023 Kahramanmaraş hasar verisine karşı geriye dönük test edilir, sonuç
-   (duyarlılık/özgüllük, kaçırılan oran) sitede yayımlanır. Rakiplerin hiçbiri bunu yapmıyor.
-4. **Dürüst çerçeve:** "profesyonel inceleme önceliği", lisanslı kuruluşa yönlendirme, "bilmiyorum"
-   seçeneği belirsizliği büyütür, gizlemez.
-5. **Görsel yardımlı form:** yumuşak kat, ağır çıkma, kısa kolon gibi kalemler çizim/fotoğraf
-   örnekleriyle sorulur (eğitimsiz kullanıcının en büyük hata kaynağı).
+1. **Resmî ve açık yöntem:** RYTEİE 2019 Ek-A, tabloları Resmî Gazete'den; her kalemin katkısı raporda.
+2. **TBDY-2018'e bağlı tehlike:** taban puan konumun SDS'i ve zemin sınıfından, belirsizliği bantla gösterilir.
+3. **Ölçülüp açıkça yazılmış isabet (K-6):** 2023 Maraş verisinde AUC ≈ 0,70, kat sayısının tek başına aynı
+   gücü taşıdığı ve ölçülemeyen kusurlar dahil. Rakiplerin hiçbiri isabet yayımlamıyor.
+4. **Dürüst çerçeve:** öncelik bandı, "bilmiyorum" belirsizliği büyütür, lisanslı kuruluşa yönlendirme.
+5. **Görsel yardımlı form:** kusurlar yönetmeliğin kendi çizimleriyle (Şekil A.1) sorulur.
 
 ## v1: Kapsam ve "Bitti" Tanımı
-<!-- 2026-09 denetimi: büyük kapsamla başlayan projeler (AEGIS, FabrikaOS v2) yarım kaldı;
-     "testler yeşil" çoğu projede "ürün çalışıyor" demek değildi. Bu bölüm denetimde kapanır. -->
-- **Süre tavanı:** v1 en fazla ~4 haftalık iş. Sığmıyorsa v1 küçülür, gerisi v2'ye gider.
-- **Bitti = kullanıldı (taslak):** Scryne ve en az 5 gerçek kişi Manisa'daki kendi binalarını
-  değerlendirip PDF rapor aldı; **ve** skor 2023 hasar verisine karşı ölçüldü, sonuç raporda ve sitede
-  yazıyor. Testlerin yeşil olması bu cümlenin yerine geçmez.
+
+- **Süre tavanı:** ~4 hafta (Faz 1 iskelet dahil). Tahmin: iskelet + CI 2 gün, harita + mahalle arama +
+  ayak izi parçaları 4–5 gün, tehlike paketi + bant 2 gün, form + çizimler 4 gün, puan motoru + testler
+  2 gün (spike'ta hazır), sonuç + rapor 3 gün, isabet sayfası 1 gün, gerçek kullanım 3–4 gün → ~22 iş günü.
+- **Bitti = kullanıldı:** Scryne'ın seçtiği en az 5 kişi, Manisa'daki gerçek bir betonarme binayı **yardım
+  almadan** değerlendirip rapor aldı ve "sonuç ne diyor" sorusuna doğru cevap verdi (bandın hüküm değil öncelik
+  olduğunu anladı); bulgular roadmap'e işlendi. Testlerin yeşil olması bu cümlenin yerine geçmez.
 - **Temel özellikler:**
-  1. Bina bulma: mahalle araması → haritada binaya tıklama (ayak izi katmanı, Manisa ili; K-7).
-  2. Konum tehlike değeri: önceden hesaplanmış ESHM20 grid'inden (sürümlü statik dosya) + isteğe
-     bağlı elle TDTH PGA girişi; zemin sınıfı kullanıcı beyanı ya da "bilmiyorum" (USGS Vs30 yalnız ipucu).
-  3. Görsel yardımlı bina formu: yapım yılı, kat, taşıyıcı sistem, yumuşak kat, ağır çıkma, kısa
-     kolon, görünen kalite, bitişik nizam/çarpışma, eğim. Her soruda "bilmiyorum".
-  4. Puanlama motoru: RYTEİE 2019 Ek-A (K-4) + Sucuoğlu–Yazgan–Yakut çapraz kontrolü; saf fonksiyon,
-     birim testli, yöntem tabloları veri dosyasında; çıktı öncelik bandı + kalem kalem katkı + belirsizlik
-     notu ("bilmiyorum" cevapları puanı aralığa çevirir: en iyi–en kötü durum).
-  5. Geriye dönük doğrulama betiği ve sonuç sayfası.
-  6. Türkçe PDF rapor: girdiler, kaynaklar, feragat, lisanslı kuruluşa başvuru yolu.
+  1. **Bina bulma (K-7):** Photon ile mahalle araması → harita → Microsoft ayak izine tıklama; ayak izi yoksa
+     haritada nokta seçme.
+  2. **Tehlike (K-2, K-5, K-9):** sürümlü ESHM20 ızgarasından SS + S1'de ölçülen belirsizlik bandı; kullanıcı
+     TDTH raporundaki SDS'i isterse girer (arayüz adım adım anlatır), bant kapanır.
+  3. **Form:** kat (serbest kat adedi), yapısal sistem (perde var mı), görünen kalite, yumuşak kat, düşeyde
+     düzensizlik, ağır çıkma, planda düzensizlik, kısa kolon, yapı nizamı (bitişik: kat seviyesi aynı/farklı,
+     orta/kenar), zemin eğimi, zemin sınıfı. Her soruda Şekil A.1 çizimi ve "bilmiyorum". Yapım yılı
+     isteğe bağlı, **puana girmez** (K-10).
+  4. **Puan motoru (K-4):** RYTEİE Ek-A saf fonksiyon, tablolar veri dosyasında, birim testli; "bilmiyorum"
+     ve tehlike bandı puanı en iyi–en kötü aralığına çevirir.
+  5. **Sonuç ve rapor:** 3 bant (kötü durum öne), kalem kalem katkı, belirsizlik, yöntem ve isabet notu,
+     6306 feragati, lisanslı kuruluş yolu; tarayıcıdan yazdırılabilir/PDF.
+  6. **Yöntem ve isabet sayfası:** RYTEİE açıklaması, S3 ölçümü (veri seti, n, AUC, sınırlar), veri kaynakları
+     ve lisanslar.
 
-## Kapsam Dışı
+## Kapsam Dışı (v1)
 
-- Fotoğraftan özellik çıkarımı (v2 adayı; yalnız kullanıcının onayladığı öneri olarak, skoru kendisi
-  belirlemez). Türk apartman fotoğrafında VLM doğruluğunu ölçen çalışma yok, ölçmeden girmez.
-- Google Street View: önbellek/türetme/baskı kısıtları. Gerekirse Mapillary (CC BY-SA).
-- B2B toplu giriş, API, ofis paneli (v2, talep testine bağlı).
-- ML hasar modeli, "yapay zekâ ile risk" iddiası.
-- TKGM/e-Devlet entegrasyonu, TDTH otomasyonu.
+- **Yığma, çelik, prefabrik ve 8+ katlı binalar (K-8):** yöntem kapsamı dışında mesajı + lisanslı kuruluş yolu.
+  Yığma (RYTEİE Ek-A.2.2, 1–5 kat) v1.1 adayı.
+- **Sucuoğlu–Yazgan–Yakut çapraz kontrolü (K-4 revize):** yalnız 3–6 kat, tehlikeden bağımsız, test edilmedi;
+  ikinci puan kullanıcıyı karıştırır.
+- Kapı numarasıyla adres araması (S4: Manisa'da veri yok).
+- Fotoğraftan özellik çıkarımı; Street View (lisans); ML hasar modeli, "yapay zekâ ile risk" iddiası.
+- Hesap, sunucu, kişisel veri saklama (K-1); TKGM/e-Devlet entegrasyonu, TDTH otomasyonu.
+- B2B toplu giriş/API (v2, koşullu); Manisa dışı iller (yeni veri paketi, kod değişmez); mobil uygulama.
 - Resmî tespit ya da "riskli/güvenli" hükmü.
-- Mobil uygulama (web, telefonda iyi çalışan).
 
-## Riskli Varsayımlar — finalize etmeden spike
+## Kararlar
 
-| # | Varsayım | Spike | Tutmazsa |
+Scryne 09-29'da yön kararlarını verdi (ad YapiRisk, önce bireysel sonra B2B), 09-30'da diğerleri için
+"sen karar ver / tüm yetki sende" dedi.
+
+| # | Karar | Gerekçe |
+| --- | --- | --- |
+| K-1 | **Sunucusuz statik site; girdiler yalnız tarayıcıda.** Hesap yok, rapor tarayıcıda üretilir. | Adres sunucuya hiç gelmez, KVKK yükü sıfıra iner; bedava barınır, güvenlik yüzeyi yok. v2 sunucu isterse o zaman. |
+| K-2 | **Tehlike ızgarası önceden çekilip sürümlü statik dosya olur.** Model sürümü ve çekim tarihi raporda. | EFEHR'in SLA'sı yok; tekrarlanabilir, çevrimdışı, adres dışarı gitmez. S1: Manisa 3 × 330 nokta, ~51 KB, <3 dk. |
+| K-3 | **v1 kapsamı Manisa ili.** Kod bölgeden bağımsız, yeni il = yeni veri paketi. | Kullanıcılar ve bağlam Manisa'da; veri paketleri küçük (S1, S4). |
+| K-4 | **Tek yöntem: RYTEİE 2019 Ek-A (betonarme).** Resmî metinde eşik yok (A.2.1.8, puanlar sıralanır); "PP < 100 riskli" yalnız ÇŞB/ARUP rehberinde → hüküm olarak gösterilmez. Rapor "tekil binada kullanılamaz" kaydını yazar. Denetimde Sucuoğlu–Yazgan–Yakut çıkarıldı. | Resmî, Türkiye'ye özgü, SDS'e bağlı, tüm girdiler dışarıdan gözlenebilir. Manisa'da (bölge I/II) kusursuz BA çerçeve bile TP ≤ 90 alır; eşik ayırmaz, sıralar. |
+| K-5 | **Tehlike iki kademeli.** Varsayılan ESHM20 + S1 bandı (gerçek SS ∈ SS_ESHM20 / [1,25 … 0,72]); bant iki bölgeye düşerse puan aralık olur, kötü durum öne çıkar. TDTH SDS'i girilirse tek değer. | S1: ESHM20 TDTH'nin ort. %11 altında, 3/10 noktada bölge güvensiz yönde kayıyor. TDTH'nin yasal açık kaynağı yok (`arastirma/06`); tek yol CIMER (taslak `docs/cimer-dilekce-taslak.md`). |
+| K-6 | **Fark "ölçülüp açıkça yazılmış isabet"; en fazla 3 bant.** Yumuşak kat formda en görünür soru. | S3: ACI-133'te kısmi RYTEİE AUC ≈ 0,70 = kat sayısı; 5 kusur ve tehlike terimi test edilemedi. 5 bant sahte hassasiyet olur. |
+| K-7 | **Bina bulma: mahalle ara → harita → binaya tıkla.** Microsoft ayak izi z14 parçalı gzip (Manisa 474.953 bina, 15,3 MB). | S4: OSM'de il genelinde 779 kapı no, sokakların %8'i adlı; mahalle araması Photon 18/18. |
+| K-8 | **v1 yalnız betonarme, 1–7 serbest kat.** Diğerleri "kapsam dışı" mesajı alır. | RYTEİE Ek-A betonarme yöntemi 1–7 kat içindir; yığma ayrı yöntem (v1.1). 4 haftaya sığdırmak. |
+| K-9 | **Zemin sınıfı "bilmiyorum" → kötü durum:** bölge için ZC/ZD/ZE grubu, SDS için bu üçünden en büyük Fs. Taşıyıcı sistem "bilmiyorum" → BAÇ (resmî kural A.2.1.1). USGS Vs30 yalnız ipucu olarak gösterilir. | Çoğu kullanıcı zemini bilmez; bilinmeyen belirsizlik güvenli yöne değil öncelik yönüne çözülür, resmî metnin sistem kuralıyla aynı mantık. |
+| K-10 | **Yapım yılı puana girmez; isteğe bağlı bilgi olarak yönetmelik dönemi notunu besler.** | RYTEİE yılı kullanmıyor; S3'te yaş tek başına AUC 0,595. Resmî yöntemi değiştirmek "resmî ve açık" farkını bozar. |
+| K-11 | **Hedef yayın: public repo + statik site** (ör. GitHub Pages). Yayın anı `yayin-oncesi` kapısı ve Scryne'ın o anki onayıyla; repo ve site kişisel veri taşımaz, commit kimliği noreply. NC/ND lisanslı ham veri repoya girmez. | "Bitti" 5 kişinin kendi cihazından kullanmasını gerektiriyor; isabet sayfası kamuya açık olmalı. |
+
+## Spike Sonuçları
+
+| # | Soru | Sonuç | Karar |
 | --- | --- | --- | --- |
-| S1 | **Kapandı (09-30), yarı tuttu:** grid çekiliyor (Manisa 3 × 330 nokta, ~51 KB, <3 dk) ama ESHM20 TDTH'nin ortalama %11 altında, 10 noktanın 3'ünde RYTEİE bölgesi güvensiz yönde değişiyor → K-5. Ayrıntı `spike/S1/README.md`. ~~ESHM20 Türkiye koordinatında PGA döndürür, Manisa grid'i çekilebilir ve TDTH'ye yakındır~~ | 30.09 platform geçişinden sonra EFEHR API'den 10 Manisa noktası çek; aynı noktaları Scryne TDTH'den elle okusun; farkı ölç; Manisa sınırında grid çekim süresi ve dosya boyutunu ölç (K-2) | Tehlike yalnız elle TDTH girişi olur, ya da GEM (NC lisansı: ticari yol kapanır) |
-| S2 | **Kapandı (09-30):** RYTEİE Ek-A Tablo A.1–A.4 Resmî Gazete asıl metninden doğrulandı (resmî metinde eşik yok, tespit edilemeyen sistem → BAÇ); TBDY Tablo 2.1/2.2 tüm zemin sınıfları Vikikaynak'tan, ZC satırı ayrıca 10 TDTH raporuyla; Coşkun–Aldemir–Şahmaran Tablo 4 ceza puanları `docs/arastirma/07`'de. ~~Yöntem tabloları elde edilebilir~~ **büyük ölçüde kapandı (09-30):** ÇŞB belgesi indirildi, RYTEİE Ek-A ve Sucuoğlu–Yazgan–Yakut tabloları aktarıldı | Kalan: (a) Tablo 24'ün son satırı ve Tablo 26 sütun eşlemesi RYTEİE Resmî Gazete asıl metnine karşı; (b) SDS = Fs·SS için TBDY-2018 Tablo 2.1 zemin katsayıları (ZC satırı 09-30'da 10 TDTH raporuyla doğrulandı; ZA/ZB/ZD/ZE kaldı); (c) Coşkun–Aldemir–Şahmaran ceza tablosu asıl makaleden | (a) doğrulanamazsa belirsiz hücreler raporda işaretlenir |
-| S3 | **Kapandı (09-30): veri var, sonuç mütevazı.** ACI-133 (242 BA, CC BY) üzerinde RYTEİE kısmi puanı ağır hasarı AUC ≈ 0,70 ile sıralıyor, yalnız kat sayısı da 0,70; ölçüm isteyen Hassan–Sozen 0,76. Gaziantep seti (CC BY-NC-ND) yardımcı. Ayrıntı `spike/S3/README.md` → K-6. ~~Doğrulama için yıl + kat + konum + hasar içeren erişilebilir veri var~~ | Yilmaz vd. 2024 portalı (2,15 M bina) ve Gaziantep Dataverse setine (DOI 10.7910/DVN/OQCPWF) bak | "Ölçülmüş isabet" farkı düşer; yöntem doğrulaması literatür atfına iner |
-| S4 | **Kapandı (09-30):** kapı numarası araması çalışmaz (OSM'de il genelinde 779 kapı no, sokakların %8'i adlı); mahalle araması çalışır (Photon 18/18); Microsoft ayak izi Manisa'da 474.953 bina, parçalı gzip 15,3 MB → K-7. Ayrıntı `spike/S4/README.md`. ~~Manisa'da ayak izi + adres araması kullanılabilir isabette~~ | 50 gerçek Manisa adresinde Photon/Nominatim + Microsoft ayak izi eşleşmesi | Akış "haritada bina tıkla"ya kurulur, adres ikincil olur |
+| S1 | ESHM20, TDTH'nin yerini tutar mı? | Izgara çekiliyor; ama ort. %11 düşük, 3/10 bölge değişimi (güvensiz yön). ZC zemin katsayıları doğrulandı. | K-2, K-5 |
+| S2 | Yöntem tabloları elde mi? | RYTEİE Ek-A A.1–A.4 Resmî Gazete'den doğrulandı; TBDY Fs/F1 tüm zeminler elde; Coşkun vd. Tablo 4 elde. | K-4, K-9 |
+| S3 | İsabet ölçülebilir mi? | ACI-133 (242 BA, CC BY): kısmi puan AUC ≈ 0,70, kat sayısı da 0,70; Hassan–Sozen (ölçüm ister) 0,76. | K-6 |
+| S4 | Kullanıcı binasını bulabilir mi? | Kapı no araması yok, mahalle araması var; ayak izi 474.953 bina, 15,3 MB parçalı. | K-7 |
 
-Kıyas tabanı (literatür): 7.292 binalık Nurdağı/İslahiye çalışmasında yaş+kat+PGA+Vs30 topluluk modeli
-AUC 0,81, recall %88,9, özgüllük %52,8; "1998 öncesi" kuralı güvensiz binaların %55'ini kaçırıyor.
+Kıyas (literatür, farklı set): Nurdağı/İslahiye 7.292 binada yaş + kat + PGA + Vs30 topluluk modeli AUC 0,81.
 
 ## Rakipler (özet; tam tablo `docs/arastirma/03-pazar-ve-rakipler.md`)
 
 | Araç | Ne yapar | Zaaf |
 | --- | --- | --- |
-| AFAD TDTH | Koordinat → PGA, zemin, fay | Bina bilgisi yok, API yok |
-| İBB Depreme Yenilme | Konum+yıl+kat+düzensizlik → FEMA-154 tipi skor | İstanbul odaklı, yöntem kapalı |
-| İBB Bina Tespiti | Saha ekibiyle A–E sınıfı | Yalnız İstanbul, aylarca bekleme |
+| AFAD TDTH | Koordinat → SS, S1, PGA, SDS | Bina bilgisi yok, API yok |
+| İBB Depreme Yenilme | Konum + yıl + kat + düzensizlik → FEMA-154 tipi skor | İstanbul odaklı, isabet yayımlanmamış |
+| İBB Bina Tespiti | Saha ekibiyle A–E sınıfı (PERA) | Yalnız İstanbul, aylarca bekleme |
 | Başarsoft DepremRiskim | Harita + foto + FEMA-154 skor | 3,0/5, 2023'ten beri güncellenmiyor |
 | BEUN Yapı Analiz | Fotoğraf + konum → YZ raporu | Doğrulama verisi yayımlanmamış |
-| Manisa BB + CBÜ ücretsiz test | Saha taraması, 600 bin bağımsız bölüm hedefi | Sonuçlara bireysel erişim belirsiz |
-| Cadastrum (eklenti) | İlan sitelerinde konum riski | Bina bazlı yapısal risk yok |
+| Manisa BB + CBÜ ücretsiz test | Saha taraması | Sonuçlara bireysel erişim belirsiz |
 
-## Mevzuat ve Veri Koruma
+## Mevzuat, Veri Koruma, Lisans
 
-- **6306:** Tespit yalnız lisanslı kuruluş (lisans harcı 2026'da 125.000 TL + KDV). Rapor dili: "6306
-  kapsamında riskli yapı tespiti değildir; kesin sonuç için lisanslı kuruluşa başvurun."
-- **KVKK:** Adres (ve v2'de fotoğraf) kişisel veri. v1'de hesap yok; girdiler tarayıcıda kalırsa
-  sunucuda kişisel veri tutulmaz (tercih edilen). Tutulursa aydınlatma metni; VERBİS muafiyet eşiği
-  (<50 çalışan, <100 M TL) altında ama diğer yükümlülükler geçerli.
-- **Lisanslar:** ESHM20/EFSM20 CC BY 4.0 (atıf), Microsoft ayak izleri CDLA Permissive 2.0, OSM ODbL.
-  Kullanılmaz: MTA Diri Fay (ticari yasak, yazılı izin), GEM haritası (NC), TKGM servisleri.
-
-## Kararlar
-
-| # | Karar (2026-09-30, Scryne yetki verdi, Aria karar verdi) | Gerekçe |
-| --- | --- | --- |
-| K-1 | **v1 sunucusuz: girdiler yalnız tarayıcıda** (localStorage). Hesap, kayıt, sunucu tarafı kişisel veri yok. Rapor tarayıcıda üretilir. | KVKK yükü sıfıra iner (adres sunucuya hiç gelmez), aydınlatma metni kısa kalır; statik site olarak bedava barınır, bakım ve güvenlik yüzeyi yok. 4 haftalık v1'e sığar. B2B (v2) sunucu isterse o zaman eklenir; v1'de ona hazırlık yapılmaz. |
-| K-2 | **Tehlike değeri çalışma anında API'den değil, önceden hesaplanmış grid'den.** Bir derleme betiği ESHM20'yi EFEHR'den bölge için bir kez çeker, sürümlü statik dosyaya yazar (model sürümü + çekim tarihi raporda). | EFEHR bugün platform değiştiriyor, SLA yok, CORS bilinmiyor; kullanıcı isteğini üçüncü tarafa bağlamak kırılganlık. Grid tekrarlanabilir (aynı bina hep aynı değeri alır), çevrimdışı çalışır, adres dışarı sızmaz (K-1 ile tutarlı). |
-| K-3 | **v1 coğrafi kapsamı: Manisa ili.** Yöntem ve kod bölgeden bağımsız yazılır; yeni il = yeni veri paketi (grid + ayak izi), kod değişmez. | "Bitti" cümlesi zaten Manisa'daki kullanıcılara bağlı; bağlam güçlü (Akhisar 2020, Sındırgı 2025, İRAP %38). Tüm Türkiye ayak izi 5,8 M bina (yüzlerce MB) ve ülke çapı grid spike'ı büyütür; Manisa'da ikisi de küçük ve S1/S4 tek ilde ölçülebilir. Genişleme v1 sonrası veri işi. |
-
-| K-4 | **Temel yöntem RYTEİE 2019 Ek-A; Sucuoğlu–Yazgan–Yakut çapraz kontrol olarak raporda.** Resmî metinde eşik yok (A.2.1.8: puanlar sıralanır, dağılıma göre öncelik; "PP < 100 riskli" yalnız ÇŞB/ARUP 2025 rehberinde), bu yüzden 100 kullanıcıya hüküm olarak gösterilmez; öncelik bantları PP dağılımı ve S3 doğrulamasıyla kalibre edilir. Rapor, yönetmeliğin "tekil binada kullanılamaz" kaydını açıkça yazar. | Resmî, Türkiye'ye özgü, TBDY SDS'ine bağlı ve tüm girdileri dışarıdan gözlenebilir: vatandaş formuna birebir uyar. Ama Manisa gibi bölge I/II'de kusursuz BA çerçeve bina bile TP ≤ 90 < 100 alır; eşik ayırt etmez, sıralama eder. ÇŞB belgesi de yöntemlerin Maraş verisiyle kalibre edilip doğruluk oranlarının ölçülmesini öneriyor: projenin farkı bu boşluğa oturuyor. |
-
-| K-5 | **Tehlike değeri iki kademeli (S1 sonucu, spike'ın önceden yazılmış karar kuralına göre).** Varsayılan: ESHM20 grid'i + S1'de ölçülen belirsizlik bandı (gerçek SS ∈ SS_ESHM20 / [1,25 … 0,72]); bant iki RYTEİE bölgesine düşüyorsa puan aralık olarak verilir ve rapor **kötü durumu** öne koyar. Kullanıcı TDTH raporundaki SDS'i girerse bant kapanır, tek değer kullanılır; arayüz TDTH'ye adım adım yol gösterir. | ESHM20 ortalama %11 düşük ve 3/10 noktada bölgeyi güvensiz yönde kaydırıyor; ham haliyle kullanmak binayı olduğundan güvenli gösterir. TDTH otomatik alınamıyor. Bant, bilinen belirsizliği gizlemeden gösterir ("bilmiyorum" cevaplarıyla aynı mantık, K-4). TDTH ızgarasının yasal bir kaynağı bulunursa K-5 yeniden açılır. 09-30 araştırması (`docs/arastirma/06`): açık grid, API ya da OpenQuake paketi yok; GEM'in açık EMME14'ü TDTH değil (benzer sapma beklenir), EMME2 v2026 kısıtlı lisanslı; ideCAD'in çevrimdışı değerleri kendi türetmesi olabilir. Tek yasal yol AFAD'a CIMER/bilgi edinme başvurusu (sonucu belirsiz). |
-
-| K-6 | **Farkın tanımı "daha isabetli" değil, "isabeti ölçülüp açıkça yazılmış".** Sitede ve raporda: veri seti, bina sayısı, AUC ≈ 0,70, kat sayısının tek başına aynı gücü taşıdığı ve ölçülemeyen kusurlar. Öncelik bandı en fazla **3** (bu ayırma gücünde 5 bant sahte hassasiyet olur). Yumuşak kat en güçlü görsel sinyal (ağır hasar %82'ye %61), formda en görünür soru o olur. | S3: ölçüm mümkün ama yöntem bu sette kat sayısını geçmiyor; tehlike terimi ve 5 kusur test edilemedi. Rakipler isabet yayımlamıyor; dürüst bir 0,70, yayımlanmamış bir "%91"den savunulabilir. Bant sayısı, ayırma gücüyle sınırlı. |
-
-| K-7 | **Bina bulma akışı: mahalle araması (Photon) → harita → binaya tıkla.** Ayak izi Microsoft GlobalMLBuildingFootprints'ten, z14 parçalı statik gzip dosyalar (Manisa 15,3 MB, yalnız görünen parçalar yüklenir). Kapı numarası araması v1'de yok; ayak izi yoksa "haritada nokta seç". | S4: OSM'de Manisa'da kapı numarası ve sokak adı neredeyse yok, mahalle katmanı sağlam. Microsoft verisi OSM'nin 7 katı bina, lisansı serbest, parçalı hali statik siteye sığar (K-1, K-2 ile tutarlı). |
+- **6306:** Tespit yalnız lisanslı kuruluş. Rapor dili: "6306 kapsamında riskli yapı tespiti değildir;
+  RYTEİE Ek-A yöntemi bölgesel önceliklendirme içindir, tekil binada kesin sonuç vermez; lisanslı kuruluşa
+  başvurun."
+- **KVKK:** K-1 ile sunucuda kişisel veri yok. Photon'a giden mahalle araması ve harita parçası istekleri
+  üçüncü tarafa gider (IP); aydınlatma notunda yazılır.
+- **Lisanslar:** ESHM20 CC BY 4.0 (atıf), Microsoft ayak izleri CDLA Permissive 2.0, OSM/Photon ODbL (atıf),
+  ACI-133 CC BY 4.0. Şekil A.1 çizimleri Resmî Gazete'de yayımlanmış mevzuat eki (FSEK md. 31 kapsamı, finalizasyonda
+  teyit). Gaziantep seti (CC BY-NC-ND) yalnız yerel analiz. Kullanılmaz: MTA Diri Fay, GEM haritası (NC), TKGM.
 
 ## Açık Sorular
 
-1. ~~ÇŞB belgesi resmî yöntem veriyor mu?~~ → Evet, K-4. Kalan doğrulamalar S2'de.
-2. ~~Girdiler nerede durur?~~ → K-1.
-3. ~~CORS/proxy mi grid mi?~~ → K-2.
-4. Yayın: public repo + canlı site mi? (Kurallar: repo ve site kişisel veri taşımaz; `yayin-oncesi` kapısı.)
-5. "Bitti" cümlesindeki 5 kişi kim olacak; B2B talep görüşmeleri v1 bittiğinde mi, paralel mi?
-6. ~~Coğrafi kapsam?~~ → K-3.
-7. AFAD'a CIMER üzerinden Manisa TDTH grid talebi yapılsın mı? (Dışarı giden resmî başvuru, Scryne'ın kararı; ücretsiz, cevap süresi yasal olarak kısa ama sonuç belirsiz. Olumlu dönerse K-5'teki bant kalkar.)
+1. CIMER başvurusu (Scryne'ın kararı; taslak hazır). Olumlu dönerse K-5'teki bant kalkar.
+2. 3 bandın PP sınırları: S3 dağılımı + Manisa'da tipik binalar üzerinden finalizasyonda belirlenir.
+3. Şekil A.1'in kullanım serbestliği (FSEK md. 31) finalizasyonda teyit.
