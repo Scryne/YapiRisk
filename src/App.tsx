@@ -10,18 +10,17 @@ import { cn } from '@/lib/utils'
 import { Rapor } from '@/sonuc/Rapor'
 import { sonucHesapla } from '@/sonuc/sonuc'
 import { baglantiOku } from '@/harita/baglanti'
-import { geometriIcinde } from '@/harita/geometri'
 import { BINA_YAKINLIGI, type HaritaHedefi, type Secim } from '@/harita/tipler'
 import { UYDU_ANAHTARI } from '@/harita/uydu'
 import { SecimKarti } from '@/panel/SecimKarti'
-import { bolgeleriYukle, bolgePaketiYukle, type BolgePaketi } from '@/veri/bolge'
+import { adlarListesi, bolgeBul, tumBolgeleriYukle, type BolgePaketi } from '@/veri/bolge'
 import { bilineer } from '@/yontem/tehlike'
 
 // MapLibre (~1 MB) ayrı parçada; panel ve arama harita yüklenmeden kullanılabilir.
 const Harita = lazy(() => import('@/harita/Harita').then((m) => ({ default: m.Harita })))
 
 type Yukleme =
-  { durum: 'yukleniyor' } | { durum: 'hata'; mesaj: string } | { durum: 'hazir'; paket: BolgePaketi }
+  { durum: 'yukleniyor' } | { durum: 'hata'; mesaj: string } | { durum: 'hazir'; paketler: BolgePaketi[] }
 
 const MAHALLE_YAKINLIGI = 15.5
 const KONUM_YAKINLIGI = 17
@@ -83,10 +82,9 @@ export default function App() {
 
   useEffect(() => {
     let iptal = false
-    bolgeleriYukle()
-      .then(([ilk]) => bolgePaketiYukle(ilk))
-      .then((paket) => {
-        if (!iptal) setYukleme({ durum: 'hazir', paket })
+    tumBolgeleriYukle()
+      .then((paketler) => {
+        if (!iptal) setYukleme({ durum: 'hazir', paketler })
       })
       .catch((e: unknown) => !iptal && setYukleme({ durum: 'hata', mesaj: String(e) }))
     return () => {
@@ -118,8 +116,10 @@ export default function App() {
     haritaya()
   }
 
-  const paket = yukleme.durum === 'hazir' ? yukleme.paket : null
-  const hazir = paket !== null
+  const paketler = yukleme.durum === 'hazir' ? yukleme.paketler : null
+  const hazir = paketler !== null
+  const mahalleler = useMemo(() => paketler?.flatMap((p) => p.mahalleler) ?? [], [paketler])
+  const adlar = useMemo(() => paketler?.map((p) => p.kayit.ad) ?? [], [paketler])
 
   // Adresteki #konum / #harita: açılışta ve sonradan değişince.
   useEffect(() => {
@@ -138,14 +138,28 @@ export default function App() {
     window.addEventListener('hashchange', oku)
     return () => window.removeEventListener('hashchange', oku)
   }, [hazir])
+  // Seçilen noktayı sınırı içine alan bölge; tehlike o bölgenin ızgarasından okunur.
+  const secimBolgesi = useMemo(
+    () => (paketler && secim ? bolgeBul(paketler, secim.merkez) : null),
+    [paketler, secim],
+  )
   const ss = useMemo(() => {
-    if (!paket || !secim) return null
+    if (!secimBolgesi || !secim) return null
     const [boylam, enlem] = secim.merkez
-    if (!geometriIcinde(secim.merkez, paket.sinir.geometry)) return null
-    return bilineer(paket.tehlike.izgaralar.SS, enlem, boylam)
-  }, [paket, secim])
+    return bilineer(secimBolgesi.tehlike.izgaralar.SS, enlem, boylam)
+  }, [secimBolgesi, secim])
 
-  const sonuc = useMemo(() => sonucHesapla(taslak, ss, tdthSs), [taslak, ss, tdthSs])
+  const sonuc = useMemo(
+    () =>
+      sonucHesapla(
+        taslak,
+        ss,
+        tdthSs,
+        secimBolgesi?.kayit ?? null,
+        paketler?.map((p) => p.kayit),
+      ),
+    [taslak, ss, tdthSs, secimBolgesi, paketler],
+  )
 
   const sec = (s: Secim) => {
     setSecim(s)
@@ -160,10 +174,10 @@ export default function App() {
         className="relative h-dvh overflow-hidden bg-background print:hidden"
         data-yakinlik={yakinlik.toFixed(1)}
       >
-        {paket && (
+        {paketler && (
           <Suspense>
             <Harita
-              paket={paket}
+              paketler={paketler}
               secim={secim}
               hedef={hedef}
               noktaModu={noktaModu}
@@ -180,7 +194,7 @@ export default function App() {
           </Suspense>
         )}
 
-        {paket && UYDU_ANAHTARI && (
+        {paketler && UYDU_ANAHTARI && (
           <button
             type="button"
             aria-pressed={uydu}
@@ -234,7 +248,7 @@ export default function App() {
             </p>
           )}
 
-          {paket && formda && (
+          {paketler && formda && (
             <div className="mt-2 flex flex-1 flex-col">
               <Form
                 taslak={taslak}
@@ -251,14 +265,14 @@ export default function App() {
             </div>
           )}
 
-          {paket && !formda && (
+          {paketler && !formda && (
             <div className="mt-4 flex flex-col gap-3">
               <h2 ref={bulBaslikRef} tabIndex={-1} className="text-label text-balance outline-none">
                 1. Binanızı bulun
               </h2>
               <MahalleArama
-                kayitlar={paket.mahalleler}
-                bolgeAdi={paket.kayit.ad}
+                kayitlar={mahalleler}
+                bolgeAdi={adlar.join(' ')}
                 onSec={(k) => {
                   setHedef((h) => ({
                     merkez: k.konum,
@@ -303,7 +317,12 @@ export default function App() {
               )}
 
               {secim && (
-                <SecimKarti secim={secim} bolgeAdi={paket.kayit.ad} ss={ss} onKaldir={() => setSecim(null)} />
+                <SecimKarti
+                  secim={secim}
+                  bolgeAdi={adlarListesi(adlar)}
+                  ss={ss}
+                  onKaldir={() => setSecim(null)}
+                />
               )}
 
               {secim && ss !== null && (
@@ -344,8 +363,8 @@ export default function App() {
           )}
         </aside>
       </main>
-      {sonuc && secim && paket && (
-        <Rapor sonuc={sonuc} secim={secim} taslak={taslak} bolgeAdi={paket.kayit.ad} />
+      {sonuc && secim && secimBolgesi && (
+        <Rapor sonuc={sonuc} secim={secim} taslak={taslak} bolgeAdi={secimBolgesi.kayit.ad} />
       )}
     </>
   )

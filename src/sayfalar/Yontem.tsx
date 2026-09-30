@@ -203,7 +203,8 @@ export function Yontem() {
                 etkisi bu veriyle ölçülemedi.
               </li>
               <li>
-                Ölçüm Kahramanmaraş depremlerinden; Manisa’daki bina stoğu ve depremler farklı olabilir.
+                Ölçüm Kahramanmaraş depremlerinden; YapiRisk’in kapsadığı illerdeki bina stoğu ve depremler
+                farklı olabilir.
               </li>
             </ul>
           </>

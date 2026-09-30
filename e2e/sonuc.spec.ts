@@ -141,3 +141,31 @@ test('bilgi sayfaları: panelden açılıyor, sayılar veri dosyalarıyla aynı'
   expect(yabanci).toEqual([])
   expect(hatalar).toEqual([])
 })
+
+test('ikinci il: İzmir mahallesi aranıyor, tehlike İzmir ızgarasından, fark notu ölçülmediğini söylüyor', async ({
+  page,
+  baseURL,
+}) => {
+  const { yabanci, hatalar } = istekleriIzle(page, baseURL!)
+  await page.goto('/')
+  await hazirBekle(page)
+  const arama = page.getByRole('combobox', { name: 'Mahalle ya da köy ara' })
+  await arama.fill('alsancak')
+  await page.getByRole('option', { name: /Alsancak.*Konak/ }).click()
+  await expect(arama).toHaveValue('Alsancak, Konak')
+
+  // Alsancak'ta bir nokta: bölge İzmir, S_S İzmir ızgarasından (Manisa ızgarası bu noktayı kapsamaz).
+  await page.goto('/#konum=38.4392,27.1438')
+  await expect(page.getByRole('heading', { name: 'Seçilen nokta' })).toBeVisible()
+  await expect(page.getByTestId('ss-degeri')).toBeVisible()
+  await page.getByRole('button', { name: 'Sorulara başla' }).click()
+  await doldur(page, KUSURSUZ_4_KAT)
+  await expect(page.getByTestId('sonuc-karti')).toContainText(
+    'Bu ilde AFAD’la karşılaştırma henüz yapılmadı; aralık Manisa’da ölçülen farktan geliyor',
+  )
+  await page.emulateMedia({ media: 'print' })
+  await expect(page.getByRole('article')).toContainText('İzmir')
+
+  expect(yabanci).toEqual([])
+  expect(hatalar).toEqual([])
+})

@@ -1,19 +1,24 @@
 // Hakkında, feragat ve aydınlatma: YapiRisk ne değildir, veriler nereye gider (K-1, K-16).
 import { PROFESYONEL_YOL, TEKIL_BINA_KAYDI } from '@/sonuc/metinler'
+import { adlarListesi, bulunma, type BolgeKaydi } from '@/veri/bolge'
+import { useJson } from './json'
 import { Bolum, Sayfa } from './Sayfa'
 
 const kok = import.meta.env.BASE_URL
 
 export function Hakkinda() {
+  const b = useJson<{ bolgeler: BolgeKaydi[] }>('bolgeler.json')
+  // İl adları bölge kaydından (K-3); yüklenene kadar genel ifade.
+  const iller = b.durum === 'hazir' ? adlarListesi(b.veri.bolgeler.map((k) => k.ad)) : null
   return (
     <Sayfa
       etkin="hakkinda"
       baslik="Hakkında"
       giris={
         <p>
-          YapiRisk, Manisa’daki betonarme binalar için deprem riskinin ön değerlendirmesini yapar: binanızı
-          haritada bulursunuz, dışarıdan bakarak cevaplanabilen soruları cevaplarsınız, resmî bir yöntemle
-          hesaplanan profesyonel inceleme önceliğini görürsünüz.
+          YapiRisk, {iller ? bulunma(iller) + 'ki' : 'kapsadığı illerdeki'} betonarme binalar için deprem
+          riskinin ön değerlendirmesini yapar: binanızı haritada bulursunuz, dışarıdan bakarak cevaplanabilen
+          soruları cevaplarsınız, resmî bir yöntemle hesaplanan profesyonel inceleme önceliğini görürsünüz.
         </p>
       }
     >
@@ -66,8 +71,9 @@ export function Hakkinda() {
 
       <Bolum id="kapsam" baslik="Kapsam">
         <p>
-          Şimdilik yalnız Manisa ilinin verisi var. Yöntem 1–7 serbest katlı betonarme binalar içindir; yığma,
-          çelik, prefabrik ve 8 ya da daha fazla katlı binalar değerlendirilmez.
+          Şimdilik yalnız {iller ?? 'kapsanan illerin'} {iller ? 'için veri var' : 'verisi var'}. Yöntem 1–7
+          serbest katlı betonarme binalar içindir; yığma, çelik, prefabrik ve 8 ya da daha fazla katlı binalar
+          değerlendirilmez.
         </p>
       </Bolum>
     </Sayfa>

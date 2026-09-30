@@ -12,8 +12,12 @@ from .bolgeler import Bolge
 from .ortak import indir
 
 OVERPASS = "https://overpass-api.de/api/interpreter"
-# Ana sunucu S4'te 504 verdi; yedek aynı veriyi sunuyor ama gecikmeli olabilir (timestamp_osm_base kaydedilir).
-OVERPASS_YEDEK = ("https://overpass.private.coffee/api/interpreter",)
+# Ana sunucu S4'te 504 verdi, 2026-09-30'da ana sunucu ve private.coffee "too busy" dedi; yedekler aynı veriyi
+# sunuyor ama gecikmeli olabilir (timestamp_osm_base kaydedilir).
+OVERPASS_YEDEK = (
+    "https://overpass.private.coffee/api/interpreter",
+    "https://maps.mail.ru/osm/tools/overpass/api/interpreter",
+)
 
 
 @dataclass(frozen=True)
@@ -24,8 +28,24 @@ class OsmSonucu:
     meta: dict[str, str]
 
 
+def overpass_gecerli(icerik: bytes) -> bool:
+    """Meşgul sunucu HTTP 200 ile HTML hata sayfası ya da `remark` içinde zaman aşımı döndürebiliyor."""
+    try:
+        d = json.loads(icerik)
+    except ValueError:
+        return False
+    return isinstance(d, dict) and "elements" in d and "error" not in str(d.get("remark", "")).lower()
+
+
 def overpass(ad: str, sorgu: str) -> OsmSonucu:
-    yol, meta = indir(ad, OVERPASS, veri={"data": sorgu}, yedek_urller=OVERPASS_YEDEK, zaman_asimi=600)
+    yol, meta = indir(
+        ad,
+        OVERPASS,
+        veri={"data": sorgu},
+        yedek_urller=OVERPASS_YEDEK,
+        zaman_asimi=600,
+        gecerli=overpass_gecerli,
+    )
     return _oku(yol, meta)
 
 

@@ -12,6 +12,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+from collections.abc import Callable
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -55,8 +56,10 @@ def indir(
     yedek_urller: tuple[str, ...] = (),
     zaman_asimi: float = 300,
     deneme: int = 3,
+    gecerli: Callable[[bytes], bool] | None = None,
 ) -> tuple[Path, dict[str, str]]:
     """URL'yi önbelleğe indirir (varsa dokunmaz). `veri` verilirse POST form gövdesi olarak gider.
+    `gecerli` verilirse içerik önbelleğe yazılmadan denetlenir; geçersizse sıradaki deneme/yedek URL.
 
     Döner: (dosya yolu, meta). Meta: url, çekim tarihi (UTC), sha256.
     """
@@ -73,6 +76,8 @@ def indir(
                 istek = urllib.request.Request(aday, data=govde, headers={"User-Agent": KULLANICI_AJANI})
                 with urllib.request.urlopen(istek, timeout=zaman_asimi) as yanit:
                     icerik = yanit.read()
+                if gecerli and not gecerli(icerik):
+                    raise ValueError(f"{aday} geçersiz içerik döndü: {icerik[:120]!r}")
                 yol.parent.mkdir(parents=True, exist_ok=True)
                 gecici = yol.with_name(yol.name + ".indiriliyor")
                 gecici.write_bytes(icerik)
@@ -84,7 +89,7 @@ def indir(
                 }
                 meta_yol.write_text(json.dumps(meta, ensure_ascii=False, indent=1), encoding="utf-8")
                 return yol, meta
-            except (urllib.error.URLError, TimeoutError, ConnectionError) as hata:
+            except (urllib.error.URLError, TimeoutError, ConnectionError, ValueError) as hata:
                 son_hata = hata
                 time.sleep(5 * (i + 1))
     raise RuntimeError(f"{ad} indirilemedi: {son_hata}")

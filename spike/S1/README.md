@@ -67,3 +67,14 @@ en düşük Gördes/Kula), Salihli dışında. 0,1° çözünürlük ve farklı 
   "TDTH girilmediğinde kaba tahmin" olur, TDTH girişi öne çıkar.
 - 0,1° çözünürlük: fay yakınında (Gediz grabeni) TDTH'nin daha ince ızgarasıyla fark büyüyebilir;
   noktalar arası tutarsızlık buna bakılarak yorumlanır.
+
+## İzmir (Roadmap Faz 6.5, 2026-09-30)
+
+Yayın için ikinci il İzmir. S1 bandının (0,72–1,25) İzmir'de geçerli olup olmadığını ölçmek için 10 ilçe merkezi
+seçildi (`izmir-tdth-okumalar.csv`; koordinatlar OSM `admin_centre` düğümleri, Konak için Konak Meydanı). İl
+kuzeyden (Bergama, Aliağa) batıya (Çeşme, Seferihisar), merkezden (Konak, Bornova) güneydoğuya (Torbalı, Tire,
+Ödemiş, Beydağ) kapsanıyor.
+
+**Okuma (Scryne, e-Devlet):** Manisa'daki akışın aynısı: tdth.afad.gov.tr → Raporlama → koordinat → **DD-2** →
+zemin **ZC** → Değerleri Hesapla. Rapordan SS, S1, PGA, PGV, SDS, SD1 CSV'nin boş sütunlarına (SDS → `SDS_ZC`,
+SD1 → `SD1_ZC`). Sonra `karsilastir.py` Manisa'daki gibi oranları ve bölge değişimlerini çıkarır.

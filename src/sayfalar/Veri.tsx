@@ -1,5 +1,6 @@
 // Veri ve lisanslar: her kaynağın lisansı, sürümü ve paket dosyalarının sha256 özeti (K-2, K-15).
-// Sürüm ve özetler bölge paketindeki kaynak.json'dan; tam lisans metinleri data/LISANSLAR.md.
+// Sürüm ve özetler her bölge paketinin kaynak.json'ından; tam lisans metinleri data/LISANSLAR.md.
+import type { BolgeKaydi } from '@/veri/bolge'
 import { useJson } from './json'
 import { Bolum, Sayfa } from './Sayfa'
 
@@ -18,9 +19,42 @@ const gun = (iso: string) => tarih.format(new Date(iso.slice(0, 10) + 'T12:00:00
 const sayi = new Intl.NumberFormat('tr-TR')
 const kok = import.meta.env.BASE_URL
 
+/** Bir bölge paketinin sürüm bilgisi ve dosya özetleri. */
+function BolgePaketi({ kayit }: { kayit: BolgeKaydi }) {
+  const k = useJson<KaynakPaketi>(`${kayit.kimlik}/kaynak.json`)
+  if (k.durum !== 'hazir')
+    return (
+      <p className={k.durum === 'hata' ? 'text-error' : 'text-muted-foreground'}>
+        {k.durum === 'hata' ? `${kayit.ad} paketi yüklenemedi.` : 'Yükleniyor'}
+      </p>
+    )
+  const v = k.veri
+  return (
+    <section aria-labelledby={`paket-${kayit.kimlik}`} className="flex flex-col gap-2">
+      <h3 id={`paket-${kayit.kimlik}`} className="text-body-md font-medium">
+        {kayit.ad}
+      </h3>
+      <ul className="list-disc pl-5 text-body-sm">
+        <li>
+          {sayi.format(v.bina.bina)} bina ayak izi, Microsoft sürümü {gun(v.kaynaklar.microsoft.surum)}
+        </li>
+        <li>ESHM20 çekimi {gun(v.kaynaklar.eshm20.cekim)}</li>
+        <li>OpenStreetMap verisi {gun(v.kaynaklar.osm.osmTarihi)}</li>
+      </ul>
+      <dl className="flex flex-col gap-2">
+        {[...Object.entries(v.dosyalar), ['bina/ (dizin)', v.bina.dizinOzeti] as const].map(([ad, ozet]) => (
+          <div key={ad}>
+            <dt className="text-body-sm">{ad}</dt>
+            <dd className="font-mono text-mono-sm break-all text-muted-foreground">{ozet}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  )
+}
+
 export function Veri() {
-  const k = useJson<KaynakPaketi>('manisa/kaynak.json')
-  const v = k.durum === 'hazir' ? k.veri : null
+  const b = useJson<{ bolgeler: BolgeKaydi[] }>('bolgeler.json')
 
   return (
     <Sayfa
@@ -44,23 +78,20 @@ export function Veri() {
               ),
               kaynak: <a href="https://doi.org/10.12686/a15">ESHM20, EFEHR</a>,
               lisans: 'CC BY 4.0',
-              tarih: v && `çekim ${gun(v.kaynaklar.eshm20.cekim)}`,
             },
             {
-              veri: v ? `Bina ayak izleri (${sayi.format(v.bina.bina)} bina)` : 'Bina ayak izleri',
+              veri: 'Bina ayak izleri',
               kaynak: (
                 <a href="https://github.com/microsoft/GlobalMLBuildingFootprints">
                   Microsoft GlobalMLBuildingFootprints
                 </a>
               ),
               lisans: 'CDLA Permissive 2.0',
-              tarih: v && `sürüm ${gun(v.kaynaklar.microsoft.surum)}`,
             },
             {
               veri: 'Mahalle ve köy dizini, il sınırı',
               kaynak: <a href="https://www.openstreetmap.org/copyright">© OpenStreetMap katkıcıları</a>,
               lisans: 'ODbL 1.0',
-              tarih: v && `veri ${gun(v.kaynaklar.osm.osmTarihi)}`,
             },
             {
               veri: 'İsabet ölçümü (yalnız özet sayılar)',
@@ -78,11 +109,6 @@ export function Veri() {
             </li>
           ))}
         </ul>
-        {k.durum === 'hata' && (
-          <p role="alert" className="text-error">
-            Sürüm bilgisi yüklenemedi. Bağlantınızı kontrol edip sayfayı yenileyin.
-          </p>
-        )}
         <p>
           Değişiklikler ve lisansların tam metni: <a href={`${kok}data/LISANSLAR.md`}>LISANSLAR.md</a>. ESHM20
           değerleri Avrupa modelinin kaya değerleridir; AFAD Türkiye Deprem Tehlike Haritası’nın resmî
@@ -121,20 +147,15 @@ export function Veri() {
         </p>
       </Bolum>
 
-      <Bolum id="ozetler" baslik="Dosya özetleri (sha256)">
-        {v ? (
-          <dl className="flex flex-col gap-2">
-            {[...Object.entries(v.dosyalar), ['bina/ (dizin)', v.bina.dizinOzeti] as const].map(
-              ([ad, ozet]) => (
-                <div key={ad}>
-                  <dt className="text-body-sm">{ad}</dt>
-                  <dd className="font-mono text-mono-sm break-all text-muted-foreground">{ozet}</dd>
-                </div>
-              ),
-            )}
-          </dl>
+      <Bolum id="paketler" baslik="Bölge paketleri ve dosya özetleri (sha256)">
+        {b.durum === 'hazir' ? (
+          b.veri.bolgeler.map((kayit) => <BolgePaketi key={kayit.kimlik} kayit={kayit} />)
         ) : (
-          <p className="text-muted-foreground">{k.durum === 'hata' ? 'Yüklenemedi.' : 'Yükleniyor'}</p>
+          <p role={b.durum === 'hata' ? 'alert' : 'status'} className="text-muted-foreground">
+            {b.durum === 'hata'
+              ? 'Bölge listesi yüklenemedi. Bağlantınızı kontrol edip sayfayı yenileyin.'
+              : 'Yükleniyor'}
+          </p>
         )}
       </Bolum>
     </Sayfa>

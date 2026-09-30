@@ -1,9 +1,11 @@
 // Sonuç kartı ve raporun ortak metinleri. Dil kuralı (DESIGN.md): "riskli", "güvenli", "sağlam", "çürük" yok;
 // sonuç bina hakkında hüküm değil, profesyonel inceleme önceliğidir (K-4, K-12).
 import type { Donem } from '@/form/taslak'
+import { adlarListesi, bulunma } from '@/veri/bolge'
 import type { Bant } from '@/yontem/bant'
 import type { Parametre } from '@/yontem/ryteie'
 import type { ZeminCevabi } from '@/yontem/tehlike'
+import type { Sonuc } from './sonuc'
 
 export const BANT_ADI: Record<Bant, string> = {
   yuksek: 'Yüksek öncelik',
@@ -85,3 +87,15 @@ export const ondalik = (basamak: number) =>
 /** "a – b" ya da tek değer. */
 export const aralik = (a: number, b: number, bicim: Intl.NumberFormat = tamsayi) =>
   bicim.format(a) === bicim.format(b) ? bicim.format(a) : `${bicim.format(a)} – ${bicim.format(b)}`
+
+/** ESHM20 kaynaklı sonuçta AFAD farkının nerede ölçüldüğü (S1); bölge kayıtlarından, kod il bilmez (K-3). */
+export function tehlikeFarkiNotu({
+  bolge,
+  olculenBolgeler,
+}: Pick<Sonuc, 'bolge' | 'olculenBolgeler'>): string {
+  if (bolge && bolge.tdthNokta > 0)
+    return `AFAD’ın resmî değeriyle farkı ${bulunma(bolge.ad)} ${bolge.tdthNokta} noktada ölçüldü ve aralığa katıldı`
+  if (olculenBolgeler.length)
+    return `Bu ilde AFAD’la karşılaştırma henüz yapılmadı; aralık ${bulunma(adlarListesi(olculenBolgeler.map((b) => b.ad)))} ölçülen farktan geliyor`
+  return 'AFAD’la karşılaştırma henüz yapılmadı'
+}

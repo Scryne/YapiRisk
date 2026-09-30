@@ -120,3 +120,13 @@ def test_duzenli_izgara_eksik_hucre_hata():
     assert tehlike.bilineer(iz, 38.05, 27.05) == pytest.approx(38.05 * 10 + 27.05)
     with pytest.raises(ValueError, match="model alanı"):
         tehlike.bilineer(iz, 38.15, 27.05)
+
+
+def test_overpass_mesgul_cevabi_onbellege_girmez():
+    from yapirisk_pipeline.osm import overpass_gecerli
+
+    assert overpass_gecerli(b'{"version": 0.6, "elements": []}')
+    assert not overpass_gecerli(
+        b'<?xml version="1.0"?><html>Dispatcher_Client::request_read_and_idx::timeout</html>'
+    )
+    assert not overpass_gecerli(b'{"elements": [], "remark": "runtime error: Query timed out"}')

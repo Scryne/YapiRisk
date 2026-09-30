@@ -18,7 +18,8 @@ maplibregl.setWorkerUrl(isciAdresi)
 const EN_COK_PARCA = 48
 
 interface Props {
-  paket: BolgePaketi
+  /** Kayıttaki bütün bölgeler; binalar ve sınırlar birlikte çizilir. */
+  paketler: BolgePaketi[]
   secim: Secim | null
   hedef: HaritaHedefi | null
   noktaModu: boolean
@@ -38,7 +39,7 @@ const dolgu = (b: { sol: number; alt: number }) => ({ top: 0, right: 0, left: b.
 const renk = (ad: string) => getComputedStyle(document.documentElement).getPropertyValue(ad).trim()
 
 export function Harita({
-  paket,
+  paketler,
   secim,
   hedef,
   noktaModu,
@@ -66,15 +67,28 @@ export function Harita({
     },
   )
 
-  // Harita bir kez kurulur; bölge değişirse yeniden.
+  // Harita bir kez kurulur; bölge kaydı değişirse yeniden. Açılışta bütün bölgeler görünür.
   useEffect(() => {
-    const { kayit, binaDizini, sinir } = paket
-    const [bmin, emin, bmax, emax] = kayit.sinirKutusu
+    const kutular = paketler.map((p) => p.kayit.sinirKutusu)
+    const [bmin, emin, bmax, emax] = [
+      Math.min(...kutular.map((k) => k[0])),
+      Math.min(...kutular.map((k) => k[1])),
+      Math.max(...kutular.map((k) => k[2])),
+      Math.max(...kutular.map((k) => k[3])),
+    ]
     const harita = new maplibregl.Map({
       container: kapRef.current!,
       style: STIL,
-      center: kayit.merkez,
-      zoom: kayit.yakinlik,
+      bounds: [bmin, emin, bmax, emax],
+      // Panelin kapladığı kenar da boşluğa eklenir; iller panelin altında kalmasın.
+      fitBoundsOptions: {
+        padding: {
+          top: 24,
+          right: 24,
+          bottom: 24 + boslukRef.current.alt,
+          left: 24 + boslukRef.current.sol,
+        },
+      },
       maxBounds: [
         [bmin - 0.6, emin - 0.4],
         [bmax + 0.6, emax + 0.4],
@@ -97,7 +111,7 @@ export function Harita({
     harita.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right')
     haritaRef.current = harita
 
-    const onbellek = new ParcaOnbellegi(kayit.kimlik)
+    const onbellekler = new Map(paketler.map((p) => [p.kayit.kimlik, new ParcaOnbellegi(p.kayit.kimlik)]))
     const cokgenler = new Map<string, BinaCokgeni>()
     let istek = 0
 
@@ -111,21 +125,30 @@ export function Harita({
         return
       }
       const b = harita.getBounds()
-      const parcalar = gorunenParcalar(binaDizini, {
-        bati: b.getWest(),
-        guney: b.getSouth(),
-        dogu: b.getEast(),
-        kuzey: b.getNorth(),
-      }).slice(0, EN_COK_PARCA)
+      const gorunen = { bati: b.getWest(), guney: b.getSouth(), dogu: b.getEast(), kuzey: b.getNorth() }
+      // İl sınırındaki bir karo iki bölgede de bulunabilir; her biri kendi ilinin binalarını taşır.
+      const parcalar = paketler
+        .flatMap((p) =>
+          gorunenParcalar(p.binaDizini, gorunen).map(([x, y]) => ({ bolge: p.kayit.kimlik, x, y })),
+        )
+        .slice(0, EN_COK_PARCA)
       const yuklenen = await Promise.all(
-        parcalar.map(async ([x, y]) => ({ x, y, binalar: await onbellek.al(x, y).catch(() => []) })),
+        parcalar.map(async ({ bolge, x, y }) => ({
+          bolge,
+          x,
+          y,
+          binalar: await onbellekler
+            .get(bolge)!
+            .al(x, y)
+            .catch(() => []),
+        })),
       )
       if (sira !== istek) return
       cokgenler.clear()
       const features: Feature[] = []
-      for (const { x, y, binalar } of yuklenen) {
+      for (const { bolge, x, y, binalar } of yuklenen) {
         binalar.forEach((cokgen, i) => {
-          const anahtar = `${x}/${y}/${i}`
+          const anahtar = `${bolge}/${x}/${y}/${i}`
           cokgenler.set(anahtar, cokgen)
           features.push({
             type: 'Feature',
@@ -160,7 +183,10 @@ export function Harita({
           .filter((k) => k.type === 'line' || k.type === 'fill' || k.type === 'fill-extrusion')
           .map((k) => k.id)
       }
-      harita.addSource('sinir', { type: 'geojson', data: sinir })
+      harita.addSource('sinir', {
+        type: 'geojson',
+        data: { type: 'FeatureCollection', features: paketler.map((p) => p.sinir) },
+      })
       harita.addLayer({
         id: 'sinir',
         type: 'line',
@@ -236,7 +262,7 @@ export function Harita({
       harita.remove()
       haritaRef.current = null
     }
-  }, [paket])
+  }, [paketler])
 
   useEffect(() => {
     const harita = haritaRef.current

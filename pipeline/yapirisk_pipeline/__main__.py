@@ -131,6 +131,7 @@ def bolge_paketi(bolge: Bolge) -> dict:
         "ad": bolge.ad,
         "merkez": list(bolge.merkez),
         "yakinlik": bolge.yakinlik,
+        "tdthNokta": bolge.tdth_nokta,
         "sinirKutusu": [round(v, 4) for v in kutu],
     }
 

@@ -1,5 +1,6 @@
 // Formdan sonuca: tehlike kaynağı (ESHM20 tahmini ya da kullanıcının girdiği TDTH S_S'i) × cevaplar → değerlendirme.
 import { tamCevaplar, type TamCevaplar, type Taslak } from '@/form/taslak'
+import type { BolgeKaydi } from '@/veri/bolge'
 import { degerlendir, type Degerlendirme } from '@/yontem/degerlendir'
 import type { Parametre } from '@/yontem/ryteie'
 
@@ -10,9 +11,18 @@ export interface Sonuc {
   ssEshm20: number
   /** Kullanıcının AFAD TDTH raporundan girdiği S_S; yoksa null. */
   tdthSs: number | null
+  /** Binanın bulunduğu bölge ve ESHM20–TDTH farkının ölçüldüğü bölgeler (metin için). */
+  bolge: BolgeKaydi | null
+  olculenBolgeler: BolgeKaydi[]
 }
 
-export function sonucHesapla(taslak: Taslak, ssEshm20: number | null, tdthSs: number | null): Sonuc | null {
+export function sonucHesapla(
+  taslak: Taslak,
+  ssEshm20: number | null,
+  tdthSs: number | null,
+  bolge: BolgeKaydi | null = null,
+  bolgeler: BolgeKaydi[] = [],
+): Sonuc | null {
   const tam = tamCevaplar(taslak)
   if (!tam || ssEshm20 === null) return null
   const d = degerlendir(
@@ -21,7 +31,7 @@ export function sonucHesapla(taslak: Taslak, ssEshm20: number | null, tdthSs: nu
       ? { kaynak: 'eshm20', ss: ssEshm20, zemin: tam.zemin }
       : { kaynak: 'tdth', ss: tdthSs, zemin: tam.zemin },
   )
-  return { tam, d, ssEshm20, tdthSs }
+  return { tam, d, ssEshm20, tdthSs, bolge, olculenBolgeler: bolgeler.filter((b) => b.tdthNokta > 0) }
 }
 
 export interface KatkiSatiri {

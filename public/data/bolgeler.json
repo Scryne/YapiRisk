@@ -1,1 +1,1 @@
-{"bolgeler":[{"ad":"Manisa","kimlik":"manisa","merkez":[27.9,38.75],"sinirKutusu":[27.1124,38.0835,29.1186,39.4071],"yakinlik":8.5}]}
+{"bolgeler":[{"ad":"İzmir","kimlik":"izmir","merkez":[27.25,38.45],"sinirKutusu":[26.1708,37.8152,28.4931,39.3855],"tdthNokta":0,"yakinlik":8.5},{"ad":"Manisa","kimlik":"manisa","merkez":[27.9,38.75],"sinirKutusu":[27.1124,38.0835,29.1186,39.4071],"tdthNokta":10,"yakinlik":8.5}]}

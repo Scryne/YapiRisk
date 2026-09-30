@@ -9,6 +9,7 @@ const ivme = sayi(3)
 
 interface Props {
   secim: Secim
+  /** Kapsanan illerin listesi, ör. "İzmir ve Manisa". */
   bolgeAdi: string
   /** Bölge dışındaysa null. */
   ss: number | null
@@ -40,8 +41,8 @@ export function SecimKarti({ secim, bolgeAdi, ss, onKaldir }: Props) {
       {ss === null ? (
         <p role="alert" className="mt-3 flex gap-2 text-body-sm text-pretty text-error">
           <TriangleAlert className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
-          Bu nokta {bolgeAdi} sınırının dışında. YapiRisk şimdilik yalnız {bolgeAdi} için tehlike verisi
-          taşıyor.
+          Bu nokta YapiRisk’in kapsadığı illerin dışında. YapiRisk şimdilik yalnız {bolgeAdi} için tehlike
+          verisi taşıyor.
         </p>
       ) : (
         <dl className="mt-3 grid grid-cols-[1fr_auto] items-baseline gap-x-3 gap-y-1">

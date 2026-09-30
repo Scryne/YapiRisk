@@ -15,6 +15,7 @@ import {
   PROFESYONEL_YOL,
   tamsayi,
   TEKIL_BINA_KAYDI,
+  tehlikeFarkiNotu,
   ZEMIN_ADI,
 } from './metinler'
 import { katkiSatirlari, type Sonuc } from './sonuc'
@@ -166,7 +167,7 @@ export function SonucKarti({ sonuc, merkez, onTdth, onYazdir }: Props) {
           <dd className="col-span-2 text-body-sm text-pretty text-muted-foreground">
             {d.tehlike.kaynak === 'tdth'
               ? 'Kaynak: AFAD Türkiye Deprem Tehlike Haritası, girdiğiniz değer (DD-2).'
-              : 'Kaynak: ESHM20 Avrupa modeli. AFAD’ın resmî değeriyle farkı Manisa’daki 10 noktada ölçüldü ve aralığa katıldı; resmî değeri girerseniz aralık kalkar.'}{' '}
+              : `Kaynak: ESHM20 Avrupa modeli. ${tehlikeFarkiNotu(sonuc)}; resmî değeri girerseniz aralık kalkar.`}{' '}
             Zemin: {ZEMIN_ADI(tam.zemin)}.
           </dd>
         </dl>

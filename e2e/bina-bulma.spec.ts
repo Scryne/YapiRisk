@@ -56,8 +56,8 @@ test('ayak izi yoksa nokta seçiliyor; bölge dışı nokta uyarı veriyor', asy
   await expect(page.getByRole('heading', { name: 'Seçilen nokta' })).toBeVisible()
   await expect(page.getByTestId('ss-degeri')).toBeVisible()
 
-  await page.goto('/#konum=38.42,27.14') // İzmir, Konak
-  await expect(page.getByRole('alert')).toContainText('Manisa sınırının dışında')
+  await page.goto('/#konum=38.68,29.40') // Uşak: kapsanan illerin dışında
+  await expect(page.getByRole('alert')).toContainText('kapsadığı illerin dışında')
   await page.getByRole('button', { name: 'Seçimi kaldır' }).click()
   await expect(page.getByRole('heading', { name: 'Seçilen nokta' })).toBeHidden()
   expect(yabanci).toEqual([])

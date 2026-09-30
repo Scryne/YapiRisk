@@ -45,7 +45,9 @@ değiştirilmez. Kanonik roadmap `docs/Roadmap.md` dışında bir dosyaysa `stat
 - **Tuzaklar (bu projede yaşandı):**
   - EFEHR `/v1/maps` nokta sorgusu noktayı değil 10×10 ızgarayı döndürür → `/v1/maps/area` kullan;
     SA sorguları 70–120 sn sürer (arka planda çalıştır).
-  - Overpass ana sunucusu 504 verebiliyor → `https://overpass.private.coffee/api/interpreter` yedeği.
+  - Overpass ana sunucusu 504 verebiliyor, yedekler "too busy" diyebiliyor ve bunu **HTTP 200 + HTML** ile dönüyor →
+    `osm.overpass_gecerli` içeriği önbelleğe yazmadan denetler; yedek sırası private.coffee, maps.mail.ru (09-30'da
+    tek çalışan buydu). Elle sorguda `curl -A "YapiRisk-pipeline"` (ajan yoksa 406).
   - EFEHR `imt` parametresi `SA[0.20s]` / `SA[1.00s]` biçiminde; `SA(0.2)` hata vermeden boş liste döner. ESHM20
     model alanı Suriye sınırında bitiyor (Maraş ızgarasında boş hücre).
   - `du` 3.669 küçük parçayı küme boyutuyla 22 MB gösteriyor; gerçek toplam 14,5 MB (`find -printf %s`).

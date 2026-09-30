@@ -17,6 +17,7 @@ import {
   PROFESYONEL_YOL,
   tamsayi,
   TEKIL_BINA_KAYDI,
+  tehlikeFarkiNotu,
   ZEMIN_ADI,
 } from './metinler'
 import { katkiSatirlari, type Sonuc } from './sonuc'
@@ -134,8 +135,8 @@ export function Rapor({ sonuc, secim, taslak, bolgeAdi }: Props) {
         ) : (
           <>
             Kaynak: ESHM20 (EFEHR, CC BY 4.0), 475 yıl, kaya; seçilen noktada S<sub>S</sub>{' '}
-            <span className="font-mono">{g3.format(sonuc.ssEshm20)} g</span>. AFAD TDTH’den sapması Manisa’da
-            10 noktada ölçüldü (oran 0,72–1,25) ve aralık olarak eklendi. AFAD’ın resmî değeri değildir.
+            <span className="font-mono">{g3.format(sonuc.ssEshm20)} g</span>. {tehlikeFarkiNotu(sonuc)} (oran
+            0,72–1,25). AFAD’ın resmî değeri değildir.
           </>
         )}
       </p>
