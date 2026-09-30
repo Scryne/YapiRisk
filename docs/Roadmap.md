@@ -236,6 +236,10 @@ Faz 9–11 olaya bağlıdır; hook bunları "sıradaki iş" saymaz.
     silindi (PR #1 kapandı). Kalan: GitHub'ın salt okunur `refs/pull/1/head` ve `refs/pull/2/head` referansları eski
     commit'leri tutuyor → public yapmadan önce GitHub Support'tan silinmesi ya da repoyu temiz geçmişle yeniden açmak
     gerekir. (2) Yayın ikinci il paketine kadar ertelendi → Faz 6.5. (3) Hazırlık hazır bekliyor.
+  - 2026-09-30 (Scryne): eski `refs/pull` referansları için repo silinip aynı adla temiz geçmişle yeniden açıldı
+    (private, wiki kapalı; önce `git bundle` yedeği alındı). Uzakta yalnız `main`; CI yeşil. Yayın Scryne'ın komutunu
+    bekliyor. `yayin-oncesi` taramasında "Celal Bayar" eşleşmesi çıkacak: Çeşme'deki mahalle adı (OSM,
+    `izmir/mahalleler.json`), okulla ilgisi yok → kasıtlı.
 
 ### Faz 8: Gerçek kullanım (~3–4 gün, takvim olarak daha uzun)
 - **İşler:** Scryne 5+ kişi seçer; her biri kendi cihazından, yardım almadan bir binayı değerlendirir; sonra tek
