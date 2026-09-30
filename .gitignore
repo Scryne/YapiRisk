@@ -26,3 +26,6 @@ __pycache__/
 
 # Üçüncü taraf kaynak belgeler (telifli; yalnız yerel referans)
 docs/arastirma/kaynak/
+
+# Üçüncü taraf lisanslı ham veri (NC/ND; yeniden dağıtılmaz)
+spike/S3/veri/

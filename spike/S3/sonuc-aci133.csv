@@ -1,0 +1,25 @@
+﻿hedef,skor,auc,n,pozitif
+ağır+ (hasar3 = S),RYTEİE kısmi PP (ESHM20 ham),0.691,154,100
+ağır+ (hasar3 = S),"RYTEİE kısmi PP (ESHM20/0,89)",0.697,154,100
+ağır+ (hasar3 = S),"RYTEİE kısmi PP (ESHM20/0,72, kötü durum)",0.695,154,100
+ağır+ (hasar3 = S),yalnız kat sayısı,0.7,154,100
+ağır+ (hasar3 = S),yalnız yaş,0.595,154,100
+ağır+ (hasar3 = S),yalnız yumuşak kat,0.569,154,100
+ağır+ (hasar3 = S),Hassan–Sozen PI (düşük = riskli; ölçüm ister),0.76,154,100
+ağır+ (hasar3 = S),"gözlenen PGA (yöntem dışı, tavan referansı)",0.549,154,100
+göçme (hasar5 = C),RYTEİE kısmi PP (ESHM20 ham),0.631,154,4
+göçme (hasar5 = C),"RYTEİE kısmi PP (ESHM20/0,89)",0.603,154,4
+göçme (hasar5 = C),"RYTEİE kısmi PP (ESHM20/0,72, kötü durum)",0.603,154,4
+göçme (hasar5 = C),yalnız kat sayısı,0.512,154,4
+göçme (hasar5 = C),yalnız yaş,0.256,154,4
+göçme (hasar5 = C),yalnız yumuşak kat,0.407,154,4
+göçme (hasar5 = C),Hassan–Sozen PI (düşük = riskli; ölçüm ister),0.657,154,4
+göçme (hasar5 = C),"gözlenen PGA (yöntem dışı, tavan referansı)",0.098,154,4
+kritik hasar = Y,RYTEİE kısmi PP (ESHM20 ham),0.617,154,45
+kritik hasar = Y,"RYTEİE kısmi PP (ESHM20/0,89)",0.615,154,45
+kritik hasar = Y,"RYTEİE kısmi PP (ESHM20/0,72, kötü durum)",0.614,154,45
+kritik hasar = Y,yalnız kat sayısı,0.55,154,45
+kritik hasar = Y,yalnız yaş,0.615,154,45
+kritik hasar = Y,yalnız yumuşak kat,0.576,154,45
+kritik hasar = Y,Hassan–Sozen PI (düşük = riskli; ölçüm ister),0.672,154,45
+kritik hasar = Y,"gözlenen PGA (yöntem dışı, tavan referansı)",0.395,154,45

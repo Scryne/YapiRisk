@@ -35,6 +35,24 @@ alınan ilk hızlı tarama yöntemi" diye anar. Kritik kayıt, yönetmelikten al
 > olarak anlamlı sayıda bina ihtiva eden alanlarda uygulanabilir ve **tekil binada risk değerlendirme
 > amaçlı olarak kullanılamaz.**"
 
+## ✅ Resmî metinle doğrulama (2026-09-30)
+
+Resmî Gazete 16.02.2019 / 30688 eki (`resmigazete.gov.tr/eskiler/2019/02/20190216-1-1.pdf`, taranmış görüntü;
+Ek-A s. 30–35) sayfa görüntülerinden okundu. **Tablo A.1–A.4 aşağıdaki aktarımla birebir aynı**; iki ⚠ de
+çözüldü: Tablo A.2'de "0,75 ≥ SDS ≥ 0,50 ve ZA/ZB" satırı **bölge IV**'e ait; Tablo A.4 nizam sütunları
+aynı-orta 0 / aynı-kenar −10 / farklı-orta −5 / farklı-kenar −15.
+
+Resmî metinden ek kurallar (A.2.1):
+- **Eşik yok.** A.2.1.8: "Hesaplanan performans puanları büyükten küçüğe doğru sıralanacaktır. Bu şekilde
+  hesaplanan puanların dağılımı kullanılarak bölgeler arasında risk önceliği belirlenebilir." Aşağıdaki
+  "PP < 100 riskli" ifadesi ÇŞB/ARUP 2025 rehberinin eklemesidir, yönetmelikte bulunmaz.
+- Kapsam 1–7 katlı betonarme; kat = **serbest kat adedi** (n_sk, Şekil A.1).
+- Yapısal sistem tespit edilemiyorsa **BAÇ seçilir** (yani YSP = 0; resmî "bilmiyorum" kuralı).
+- Tabii zemin eğimi: 30° altı "Yok", üstü "Var".
+- Tehlike: DD-2, SDS yürürlükteki TDTH'den; bölge Tablo A.2 ile.
+- Koordinat WGS84, TDTH ile uyumlu.
+- Kısa kolon yalnız dışarıdan gözlenen kolonlar için değerlendirilir.
+
 ## RYTEİE 2019 Ek-A — betonarme (7 kata kadar)
 
 **Formül:** `PP = TP + Σ (Oᵢ · OPᵢ) + YSP` — PP < 100 "riskli", PP ≥ 100 "risksiz" (yöntemin kendi eşiği).
