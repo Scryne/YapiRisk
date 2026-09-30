@@ -1,0 +1,67 @@
+{
+  "kaynak": {
+    "ad": "Riskli Yapıların Tespit Edilmesine İlişkin Esaslar (RYTEİE) 2019, Ek-A.2.1 Betonarme Binalar",
+    "yayin": "Resmî Gazete 16.02.2019, sayı 30688 (mükerrer değil), ek s. 30–35",
+    "url": "https://www.resmigazete.gov.tr/eskiler/2019/02/20190216-1-1.pdf",
+    "dogrulama": "Tablo A.1–A.4 taranmış sayfa görüntüsünden hücre hücre okundu, 2026-09-30"
+  },
+  "katAraligi": [1, 7],
+  "katGruplari": ["1-2", "3", "4", "5", "6-7"],
+  "tabloA1": {
+    "tabanPuani": {
+      "1-2": { "I": 90, "II": 120, "III": 160, "IV": 195 },
+      "3": { "I": 80, "II": 100, "III": 140, "IV": 170 },
+      "4": { "I": 70, "II": 90, "III": 130, "IV": 160 },
+      "5": { "I": 60, "II": 80, "III": 110, "IV": 135 },
+      "6-7": { "I": 50, "II": 65, "III": 90, "IV": 110 }
+    },
+    "yapisalSistemPuani": {
+      "1-2": { "BAC": 0, "BACP": 100 },
+      "3": { "BAC": 0, "BACP": 85 },
+      "4": { "BAC": 0, "BACP": 75 },
+      "5": { "BAC": 0, "BACP": 65 },
+      "6-7": { "BAC": 0, "BACP": 55 }
+    }
+  },
+  "tabloA2": {
+    "aciklama": "SDS alt sınırları, büyükten küçüğe. Sınırdaki değer (ör. SDS = 1,0) iki satıra da uyar; yüksek tehlikeli bölge seçilir.",
+    "zayifZemin": {
+      "zeminler": ["ZC", "ZD", "ZE"],
+      "esikler": [
+        [1.0, "I"],
+        [0.75, "II"],
+        [0.5, "III"]
+      ]
+    },
+    "kayaZemin": {
+      "zeminler": ["ZA", "ZB"],
+      "esikler": [
+        [1.0, "II"],
+        [0.75, "III"],
+        [0.5, "IV"]
+      ]
+    },
+    "digerleri": "IV"
+  },
+  "tabloA3": {
+    "gorunenKalite": { "iyi": 0, "orta": 1, "kotu": 2 },
+    "varYok": { "yok": 0, "var": 1 },
+    "yapiNizami": { "ayrik": 0, "bitisik": 1 }
+  },
+  "tabloA4": {
+    "yumusakKat": { "1-2": -10, "3": -20, "4": -30, "5": -30, "6-7": -30 },
+    "gorunenKalite": { "1-2": -10, "3": -10, "4": -15, "5": -25, "6-7": -30 },
+    "agirCikma": { "1-2": -10, "3": -20, "4": -30, "5": -30, "6-7": -30 },
+    "yapiNizami": {
+      "1-2": { "ayni-orta": 0, "ayni-kenar": -10, "farkli-orta": -5, "farkli-kenar": -15 },
+      "3": { "ayni-orta": 0, "ayni-kenar": -10, "farkli-orta": -5, "farkli-kenar": -15 },
+      "4": { "ayni-orta": 0, "ayni-kenar": -10, "farkli-orta": -5, "farkli-kenar": -15 },
+      "5": { "ayni-orta": 0, "ayni-kenar": -10, "farkli-orta": -5, "farkli-kenar": -15 },
+      "6-7": { "ayni-orta": 0, "ayni-kenar": -10, "farkli-orta": -5, "farkli-kenar": -15 }
+    },
+    "duseydeDuzensizlik": { "1-2": -5, "3": -10, "4": -15, "5": -15, "6-7": -15 },
+    "plandaDuzensizlik": { "1-2": -5, "3": -10, "4": -10, "5": -10, "6-7": -10 },
+    "kisaKolon": { "1-2": -5, "3": -5, "4": -5, "5": -5, "6-7": -5 },
+    "zeminEgimi": { "1-2": -3, "3": -3, "4": -3, "5": -3, "6-7": -3 }
+  }
+}

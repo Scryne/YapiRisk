@@ -1,0 +1,3864 @@
+{
+  "aciklama": "spike/S3/fikstur_uret.py çıktısı; elle düzenlenmez.",
+  "kaynak": [
+    "ACI-133: Hariri-Ardebili 2024, Zenodo 13386343, CC BY 4.0 (kat, yumuşak kat, kısa kolon, perde, Vs30)",
+    "ESHM20: EFEHR, 475 yıl SA(0.2 s), CC BY 4.0 (ssEshm20)"
+  ],
+  "oranlar": {
+    "ham": 1.0,
+    "ort": 0.89,
+    "kotu": 0.72
+  },
+  "binalar": [
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.033578383973219,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.240294060767863,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.3935888323234416,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.722630639955365,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 2,
+      "zemin": "ZC",
+      "ssEshm20": 1.0333471486699848,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2400165784039816,
+          "bolge": "I",
+          "pp": 190
+        },
+        "ort": {
+          "sds": 1.3932770543864963,
+          "bolge": "I",
+          "pp": 190
+        },
+        "kotu": {
+          "sds": 1.722245247783308,
+          "bolge": "I",
+          "pp": 190
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.033835463037599,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": true,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2406025556451188,
+          "bolge": "I",
+          "pp": 100
+        },
+        "ort": {
+          "sds": 1.3939354557810322,
+          "bolge": "I",
+          "pp": 100
+        },
+        "kotu": {
+          "sds": 1.7230591050626651,
+          "bolge": "I",
+          "pp": 100
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.03179173029365,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": true,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2381500763523798,
+          "bolge": "I",
+          "pp": 100
+        },
+        "ort": {
+          "sds": 1.3911798610700896,
+          "bolge": "I",
+          "pp": 100
+        },
+        "kotu": {
+          "sds": 1.7196528838227498,
+          "bolge": "I",
+          "pp": 100
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 1.0305193102839276,
+      "perde": true,
+      "yumusakKat": true,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.236623172340713,
+          "bolge": "I",
+          "pp": 75
+        },
+        "ort": {
+          "sds": 1.3894642385850708,
+          "bolge": "I",
+          "pp": 75
+        },
+        "kotu": {
+          "sds": 1.717532183806546,
+          "bolge": "I",
+          "pp": 75
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.031213305374756,
+      "perde": true,
+      "yumusakKat": true,
+      "kisaKolon": true,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2374559664497073,
+          "bolge": "I",
+          "pp": 70
+        },
+        "ort": {
+          "sds": 1.3903999623030419,
+          "bolge": "I",
+          "pp": 70
+        },
+        "kotu": {
+          "sds": 1.71868884229126,
+          "bolge": "I",
+          "pp": 70
+        }
+      }
+    },
+    {
+      "kat": 2,
+      "zemin": "ZC",
+      "ssEshm20": 1.0330902436274352,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2397082923529221,
+          "bolge": "I",
+          "pp": 190
+        },
+        "ort": {
+          "sds": 1.392930665565081,
+          "bolge": "I",
+          "pp": 190
+        },
+        "kotu": {
+          "sds": 1.7218170727123918,
+          "bolge": "I",
+          "pp": 190
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZD",
+      "ssEshm20": 1.1080322607937507,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.1709541948067421,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.2474799542681139,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.538933695546876,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 5,
+      "zemin": "ZC",
+      "ssEshm20": 1.0339098526700852,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2406918232041022,
+          "bolge": "I",
+          "pp": 125
+        },
+        "ort": {
+          "sds": 1.3940357564091037,
+          "bolge": "I",
+          "pp": 125
+        },
+        "kotu": {
+          "sds": 1.7231830877834753,
+          "bolge": "I",
+          "pp": 125
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 0.8638001542037121,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0365601850444546,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.164674365218488,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.4396669236728534,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 4,
+      "zemin": "ZC",
+      "ssEshm20": 0.8741993053998234,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": true,
+      "sonuc": {
+        "ham": {
+          "sds": 1.049039166479788,
+          "bolge": "I",
+          "pp": 140
+        },
+        "ort": {
+          "sds": 1.1786956926739192,
+          "bolge": "I",
+          "pp": 140
+        },
+        "kotu": {
+          "sds": 1.456998842333039,
+          "bolge": "I",
+          "pp": 140
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.8550124432289736,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": true,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0260149318747682,
+          "bolge": "I",
+          "pp": 100
+        },
+        "ort": {
+          "sds": 1.1528257661514252,
+          "bolge": "I",
+          "pp": 100
+        },
+        "kotu": {
+          "sds": 1.425020738714956,
+          "bolge": "I",
+          "pp": 100
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.857213151103647,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0286557813243764,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.1557930127240186,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.428688585172745,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.856737854058421,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.028085424870105,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.155152162775399,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.4278964234307017,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 5,
+      "zemin": "ZC",
+      "ssEshm20": 0.9699242041619565,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": true,
+      "sonuc": {
+        "ham": {
+          "sds": 1.1639090449943477,
+          "bolge": "I",
+          "pp": 120
+        },
+        "ort": {
+          "sds": 1.3077629719037616,
+          "bolge": "I",
+          "pp": 120
+        },
+        "kotu": {
+          "sds": 1.6165403402699274,
+          "bolge": "I",
+          "pp": 120
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 0.9689816839453519,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.1627780207344223,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.3064921581285645,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.614969473242253,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.97305480847067,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.167665770164804,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.311984011421128,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.6217580141177834,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 3,
+      "zemin": "ZC",
+      "ssEshm20": 0.894627846113647,
+      "perde": false,
+      "yumusakKat": true,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0735534153363764,
+          "bolge": "I",
+          "pp": 60
+        },
+        "ort": {
+          "sds": 1.2062397925127823,
+          "bolge": "I",
+          "pp": 60
+        },
+        "kotu": {
+          "sds": 1.4910464101894116,
+          "bolge": "I",
+          "pp": 60
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 0.826069193590546,
+      "perde": true,
+      "yumusakKat": true,
+      "kisaKolon": true,
+      "sonuc": {
+        "ham": {
+          "sds": 0.9912830323086551,
+          "bolge": "II",
+          "pp": 85
+        },
+        "ort": {
+          "sds": 1.1138011598973654,
+          "bolge": "I",
+          "pp": 70
+        },
+        "kotu": {
+          "sds": 1.3767819893175766,
+          "bolge": "I",
+          "pp": 70
+        }
+      }
+    },
+    {
+      "kat": 5,
+      "zemin": "ZC",
+      "ssEshm20": 0.8252153455927638,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 0.9902584147113165,
+          "bolge": "II",
+          "pp": 145
+        },
+        "ort": {
+          "sds": 1.1126499041700184,
+          "bolge": "I",
+          "pp": 125
+        },
+        "kotu": {
+          "sds": 1.375358909321273,
+          "bolge": "I",
+          "pp": 125
+        }
+      }
+    },
+    {
+      "kat": 5,
+      "zemin": "ZD",
+      "ssEshm20": 0.5234195138409118,
+      "perde": true,
+      "yumusakKat": true,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 0.722980734938076,
+          "bolge": "III",
+          "pp": 145
+        },
+        "ort": {
+          "sds": 0.7819008599893643,
+          "bolge": "II",
+          "pp": 115
+        },
+        "kotu": {
+          "sds": 0.8857586804827479,
+          "bolge": "II",
+          "pp": 115
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.028297731384056,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2339572776608672,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.386468851304345,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.71382955230676,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.028133978654762,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2337607743857144,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.3862480611075443,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.71355663109127,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.0310774270434975,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.237292912452197,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.3902167555642662,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.718462378405829,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.031115048436393,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2373380581236715,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.390267481037833,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.7185250807273214,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.0315849513800206,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2379019416560246,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.3909010580404773,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.7193082523000345,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 1.1130671169959767,
+      "perde": true,
+      "yumusakKat": true,
+      "kisaKolon": true,
+      "sonuc": {
+        "ham": {
+          "sds": 1.335680540395172,
+          "bolge": "I",
+          "pp": 70
+        },
+        "ort": {
+          "sds": 1.5007646521294067,
+          "bolge": "I",
+          "pp": 70
+        },
+        "kotu": {
+          "sds": 1.8551118616599613,
+          "bolge": "I",
+          "pp": 70
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 1.1137613757230822,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.3365136508676987,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.501700731312021,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.8562689595384703,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 1.1179779958722194,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.3415735950466632,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.5073860618501833,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.8632966597870322,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 5,
+      "zemin": "ZC",
+      "ssEshm20": 1.0342470309842415,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2410964371810898,
+          "bolge": "I",
+          "pp": 125
+        },
+        "ort": {
+          "sds": 1.394490378855157,
+          "bolge": "I",
+          "pp": 125
+        },
+        "kotu": {
+          "sds": 1.7237450516404025,
+          "bolge": "I",
+          "pp": 125
+        }
+      }
+    },
+    {
+      "kat": 2,
+      "zemin": "ZC",
+      "ssEshm20": 1.0847900512705722,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.3017480615246866,
+          "bolge": "I",
+          "pp": 190
+        },
+        "ort": {
+          "sds": 1.4626382713760524,
+          "bolge": "I",
+          "pp": 190
+        },
+        "kotu": {
+          "sds": 1.807983418784287,
+          "bolge": "I",
+          "pp": 190
+        }
+      }
+    },
+    {
+      "kat": 4,
+      "zemin": "ZC",
+      "ssEshm20": 0.8749387012590641,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0499264415108769,
+          "bolge": "I",
+          "pp": 145
+        },
+        "ort": {
+          "sds": 1.1796926309110976,
+          "bolge": "I",
+          "pp": 145
+        },
+        "kotu": {
+          "sds": 1.4582311687651068,
+          "bolge": "I",
+          "pp": 145
+        }
+      }
+    },
+    {
+      "kat": 4,
+      "zemin": "ZC",
+      "ssEshm20": 0.8696639197155348,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0435967036586418,
+          "bolge": "I",
+          "pp": 145
+        },
+        "ort": {
+          "sds": 1.1725805659085862,
+          "bolge": "I",
+          "pp": 145
+        },
+        "kotu": {
+          "sds": 1.449439866192558,
+          "bolge": "I",
+          "pp": 145
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.8747374270957609,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.049684912514913,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.1794212500167562,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.457895711826268,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 0.8741173213306386,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0489407855967663,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.1785851523559172,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.4568622022177309,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.8550681722662982,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0260818067195578,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.1529009064264695,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.4251136204438302,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.8550170267211358,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.026020432065363,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.1528319461408572,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.4250283778685595,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.8548154953851876,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.025778594462225,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.1525602184968822,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.4246924923086461,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 5,
+      "zemin": "ZD",
+      "ssEshm20": 0.8542935561239475,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 0.9895133421719613,
+          "bolge": "II",
+          "pp": 145
+        },
+        "ort": {
+          "sds": 1.0712724471802928,
+          "bolge": "I",
+          "pp": 125
+        },
+        "kotu": {
+          "sds": 1.2166474702930232,
+          "bolge": "I",
+          "pp": 125
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.8544645777371123,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0253574932845346,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.1520870711062188,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.4241076295618538,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 5,
+      "zemin": "ZD",
+      "ssEshm20": 0.8574645333713528,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 0.9920986296611285,
+          "bolge": "II",
+          "pp": 145
+        },
+        "ort": {
+          "sds": 1.0738757501008147,
+          "bolge": "I",
+          "pp": 125
+        },
+        "kotu": {
+          "sds": 1.2190654429883492,
+          "bolge": "I",
+          "pp": 125
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.0292546574950026,
+      "perde": false,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.235105588994003,
+          "bolge": "I",
+          "pp": 50
+        },
+        "ort": {
+          "sds": 1.3877590887573068,
+          "bolge": "I",
+          "pp": 50
+        },
+        "kotu": {
+          "sds": 1.7154244291583376,
+          "bolge": "I",
+          "pp": 50
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.0276529537699994,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2331835445239994,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.3855994882292126,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.712754922949999,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 1.0330797126662126,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2396956551994551,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.3929164665162417,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.7217995211103543,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.0280721967512387,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2336866361014864,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.3861647596645914,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.7134536612520648,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 3,
+      "zemin": "ZC",
+      "ssEshm20": 1.0330797126662126,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2396956551994551,
+          "bolge": "I",
+          "pp": 165
+        },
+        "ort": {
+          "sds": 1.3929164665162417,
+          "bolge": "I",
+          "pp": 165
+        },
+        "kotu": {
+          "sds": 1.7217995211103543,
+          "bolge": "I",
+          "pp": 165
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 1.1130533053234943,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.335663966388193,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.5007460296496553,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.8550888422058238,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 1.1133356850859677,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.3360028221031612,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.5011267664080463,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.8555594751432793,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 4,
+      "zemin": "ZC",
+      "ssEshm20": 1.083547489915666,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": true,
+      "sonuc": {
+        "ham": {
+          "sds": 1.3002569878987993,
+          "bolge": "I",
+          "pp": 140
+        },
+        "ort": {
+          "sds": 1.4609629077514599,
+          "bolge": "I",
+          "pp": 140
+        },
+        "kotu": {
+          "sds": 1.8059124831927766,
+          "bolge": "I",
+          "pp": 140
+        }
+      }
+    },
+    {
+      "kat": 5,
+      "zemin": "ZC",
+      "ssEshm20": 0.8709015285808118,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.045081834296974,
+          "bolge": "I",
+          "pp": 125
+        },
+        "ort": {
+          "sds": 1.1742492520190722,
+          "bolge": "I",
+          "pp": 125
+        },
+        "kotu": {
+          "sds": 1.4515025476346866,
+          "bolge": "I",
+          "pp": 125
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.8784421848756732,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0541306218508077,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.1844164290458514,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.4640703081261222,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 5,
+      "zemin": "ZC",
+      "ssEshm20": 0.8548715142975413,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0258458171570495,
+          "bolge": "I",
+          "pp": 125
+        },
+        "ort": {
+          "sds": 1.1526357496146622,
+          "bolge": "I",
+          "pp": 125
+        },
+        "kotu": {
+          "sds": 1.4247858571625687,
+          "bolge": "I",
+          "pp": 125
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.8547371290474552,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0256845548569462,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.1524545560190407,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.4245618817457586,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZD",
+      "ssEshm20": 0.8575513082281719,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 0.9921692638447182,
+          "bolge": "II",
+          "pp": 120
+        },
+        "ort": {
+          "sds": 1.0739468476039262,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.2191313934970796,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 0.9617622605630015,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.1541147126756017,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.2967581041298897,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.602937100938336,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 0.8928570277979414,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0714284333575297,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.2038521723118312,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.4880950463299025,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 0.8950180982115059,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.074021717853807,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.2067659751166373,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.4916968303525098,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.8265595845586925,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": true,
+      "sonuc": {
+        "ham": {
+          "sds": 0.9918715014704309,
+          "bolge": "II",
+          "pp": 115
+        },
+        "ort": {
+          "sds": 1.1144623612027313,
+          "bolge": "I",
+          "pp": 100
+        },
+        "kotu": {
+          "sds": 1.3775993075978208,
+          "bolge": "I",
+          "pp": 100
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 0.8252189090658313,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 0.9902626908789975,
+          "bolge": "II",
+          "pp": 120
+        },
+        "ort": {
+          "sds": 1.112654708852806,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.3753648484430523,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.0292378611838464,
+      "perde": true,
+      "yumusakKat": true,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2350854334206156,
+          "bolge": "I",
+          "pp": 75
+        },
+        "ort": {
+          "sds": 1.3877364420456355,
+          "bolge": "I",
+          "pp": 75
+        },
+        "kotu": {
+          "sds": 1.7153964353064108,
+          "bolge": "I",
+          "pp": 75
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.029143340096139,
+      "perde": true,
+      "yumusakKat": true,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2349720081153668,
+          "bolge": "I",
+          "pp": 75
+        },
+        "ort": {
+          "sds": 1.3876089978824344,
+          "bolge": "I",
+          "pp": 75
+        },
+        "kotu": {
+          "sds": 1.7152389001602317,
+          "bolge": "I",
+          "pp": 75
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.0288909344074804,
+      "perde": true,
+      "yumusakKat": true,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2346691212889764,
+          "bolge": "I",
+          "pp": 75
+        },
+        "ort": {
+          "sds": 1.3872686756055914,
+          "bolge": "I",
+          "pp": 75
+        },
+        "kotu": {
+          "sds": 1.7148182240124674,
+          "bolge": "I",
+          "pp": 75
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.028855631743418,
+      "perde": true,
+      "yumusakKat": true,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2346267580921018,
+          "bolge": "I",
+          "pp": 75
+        },
+        "ort": {
+          "sds": 1.3872210765079793,
+          "bolge": "I",
+          "pp": 75
+        },
+        "kotu": {
+          "sds": 1.7147593862390302,
+          "bolge": "I",
+          "pp": 75
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.0288123615957232,
+      "perde": true,
+      "yumusakKat": true,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2345748339148679,
+          "bolge": "I",
+          "pp": 75
+        },
+        "ort": {
+          "sds": 1.3871627347358064,
+          "bolge": "I",
+          "pp": 75
+        },
+        "kotu": {
+          "sds": 1.7146872693262052,
+          "bolge": "I",
+          "pp": 75
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 1.0331602573551166,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.23979230882614,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.3930250660967864,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.7219337622585278,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 1.114679236413736,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.337615083696483,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.502938296288183,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.8577987273562264,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 1.0359960910455368,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2431953092546442,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.3968486620838698,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.7266601517425613,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 1.0359960910455368,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2431953092546442,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.3968486620838698,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.7266601517425613,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 3,
+      "zemin": "ZC",
+      "ssEshm20": 1.0770308100740247,
+      "perde": false,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2924369720888296,
+          "bolge": "I",
+          "pp": 80
+        },
+        "ort": {
+          "sds": 1.4521763731335164,
+          "bolge": "I",
+          "pp": 80
+        },
+        "kotu": {
+          "sds": 1.7950513501233745,
+          "bolge": "I",
+          "pp": 80
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.8270448141570933,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 0.9924537769885119,
+          "bolge": "II",
+          "pp": 120
+        },
+        "ort": {
+          "sds": 1.1151166033578785,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.3784080235951555,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.8756210434260052,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0507452521112062,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.18061264282158,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.4593684057100087,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.8749719473257088,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0499663367908505,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.1797374570683714,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.4582865788761814,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 0.8743594719026007,
+      "perde": false,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0492313662831207,
+          "bolge": "I",
+          "pp": 50
+        },
+        "ort": {
+          "sds": 1.1789116475091244,
+          "bolge": "I",
+          "pp": 50
+        },
+        "kotu": {
+          "sds": 1.4572657865043344,
+          "bolge": "I",
+          "pp": 50
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.8786436070074065,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0543723284088877,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.1846880094481884,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.4644060116790107,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.8947686457749077,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0737223749298892,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.2064296347526844,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.4912810762915127,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 5,
+      "zemin": "ZC",
+      "ssEshm20": 0.8959079141383727,
+      "perde": false,
+      "yumusakKat": true,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0750894969660472,
+          "bolge": "I",
+          "pp": 30
+        },
+        "ort": {
+          "sds": 1.2079657269281427,
+          "bolge": "I",
+          "pp": 30
+        },
+        "kotu": {
+          "sds": 1.4931798568972876,
+          "bolge": "I",
+          "pp": 30
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.8958879937267178,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0750655924720613,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.2079388679461363,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.4931466562111964,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 0.8271492812949224,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 0.9925791375539068,
+          "bolge": "II",
+          "pp": 120
+        },
+        "ort": {
+          "sds": 1.115257457925738,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.3785821354915373,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.8274726798704715,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 0.9929672158445657,
+          "bolge": "II",
+          "pp": 120
+        },
+        "ort": {
+          "sds": 1.1156935009489501,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.3791211331174524,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.8264012299326423,
+      "perde": true,
+      "yumusakKat": true,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 0.9916814759191708,
+          "bolge": "II",
+          "pp": 90
+        },
+        "ort": {
+          "sds": 1.1142488493473828,
+          "bolge": "I",
+          "pp": 75
+        },
+        "kotu": {
+          "sds": 1.3773353832210704,
+          "bolge": "I",
+          "pp": 75
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.0294475593956187,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": true,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2353370712747425,
+          "bolge": "I",
+          "pp": 100
+        },
+        "ort": {
+          "sds": 1.3880191812075757,
+          "bolge": "I",
+          "pp": 100
+        },
+        "kotu": {
+          "sds": 1.7157459323260313,
+          "bolge": "I",
+          "pp": 100
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.029567151727951,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": true,
+      "sonuc": {
+        "ham": {
+          "sds": 1.235480582073541,
+          "bolge": "I",
+          "pp": 100
+        },
+        "ort": {
+          "sds": 1.3881804292961137,
+          "bolge": "I",
+          "pp": 100
+        },
+        "kotu": {
+          "sds": 1.7159452528799182,
+          "bolge": "I",
+          "pp": 100
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.0290084968198978,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2348101961838773,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.3874271867234576,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.7150141613664962,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.0291543436501787,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2349852123802143,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.3876238341350724,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.7152572394169643,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.0333723218039117,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.240046786164694,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.3933109956906675,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.7222872030065195,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 5,
+      "zemin": "ZC",
+      "ssEshm20": 1.033160688825208,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2397928265902496,
+          "bolge": "I",
+          "pp": 125
+        },
+        "ort": {
+          "sds": 1.393025647854213,
+          "bolge": "I",
+          "pp": 125
+        },
+        "kotu": {
+          "sds": 1.721934481375347,
+          "bolge": "I",
+          "pp": 125
+        }
+      }
+    },
+    {
+      "kat": 3,
+      "zemin": "ZC",
+      "ssEshm20": 1.07673042052595,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.29207650463114,
+          "bolge": "I",
+          "pp": 165
+        },
+        "ort": {
+          "sds": 1.451771353518135,
+          "bolge": "I",
+          "pp": 165
+        },
+        "kotu": {
+          "sds": 1.7945507008765833,
+          "bolge": "I",
+          "pp": 165
+        }
+      }
+    },
+    {
+      "kat": 4,
+      "zemin": "ZC",
+      "ssEshm20": 0.8688961601307984,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.042675392156958,
+          "bolge": "I",
+          "pp": 145
+        },
+        "ort": {
+          "sds": 1.1715453844460202,
+          "bolge": "I",
+          "pp": 145
+        },
+        "kotu": {
+          "sds": 1.448160266884664,
+          "bolge": "I",
+          "pp": 145
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 0.8780723479297297,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0536868175156755,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.1839177724895231,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.463453913216216,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 0.8778194297343342,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0533833156812011,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.1835767591923607,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.4630323828905571,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 5,
+      "zemin": "ZC",
+      "ssEshm20": 0.8549953338298085,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0259944005957702,
+          "bolge": "I",
+          "pp": 125
+        },
+        "ort": {
+          "sds": 1.152802697298618,
+          "bolge": "I",
+          "pp": 125
+        },
+        "kotu": {
+          "sds": 1.4249922230496808,
+          "bolge": "I",
+          "pp": 125
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.8547684247901739,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0257221097482085,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.1524967525260772,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.4246140413169566,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 1.1163254273903562,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.3395905128684273,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.5051578796274467,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.860542378983927,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.9667626258882457,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.1601151510658947,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.3035001697369604,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.611271043147076,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.9658187641273787,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.1589825169528543,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.3022275471380385,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.6096979402122977,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 0.8947566184174041,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0737079421008848,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.2064134180908819,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.4912610306956733,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 4,
+      "zemin": "ZC",
+      "ssEshm20": 0.8952964599276234,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0743557519131481,
+          "bolge": "I",
+          "pp": 145
+        },
+        "ort": {
+          "sds": 1.207141294284436,
+          "bolge": "I",
+          "pp": 145
+        },
+        "kotu": {
+          "sds": 1.492160766546039,
+          "bolge": "I",
+          "pp": 145
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.8259819461641027,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 0.9911783353969232,
+          "bolge": "II",
+          "pp": 120
+        },
+        "ort": {
+          "sds": 1.1136835229178912,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.3766365769401714,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 5,
+      "zemin": "ZC",
+      "ssEshm20": 0.825599470919657,
+      "perde": false,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 0.9907193651035884,
+          "bolge": "II",
+          "pp": 80
+        },
+        "ort": {
+          "sds": 1.113167825959088,
+          "bolge": "I",
+          "pp": 60
+        },
+        "kotu": {
+          "sds": 1.3759991181994282,
+          "bolge": "I",
+          "pp": 60
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZD",
+      "ssEshm20": 0.5245126995807747,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 0.7240320016281848,
+          "bolge": "III",
+          "pp": 145
+        },
+        "ort": {
+          "sds": 0.7829547874147095,
+          "bolge": "II",
+          "pp": 120
+        },
+        "kotu": {
+          "sds": 0.8867237674372577,
+          "bolge": "II",
+          "pp": 120
+        }
+      }
+    },
+    {
+      "kat": 5,
+      "zemin": "ZC",
+      "ssEshm20": 0.8549156518813068,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": true,
+      "sonuc": {
+        "ham": {
+          "sds": 1.025898782257568,
+          "bolge": "I",
+          "pp": 120
+        },
+        "ort": {
+          "sds": 1.1526952609635597,
+          "bolge": "I",
+          "pp": 120
+        },
+        "kotu": {
+          "sds": 1.424859419802178,
+          "bolge": "I",
+          "pp": 120
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.8546792941221171,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0256151529465405,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.1523765763444276,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.4244654902035285,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 0.8561932121133444,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0274318545360133,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.1544178140854082,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.426988686855574,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 5,
+      "zemin": "ZC",
+      "ssEshm20": 0.8569153013589574,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0282983616307488,
+          "bolge": "I",
+          "pp": 125
+        },
+        "ort": {
+          "sds": 1.1553914175626392,
+          "bolge": "I",
+          "pp": 125
+        },
+        "kotu": {
+          "sds": 1.4281921689315957,
+          "bolge": "I",
+          "pp": 125
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZD",
+      "ssEshm20": 0.6671012770096393,
+      "perde": true,
+      "yumusakKat": true,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 0.8447630075870375,
+          "bolge": "II",
+          "pp": 90
+        },
+        "ort": {
+          "sds": 0.899731037418418,
+          "bolge": "II",
+          "pp": 90
+        },
+        "kotu": {
+          "sds": 1.0464115232547335,
+          "bolge": "I",
+          "pp": 75
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 0.8937081725927529,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0724498071113036,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.2049997832711274,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.4895136209879214,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 1.031043135626321,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.237251762751585,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.3901705199456014,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.7184052260438685,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 1.030194503240814,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2362334038889766,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.3890262965044682,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.71699083873469,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 5,
+      "zemin": "ZC",
+      "ssEshm20": 1.0287497025970933,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2344996431165118,
+          "bolge": "I",
+          "pp": 125
+        },
+        "ort": {
+          "sds": 1.38707825069271,
+          "bolge": "I",
+          "pp": 125
+        },
+        "kotu": {
+          "sds": 1.7145828376618222,
+          "bolge": "I",
+          "pp": 125
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 1.0299436131363813,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2359323357636576,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.3886880177119745,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.7165726885606356,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 5,
+      "zemin": "ZC",
+      "ssEshm20": 1.0306456776392245,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2367748131670695,
+          "bolge": "I",
+          "pp": 125
+        },
+        "ort": {
+          "sds": 1.3896346215360331,
+          "bolge": "I",
+          "pp": 125
+        },
+        "kotu": {
+          "sds": 1.7177427960653742,
+          "bolge": "I",
+          "pp": 125
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 1.1138963256048964,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.3366755907258756,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.501882686208849,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.8564938760081606,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 0.8557475312869598,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0268970375443518,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.1538168961172492,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.4262458854782665,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.02944804150995,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.23533764981194,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.3880198312493708,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.7157467358499168,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.0292652743187505,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2351183291825005,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.3877734035758431,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.715442123864584,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 1.0294078231599448,
+      "perde": false,
+      "yumusakKat": true,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2352893877919338,
+          "bolge": "I",
+          "pp": 20
+        },
+        "ort": {
+          "sds": 1.3879656042605997,
+          "bolge": "I",
+          "pp": 20
+        },
+        "kotu": {
+          "sds": 1.7156797052665749,
+          "bolge": "I",
+          "pp": 20
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.0289636274460348,
+      "perde": true,
+      "yumusakKat": true,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2347563529352417,
+          "bolge": "I",
+          "pp": 75
+        },
+        "ort": {
+          "sds": 1.3873666886912828,
+          "bolge": "I",
+          "pp": 75
+        },
+        "kotu": {
+          "sds": 1.7149393790767247,
+          "bolge": "I",
+          "pp": 75
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.0288705870913508,
+      "perde": true,
+      "yumusakKat": true,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.234644704509621,
+          "bolge": "I",
+          "pp": 75
+        },
+        "ort": {
+          "sds": 1.387241241022046,
+          "bolge": "I",
+          "pp": 75
+        },
+        "kotu": {
+          "sds": 1.714784311818918,
+          "bolge": "I",
+          "pp": 75
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.029834695362455,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.235801634434946,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.3885411622864563,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.7163911589374252,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 1.11604746934858,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.339256963218296,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.5047831047396583,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.8600791155809668,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.1183929285818366,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.3420715142982038,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.507945521683375,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.8639882143030608,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 1.1186272912314985,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.3423527494777983,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.5082615162671889,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.864378818719164,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 1.0292698374023488,
+      "perde": true,
+      "yumusakKat": true,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2351238048828186,
+          "bolge": "I",
+          "pp": 75
+        },
+        "ort": {
+          "sds": 1.3877795560481105,
+          "bolge": "I",
+          "pp": 75
+        },
+        "kotu": {
+          "sds": 1.7154497290039148,
+          "bolge": "I",
+          "pp": 75
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 1.0304478178478167,
+      "perde": true,
+      "yumusakKat": true,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.23653738141738,
+          "bolge": "I",
+          "pp": 75
+        },
+        "ort": {
+          "sds": 1.3893678442891908,
+          "bolge": "I",
+          "pp": 75
+        },
+        "kotu": {
+          "sds": 1.717413029746361,
+          "bolge": "I",
+          "pp": 75
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.0334305875803595,
+      "perde": true,
+      "yumusakKat": true,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2401167050964315,
+          "bolge": "I",
+          "pp": 75
+        },
+        "ort": {
+          "sds": 1.393389556288125,
+          "bolge": "I",
+          "pp": 75
+        },
+        "kotu": {
+          "sds": 1.7223843126339324,
+          "bolge": "I",
+          "pp": 75
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.0306628262588053,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2367953915105663,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.3896577432702992,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.717771377098009,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.1148259528738311,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.3377911434485974,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.5031361162343788,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.8580432547897185,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 4,
+      "zemin": "ZC",
+      "ssEshm20": 1.082791854295763,
+      "perde": false,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2993502251549156,
+          "bolge": "I",
+          "pp": 70
+        },
+        "ort": {
+          "sds": 1.4599440732077704,
+          "bolge": "I",
+          "pp": 70
+        },
+        "kotu": {
+          "sds": 1.8046530904929383,
+          "bolge": "I",
+          "pp": 70
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 0.8767371363226026,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0520845635871232,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.182117487176543,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.4612285605376711,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 0.8943977954847089,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0732773545816505,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.205929611889495,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.490662992474515,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.8947698535144772,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0737238242173726,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.2064312631655874,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.4912830891907953,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 5,
+      "zemin": "ZC",
+      "ssEshm20": 0.895080050755383,
+      "perde": true,
+      "yumusakKat": true,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0740960609064596,
+          "bolge": "I",
+          "pp": 95
+        },
+        "ort": {
+          "sds": 1.2068495066364713,
+          "bolge": "I",
+          "pp": 95
+        },
+        "kotu": {
+          "sds": 1.491800084592305,
+          "bolge": "I",
+          "pp": 95
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZD",
+      "ssEshm20": 0.8275488385122399,
+      "perde": true,
+      "yumusakKat": true,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 0.9673884257191769,
+          "bolge": "II",
+          "pp": 90
+        },
+        "ort": {
+          "sds": 1.0489115861187444,
+          "bolge": "I",
+          "pp": 75
+        },
+        "kotu": {
+          "sds": 1.1956364072994528,
+          "bolge": "I",
+          "pp": 75
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZD",
+      "ssEshm20": 0.525104547237604,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 0.7246003566039999,
+          "bolge": "III",
+          "pp": 145
+        },
+        "ort": {
+          "sds": 0.7835243735020254,
+          "bolge": "II",
+          "pp": 120
+        },
+        "kotu": {
+          "sds": 0.8872447237581935,
+          "bolge": "II",
+          "pp": 120
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZD",
+      "ssEshm20": 0.520394206887407,
+      "perde": true,
+      "yumusakKat": true,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 0.7200614679477539,
+          "bolge": "III",
+          "pp": 115
+        },
+        "ort": {
+          "sds": 0.7789716134125076,
+          "bolge": "II",
+          "pp": 90
+        },
+        "kotu": {
+          "sds": 0.8830686490673241,
+          "bolge": "II",
+          "pp": 90
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.0288120648474017,
+      "perde": true,
+      "yumusakKat": true,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2345744778168821,
+          "bolge": "I",
+          "pp": 75
+        },
+        "ort": {
+          "sds": 1.3871623346257103,
+          "bolge": "I",
+          "pp": 75
+        },
+        "kotu": {
+          "sds": 1.7146867747456696,
+          "bolge": "I",
+          "pp": 75
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 1.0291628799513841,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.234995455941661,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.3876353437546751,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.7152714665856403,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.0270522755475724,
+      "perde": true,
+      "yumusakKat": true,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2324627306570868,
+          "bolge": "I",
+          "pp": 75
+        },
+        "ort": {
+          "sds": 1.3847895850079628,
+          "bolge": "I",
+          "pp": 75
+        },
+        "kotu": {
+          "sds": 1.7117537925792874,
+          "bolge": "I",
+          "pp": 75
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.0294167791827677,
+      "perde": true,
+      "yumusakKat": true,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2353001350193213,
+          "bolge": "I",
+          "pp": 75
+        },
+        "ort": {
+          "sds": 1.3879776797969903,
+          "bolge": "I",
+          "pp": 75
+        },
+        "kotu": {
+          "sds": 1.7156946319712796,
+          "bolge": "I",
+          "pp": 75
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.0309459849766198,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.2371351819719438,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.3900395303055548,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.7182433082943664,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 1.115694000467991,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.338832800561589,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.5043065174849317,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.859490000779985,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 4,
+      "zemin": "ZC",
+      "ssEshm20": 0.8780160986166294,
+      "perde": false,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0536193183399554,
+          "bolge": "I",
+          "pp": 70
+        },
+        "ort": {
+          "sds": 1.1838419307190509,
+          "bolge": "I",
+          "pp": 70
+        },
+        "kotu": {
+          "sds": 1.463360164361049,
+          "bolge": "I",
+          "pp": 70
+        }
+      }
+    },
+    {
+      "kat": 5,
+      "zemin": "ZC",
+      "ssEshm20": 0.8765970614687497,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0519164737624995,
+          "bolge": "I",
+          "pp": 125
+        },
+        "ort": {
+          "sds": 1.1819286222050558,
+          "bolge": "I",
+          "pp": 125
+        },
+        "kotu": {
+          "sds": 1.4609951024479162,
+          "bolge": "I",
+          "pp": 125
+        }
+      }
+    },
+    {
+      "kat": 3,
+      "zemin": "ZC",
+      "ssEshm20": 0.8679594409823297,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0415513291787957,
+          "bolge": "I",
+          "pp": 165
+        },
+        "ort": {
+          "sds": 1.1702823923357255,
+          "bolge": "I",
+          "pp": 165
+        },
+        "kotu": {
+          "sds": 1.446599068303883,
+          "bolge": "I",
+          "pp": 165
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.8791034264221801,
+      "perde": true,
+      "yumusakKat": true,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0549241117066162,
+          "bolge": "I",
+          "pp": 75
+        },
+        "ort": {
+          "sds": 1.185307990681591,
+          "bolge": "I",
+          "pp": 75
+        },
+        "kotu": {
+          "sds": 1.4651723773703003,
+          "bolge": "I",
+          "pp": 75
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.8546295313859682,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0255554376631617,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.1523094805204064,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.424382552309947,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 0.854717081083266,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0256604972999193,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.1524275250560891,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.42452846847211,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.8557471763779485,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.026896611653538,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.153816417588245,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.4262452939632475,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 0.9675646729464282,
+      "perde": true,
+      "yumusakKat": true,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.1610776075357139,
+          "bolge": "I",
+          "pp": 75
+        },
+        "ort": {
+          "sds": 1.3045815815008022,
+          "bolge": "I",
+          "pp": 75
+        },
+        "kotu": {
+          "sds": 1.612607788244047,
+          "bolge": "I",
+          "pp": 75
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 0.9680192102909326,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.1616230523491191,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.3051944408417069,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.6133653504848877,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 0.8944597902996247,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0733517483595496,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.2060132004039883,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.4907663171660415,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 7,
+      "zemin": "ZC",
+      "ssEshm20": 0.8950129000366982,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 1.0740154800440378,
+          "bolge": "I",
+          "pp": 105
+        },
+        "ort": {
+          "sds": 1.2067589663416156,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.4916881667278303,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 6,
+      "zemin": "ZC",
+      "ssEshm20": 0.8245666711891035,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": false,
+      "sonuc": {
+        "ham": {
+          "sds": 0.9894800054269242,
+          "bolge": "II",
+          "pp": 120
+        },
+        "ort": {
+          "sds": 1.111775286996544,
+          "bolge": "I",
+          "pp": 105
+        },
+        "kotu": {
+          "sds": 1.3742777853151726,
+          "bolge": "I",
+          "pp": 105
+        }
+      }
+    },
+    {
+      "kat": 3,
+      "zemin": "ZC",
+      "ssEshm20": 0.539005479871734,
+      "perde": true,
+      "yumusakKat": false,
+      "kisaKolon": true,
+      "sonuc": {
+        "ham": {
+          "sds": 0.6922974568748977,
+          "bolge": "III",
+          "pp": 220
+        },
+        "ort": {
+          "sds": 0.7617239650246959,
+          "bolge": "II",
+          "pp": 180
+        },
+        "kotu": {
+          "sds": 0.8987560866681509,
+          "bolge": "II",
+          "pp": 180
+        }
+      }
+    }
+  ]
+}

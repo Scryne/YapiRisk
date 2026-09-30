@@ -16,7 +16,7 @@ Tahmin ~22 iş günü; her fazın sonunda "Notlar" doldurulur ve sonraki fazlar 
 | Faz | Adı | Durum | Bitti Kriteri |
 | --- | --- | --- | --- |
 | 1 | İskelet ve sağlık | ✅ Tamamlandı | Repo GitHub'da (private); CI (lint + typecheck + test + build + boru hattı testi) varsayılan dalda yeşil; `.github/dependabot.yml` (npm + uv); `npm run dev` boş kabuğu açıyor; DESIGN.md token'ları frontmatter'da ve lint geçiyor |
-| 2 | Puan motoru | ⏳ Bekliyor | `src/yontem/` RYTEİE Tablo A.1–A.4, Tablo A.2 bölge, TBDY Fs/F1, S1 bandı, "bilmiyorum" aralığı ve K-12 bantları; Vitest resmî tablo hücrelerini ve spike'la eşdeğerliği (ACI-133'teki 154 binanın PP'si Python ile birebir) geçiyor |
+| 2 | Puan motoru | ✅ Tamamlandı | `src/yontem/` RYTEİE Tablo A.1–A.4, Tablo A.2 bölge, TBDY Fs/F1, S1 bandı, "bilmiyorum" aralığı ve K-12 bantları; Vitest resmî tablo hücrelerini ve spike'la eşdeğerliği (ACI-133'teki 154 binanın PP'si Python ile birebir) geçiyor |
 | 3 | Veri boru hattı | ⏳ Bekliyor | `pipeline/` tek komutla `public/data/manisa/` üretiyor: tehlike ızgarası, ayak izi parçaları, mahalle dizini, `dogrulama.json`, `kaynak.json` (sürüm, lisans, sha256); iki kez çalıştırınca aynı sha256; `public/data/LISANSLAR.md` |
 | 4 | Harita ve bina bulma | ⏳ Bekliyor | Telefonda ve masaüstünde: mahalle aranıyor, harita gidiyor, ayak izine tıklanınca bina seçiliyor, ayak izi yoksa nokta seçiliyor; S1'deki 10 ilçe merkezinde uygulamanın gösterdiği SS, `spike/S1` değerleriyle ±0,001 aynı; ağ panelinde taban harita dışında üçüncü taraf isteği yok |
 | 5 | Form | ⏳ Bekliyor | 11 soru Şekil A.1 tabanlı SVG çizimlerle; yığma/çelik/prefabrik ve 8+ kat kapsam dışı mesajına düşüyor; her soruda "Bilmiyorum"; cevaplar `localStorage`'da, "Temizle" siliyor; klavye ve ekran okuyucuyla doldurulabiliyor (`fixing-accessibility` bulgusuz) |
@@ -59,7 +59,23 @@ Faz 9–11 olaya bağlıdır; hook bunları "sıradaki iş" saymaz.
   0,72–1,25, K-9 zemin/sistem "bilmiyorum"), `bant.ts` (K-12, kötü uç), `aralik.ts` ("bilmiyorum" iki uç).
   Spike'taki `ryteie.py`/`aci133_analiz.py` bu fazda referans çıktı üretir (JSON fikstür).
 - **Bitti Kriteri:** tablodaki satır; ayrıca 10 S1 noktası için ZC SDS'i TDTH raporlarıyla ±0,001 (S1'deki ölçüm).
-- **Notlar:**
+- **Notlar:** (2026-09-30)
+  - Tablo A.1–A.4 Resmî Gazete ekinin sayfa görüntüsünden yeniden okundu, spike aktarımıyla hücre hücre aynı.
+    Testlerdeki beklenen değerler JSON'dan ayrı yazıldı; tabloya sokulan kasıtlı hatalar (A.4, Fs, F1, bant ve A.2
+    sınırı) testleri düşürüyor.
+  - Eşdeğerlik: 154 bina × 3 tehlike varsayımı (ESHM20 ham, ÷0,89, ÷0,72) = 462 karşılaştırma; SDS 1e-12, bölge
+    ve PP birebir. Fikstür `spike/S3/fikstur_uret.py` ile üretilir (yerel ACI-133 verisi gerekir, CI yeniden
+    üretmez); koordinat ve bina kimliği içermez.
+  - S1: 10 TDTH raporunda ZC SDS ve SD1 ±0,001; ESHM20 bilineer SS/S1/PGA spike değerleriyle 3 ondalık aynı;
+    TDTH bölgesi her noktada bandın iyi–kötü ucu arasında (Akhisar: ESHM20 II, bant kötü ucu I = TDTH).
+  - Öğrenilen: SDS = Fs·SS tekdüze değil (ZE, 1,19 < SS < 1,25 arasında azalıyor). `sdsAraligi` uç, tablo
+    sütunu, parça tepe noktası ve eğri kesişimi adaylarıyla kesin aralık veriyor. ZC/ZD/ZE zarfı gerçek
+    tablolarda tekdüze, bu yüzden kesişim adayı yalnız tablo değişirse devreye giriyor (testle ayırt edilemiyor).
+  - Tablo A.2'de sınır değer (ör. SDS = 1,0) iki satıra uyuyor; yüksek tehlikeli bölge seçildi.
+  - Açık risk: TBDY Fs/F1'in ZD/ZE satırları TDTH ile doğrulanmadı (yalnız ZC). Faz 6'daki TDTH rehberi
+    denemesinde Scryne'dan bir ZD raporu alınırsa kapanır.
+  - `degerlendir()` hesap sözleşmesini uçtan uca uyguluyor (tehlike → uçlar → PP aralığı → bant); arayüz
+    Faz 4–6'da bağlanır.
 
 ### Faz 3: Veri boru hattı (~2 gün)
 - **İşler:** `pipeline/tehlike.py` (EFEHR `/v1/maps/area`; PGA, SA0.2, SA1.0; model 81, poe 0,002103),

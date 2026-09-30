@@ -1,0 +1,28 @@
+{
+  "kaynak": {
+    "ad": "Türkiye Bina Deprem Yönetmeliği 2018, Bölüm 2, Tablo 2.1 ve Tablo 2.2",
+    "url": "https://tr.wikisource.org/wiki/Türkiye_Bina_Deprem_Yönetmeliği/Ek/Bölüm_2",
+    "dogrulama": "ZC satırları 10 AFAD TDTH raporunun SDS/SD1 değerini ±0,001 ile yeniden üretti (spike S1, 2026-09-30). Diğer satırlar Vikikaynak + bağımsız bir arama özetiyle tutarlı.",
+    "araDeger": "Tablo sütunları arasında doğrusal; ilk sütunun altında ve son sütunun üstünde uç değer sabit."
+  },
+  "tablo21": {
+    "ss": [0.25, 0.5, 0.75, 1.0, 1.25, 1.5],
+    "fs": {
+      "ZA": [0.8, 0.8, 0.8, 0.8, 0.8, 0.8],
+      "ZB": [0.9, 0.9, 0.9, 0.9, 0.9, 0.9],
+      "ZC": [1.3, 1.3, 1.2, 1.2, 1.2, 1.2],
+      "ZD": [1.6, 1.4, 1.2, 1.1, 1.0, 1.0],
+      "ZE": [2.4, 1.7, 1.3, 1.1, 0.9, 0.8]
+    }
+  },
+  "tablo22": {
+    "s1": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6],
+    "f1": {
+      "ZA": [0.8, 0.8, 0.8, 0.8, 0.8, 0.8],
+      "ZB": [0.8, 0.8, 0.8, 0.8, 0.8, 0.8],
+      "ZC": [1.5, 1.5, 1.5, 1.5, 1.5, 1.4],
+      "ZD": [2.4, 2.2, 2.0, 1.9, 1.8, 1.7],
+      "ZE": [4.2, 3.3, 2.8, 2.4, 2.2, 2.0]
+    }
+  }
+}

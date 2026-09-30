@@ -4,6 +4,7 @@
   "rules": {
     "react/rules-of-hooks": "error",
     "react/exhaustive-deps": "warn",
+    "vitest/valid-expect": ["warn", { "maxArgs": 2 }],
     "react/only-export-components": ["warn", { "allowConstantExport": true }],
     "no-restricted-imports": [
       "error",
