@@ -101,7 +101,7 @@ Scryne 09-29'da yön kararlarını verdi (ad YapiRisk, önce bireysel sonra B2B)
 | K-4 | **Tek yöntem: RYTEİE 2019 Ek-A (betonarme).** Resmî metinde eşik yok (A.2.1.8, puanlar sıralanır); "PP < 100 riskli" yalnız ÇŞB/ARUP rehberinde → hüküm olarak gösterilmez. Rapor "tekil binada kullanılamaz" kaydını yazar. Denetimde Sucuoğlu–Yazgan–Yakut çıkarıldı. | Resmî, Türkiye'ye özgü, SDS'e bağlı, tüm girdiler dışarıdan gözlenebilir. Manisa'da (bölge I/II) kusursuz BA çerçeve bile TP ≤ 90 alır; eşik ayırmaz, sıralar. |
 | K-5 | **Tehlike iki kademeli.** Varsayılan ESHM20 + S1 bandı (gerçek SS ∈ SS_ESHM20 / [1,25 … 0,72]); bant iki bölgeye düşerse puan aralık olur, kötü durum öne çıkar. TDTH SDS'i girilirse tek değer. | S1: ESHM20 TDTH'nin ort. %11 altında, 3/10 noktada bölge güvensiz yönde kayıyor. TDTH'nin yasal açık kaynağı yok (`arastirma/06`); tek yol CIMER (taslak `docs/cimer-dilekce-taslak.md`). |
 | K-6 | **Fark "ölçülüp açıkça yazılmış isabet"; en fazla 3 bant.** Yumuşak kat formda en görünür soru. | S3: ACI-133'te kısmi RYTEİE AUC ≈ 0,70 = kat sayısı; 5 kusur ve tehlike terimi test edilemedi. 5 bant sahte hassasiyet olur. |
-| K-7 | **Bina bulma: mahalle ara → harita → binaya tıkla.** Microsoft ayak izi z14 parçalı gzip (Manisa 474.953 bina, 15,3 MB). | S4: OSM'de il genelinde 779 kapı no, sokakların %8'i adlı; mahalle araması Photon 18/18. |
+| K-7 | **Bina bulma: mahalle ara → harita → binaya tıkla.** (Finalizasyonda K-13: arama Photon yerine yerel OSM mahalle dizini.) Microsoft ayak izi z14 parçalı gzip (Manisa 474.953 bina, 15,3 MB). | S4: OSM'de il genelinde 779 kapı no, sokakların %8'i adlı; mahalle araması Photon 18/18. |
 | K-8 | **v1 yalnız betonarme, 1–7 serbest kat.** Diğerleri "kapsam dışı" mesajı alır. | RYTEİE Ek-A betonarme yöntemi 1–7 kat içindir; yığma ayrı yöntem (v1.1). 4 haftaya sığdırmak. |
 | K-9 | **Zemin sınıfı "bilmiyorum" → kötü durum:** bölge için ZC/ZD/ZE grubu, SDS için bu üçünden en büyük Fs. Taşıyıcı sistem "bilmiyorum" → BAÇ (resmî kural A.2.1.1). USGS Vs30 yalnız ipucu olarak gösterilir. | Çoğu kullanıcı zemini bilmez; bilinmeyen belirsizlik güvenli yöne değil öncelik yönüne çözülür, resmî metnin sistem kuralıyla aynı mantık. |
 | K-10 | **Yapım yılı puana girmez; isteğe bağlı bilgi olarak yönetmelik dönemi notunu besler.** | RYTEİE yılı kullanmıyor; S3'te yaş tek başına AUC 0,595. Resmî yöntemi değiştirmek "resmî ve açık" farkını bozar. |
@@ -143,5 +143,7 @@ Kıyas (literatür, farklı set): Nurdağı/İslahiye 7.292 binada yaş + kat + 
 ## Açık Sorular
 
 1. CIMER başvurusu (Scryne'ın kararı; taslak hazır). Olumlu dönerse K-5'teki bant kalkar.
-2. 3 bandın PP sınırları: S3 dağılımı + Manisa'da tipik binalar üzerinden finalizasyonda belirlenir.
-3. Şekil A.1'in kullanım serbestliği (FSEK md. 31) finalizasyonda teyit.
+2. ~~3 bandın PP sınırları~~ → K-12 (Final-Doküman).
+3. ~~Şekil A.1 kullanım serbestliği~~ → K-14, FSEK md. 31 mevzuat metninden teyit edildi.
+
+Finalizasyon kararları K-12…K-15 ve stack: `docs/Final-Dokuman.md`.
