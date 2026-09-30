@@ -24,7 +24,7 @@ sonuçları: `docs/Proje-Fikri.md` (K-1…K-11); bu doküman K-12…K-15'i ekler
 | --- | --- | --- |
 | Uygulama | Vite + React + TypeScript, statik çıktı | Sunucu yok (K-1); harita ve form istemcide. Next.js'in SSR/router'ı bu ürüne bir şey katmaz, statik dışa aktarımda MapLibre worker tuzağı biliniyor (vault hafızası). |
 | Stil ve bileşen | Tailwind v4 + shadcn (Radix), `cn`; ikon Lucide | Frontend sisteminin taban disiplini (`baseline-ui`, erişilebilir primitive); form ağırlıklı UI'da hazır erişilebilir bileşen. |
-| Harita | MapLibre GL JS; taban harita OpenFreeMap (anahtarsız, ticari serbest) | Açık kaynak, vektör; ayak izi katmanı GeoJSON kaynak olarak eklenir. |
+| Harita | MapLibre GL JS; taban harita OpenFreeMap (anahtarsız, ticari serbest); isteğe bağlı uydu katmanı MapTiler (K-16) | Açık kaynak, vektör; ayak izi katmanı GeoJSON kaynak olarak eklenir. |
 | Bina ayak izi | Microsoft GlobalMLBuildingFootprints → z14 parçalı `.json.gz`, tarayıcıda `DecompressionStream` ile açılır | S4: Manisa 474.953 bina, 15,3 MB, parça medyanı 1,4 KB. Ek araç (tippecanoe) yok; yalnız görünen parçalar çekilir. |
 | Mahalle araması | **Yerel dizin** (K-13): OSM mahalle/köy noktaları + ilçe, derlemede üretilir; Türkçe normalize bulanık arama istemcide | Arama üçüncü tarafa gitmez (K-1); S4'te Photon'un döndürdüğü koordinat zaten OSM'nin kendisiydi. |
 | Tehlike | ESHM20 (EFEHR) 475 yıl ızgarası, sürümlü statik JSON (K-2) + TBDY Tablo 2.1/2.2 zemin katsayıları | S1, S2. |
@@ -77,6 +77,7 @@ en iyi/en kötü) → PP aralığı → bant (kötü durum) → sonuç ve rapor.
 | K-13 | **Mahalle araması yerel dizinle (K-7 revize: Photon yerine).** | S4'te Photon'un bulduğu koordinatlar OSM'nin kendi noktalarıydı; aynı veri derlemede gömülünce arama çevrimdışı çalışır, IP/adres üçüncü tarafa gitmez, kullanım politikası riski kalkar. Kaybı: yazım hatası toleransı istemci tarafı bulanık aramayla karşılanır. |
 | K-14 | **Şekil A.1 çizimleri temiz SVG olarak yeniden çizilir, kaynak gösterilir.** | FSEK md. 31 (mevzuat metninden teyit): resmen yayımlanan yönetmelik, tebliğ ve benzeri düzenleyici metinlerin çoğaltılması ve işlenmesi serbest; RYTEİE Resmî Gazete'de yayımlanmış düzenleyici metin. Tarama 1-bit ve kaba; temiz çizim tema ve baskı için şart. |
 | K-15 | **Stack yukarıdaki tablo; bölge paketi dosyaları repoya girer** (tehlike ~51 KB, ayak izi ~15 MB, mahalle dizini küçük), NC/ND ham veri girmez. | K-2 "sürümlü statik dosya"nın doğal hali; derleme CI'da 220 MB indirme gerektirmez. Microsoft (CDLA Permissive 2.0), ESHM20 (CC BY), OSM (ODbL) yeniden dağıtımı atıfla serbest; lisans metinleri `public/data/LISANSLAR.md`. |
+| K-16 | **Uydu görünümü isteğe bağlı katman: MapTiler (ücretsiz plan), varsayılan kapalı.** Haritadaki "Uydu" düğmesiyle açılır; açıkken panelde "baktığınız bölge MapTiler'a iletilir" notu görünür. Anahtar istemcide açık, MapTiler panelinde origin kısıtlı; derlemeye `VITE_MAPTILER_ANAHTARI` ile girer, repoya girmez. 256 px karo, en fazla z18. Kota dolarsa katman kapanır, koyu harita devam eder. | Scryne binaları uydu görüntüsünde görmek istedi (2026-09-30). Araştırma (`arastirmaci`, 09-30): anahtarsız ve bina çözünürlüğünde, şartları açık bir kaynak yok; MapTiler Free ticari olmayan kullanımı açıkça kapsıyor, kart istemiyor, aşımda ücret yerine askıya alıyor, ziyaretçi IP'sini işlemediğini belgeliyor. Manisa'da z17'de binalar net, ayak izleriyle örtüşüyor; z19'da pikselleşiyor (ölçüldü). K-1 istisnası kullanıcının açık seçimine bağlı: açmayanın isteği yalnız OpenFreeMap'e gider (e2e ile doğrulanıyor). |
 
 ## Kapsam (v1)
 
@@ -96,9 +97,10 @@ en iyi/en kötü) → PP aralığı → bant (kötü durum) → sonuç ve rapor.
 | Yöntemin ayırma gücü sınırlı | Ölçüldü (S3): AUC ≈ 0,70 ≈ kat sayısı | 3 bant (K-6), isabet sayfası, "öncelik" dili |
 | Kullanıcı kusurları yanlış işaretler | Ölçülmedi | Şekil A.1 çizimleri, "bilmiyorum" iki uç hesap; Faz son kullanım testinde "sonucu doğru okudu mu" ile gözlenir |
 | Yöntem kapsamı dışı binalar (yığma, 8+ kat) | Bilinçli | Formun ilk sorularında ayıklanır, kapsam dışı mesajı (K-8) |
-| Kişisel veri | Tasarımla kapalı (K-1, K-13) | Arama ve hesap istemcide; dışarı yalnız taban harita parçası istekleri (aydınlatma notunda) |
+| Kişisel veri | Tasarımla kapalı (K-1, K-13, K-16) | Arama ve hesap istemcide; dışarı yalnız taban harita parçası istekleri, kullanıcı açarsa MapTiler uydu karoları (aydınlatma notunda) |
 | Yasal çerçeve (6306) | Araştırıldı | "Tespit değildir" feragati, yönetmeliğin "tekil binada kullanılamaz" kaydı, lisanslı kuruluş yolu |
 | Veri kaynağı değişir (EFEHR platform, Microsoft sürüm) | Bilinçli | Paketler sürümlü ve repoda; boru hattı yeniden üretilebilir, `kaynak.json` sha256 |
+| MapTiler ücretsiz kotası (100 bin istek, 5 bin oturum/ay) dolar | Bilinçli | Katman kapanır, uyarı; koyu harita ve tüm akış çalışır. Faz 8'de kullanım izlenir |
 | Yeni TDTH sürümü (TÜBİTAK projesi) | İzlenecek | Tehlike katmanı modülerdir; resmî grid erişimi olursa K-5 yeniden açılır |
 
 ## Kapsam Dışı

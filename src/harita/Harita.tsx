@@ -9,6 +9,7 @@ import { useEffect, useEffectEvent, useRef } from 'react'
 import type { BolgePaketi } from '@/veri/bolge'
 import { gorunenParcalar, ParcaOnbellegi, type BinaCokgeni } from '@/veri/parca'
 import { BINA_YAKINLIGI, type HaritaHedefi, type Secim } from './tipler'
+import { UYDU_ANAHTARI, uyduKaynagi } from './uydu'
 import { cokgenMerkezi } from './geometri'
 
 // Taban harita: OpenFreeMap (anahtarsız). Uygulamanın dışarıya yaptığı tek istek budur (K-1).
@@ -21,6 +22,10 @@ interface Props {
   secim: Secim | null
   hedef: HaritaHedefi | null
   noktaModu: boolean
+  /** Uydu katmanı açık mı (anahtar yoksa etkisiz). */
+  uydu: boolean
+  /** Uydu karoları alınamadı (kota, anahtar, ağ). */
+  onUyduHatasi: () => void
   /** Panelin kapladığı kenar (px); harita merkezi görünen alana göre hesaplanır. */
   bosluk: { sol: number; alt: number }
   onSecim: (secim: Secim) => void
@@ -32,10 +37,22 @@ const dolgu = (b: { sol: number; alt: number }) => ({ top: 0, right: 0, left: b.
 
 const renk = (ad: string) => getComputedStyle(document.documentElement).getPropertyValue(ad).trim()
 
-export function Harita({ paket, secim, hedef, noktaModu, bosluk, onSecim, onBosTiklama, onYakinlik }: Props) {
+export function Harita({
+  paket,
+  secim,
+  hedef,
+  noktaModu,
+  uydu,
+  bosluk,
+  onSecim,
+  onBosTiklama,
+  onYakinlik,
+  onUyduHatasi,
+}: Props) {
   const kapRef = useRef<HTMLDivElement>(null)
   const haritaRef = useRef<maplibregl.Map | null>(null)
   const boslukRef = useRef(bosluk)
+  const uyduOrtenler = useRef<string[]>([])
   useEffect(() => {
     boslukRef.current = bosluk
   })
@@ -128,6 +145,21 @@ export function Harita({ paket, secim, hedef, noktaModu, bosluk, onSecim, onBosT
       ]
       // Taban haritanın OSM binaları Microsoft ayak izleriyle çakışır; dokunulacak tek çizim bizimki olsun.
       if (harita.getLayer('building')) harita.removeLayer('building')
+      if (UYDU_ANAHTARI) {
+        // Taban haritanın ilk etiket katmanının altına: yol ve yer adları görüntünün üstünde kalır.
+        const katmanlar = harita.getStyle().layers
+        const ilk = katmanlar.findIndex((k) => k.type === 'symbol')
+        harita.addSource('uydu', uyduKaynagi(UYDU_ANAHTARI))
+        harita.addLayer(
+          { id: 'uydu', type: 'raster', source: 'uydu', layout: { visibility: 'none' } },
+          katmanlar[ilk]?.id,
+        )
+        // Etiketlerle iç içe gelen yol/alan katmanları görüntüyü örter; uydu açıkken gizlenir.
+        uyduOrtenler.current = katmanlar
+          .slice(ilk)
+          .filter((k) => k.type === 'line' || k.type === 'fill' || k.type === 'fill-extrusion')
+          .map((k) => k.id)
+      }
       harita.addSource('sinir', { type: 'geojson', data: sinir })
       harita.addLayer({
         id: 'sinir',
@@ -214,6 +246,32 @@ export function Harita({ paket, secim, hedef, noktaModu, bosluk, onSecim, onBosT
     if (harita.isMoving()) harita.once('moveend', uygula)
     else uygula()
   }, [bosluk.sol, bosluk.alt])
+
+  // Uydu açıkken bina dolgusu görüntüyü örtmesin; çizgi belirginleşir.
+  const uyduHatasi = useEffectEvent(() => onUyduHatasi())
+  useEffect(() => {
+    const harita = haritaRef.current
+    if (!harita || !UYDU_ANAHTARI) return
+    const uygula = () => {
+      if (!harita.getLayer('uydu')) return false
+      harita.setLayoutProperty('uydu', 'visibility', uydu ? 'visible' : 'none')
+      for (const id of uyduOrtenler.current) {
+        harita.setLayoutProperty(id, 'visibility', uydu ? 'none' : 'visible')
+      }
+      harita.setPaintProperty('bina-dolgu', 'fill-opacity', uydu ? 0.04 : 0.14)
+      harita.setPaintProperty('bina-cizgi', 'line-opacity', uydu ? 0.85 : 0.45)
+      harita.setPaintProperty('bina-cizgi', 'line-width', uydu ? 1.2 : 0.8)
+      return true
+    }
+    if (!uygula()) harita.once('load', uygula)
+    const hata = (e: maplibregl.ErrorEvent & { sourceId?: string }) => {
+      if (uydu && e.sourceId === 'uydu') uyduHatasi()
+    }
+    harita.on('error', hata)
+    return () => {
+      harita.off('error', hata)
+    }
+  }, [uydu])
 
   // Nokta modunda imleç artı işareti.
   useEffect(() => {

@@ -1,10 +1,11 @@
-import { Crosshair, LoaderCircle, MousePointerClick } from 'lucide-react'
+import { Crosshair, LoaderCircle, MousePointerClick, Satellite } from 'lucide-react'
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { MahalleArama } from '@/arama/MahalleArama'
 import { Button } from '@/components/ui/button'
 import { baglantiOku } from '@/harita/baglanti'
 import { geometriIcinde } from '@/harita/geometri'
 import { BINA_YAKINLIGI, type HaritaHedefi, type Secim } from '@/harita/tipler'
+import { UYDU_ANAHTARI } from '@/harita/uydu'
 import { SecimKarti } from '@/panel/SecimKarti'
 import { bolgeleriYukle, bolgePaketiYukle, type BolgePaketi } from '@/veri/bolge'
 import { bilineer } from '@/yontem/tehlike'
@@ -25,6 +26,8 @@ export default function App() {
   const [noktaModu, setNoktaModu] = useState(false)
   const [yakinlik, setYakinlik] = useState(0)
   const [bosTiklama, setBosTiklama] = useState(false)
+  const [uydu, setUydu] = useState(false)
+  const [uyduHatasi, setUyduHatasi] = useState(false)
   const panelRef = useRef<HTMLElement>(null)
   const [bosluk, setBosluk] = useState({ sol: 0, alt: 0 })
 
@@ -109,12 +112,45 @@ export default function App() {
             secim={secim}
             hedef={hedef}
             noktaModu={noktaModu}
+            uydu={uydu}
+            onUyduHatasi={() => {
+              setUydu(false)
+              setUyduHatasi(true)
+            }}
             bosluk={bosluk}
             onSecim={sec}
             onBosTiklama={() => setBosTiklama(true)}
             onYakinlik={setYakinlik}
           />
         </Suspense>
+      )}
+
+      {paket && UYDU_ANAHTARI && (
+        <button
+          type="button"
+          aria-pressed={uydu}
+          aria-label="Uydu görünümü"
+          title="Uydu görünümü"
+          onClick={() => {
+            setUydu((u) => !u)
+            setUyduHatasi(false)
+          }}
+          className="absolute top-24 right-2.5 z-10 flex size-9 items-center justify-center rounded-sm border border-border bg-surface text-muted-foreground transition-colors outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring aria-pressed:bg-primary aria-pressed:text-primary-foreground"
+        >
+          <Satellite className="size-5" aria-hidden="true" />
+        </button>
+      )}
+      {uydu && (
+        // MapTiler ücretsiz planı logoyu şart koşar; dosya bizden servis edilir.
+        <a
+          href="https://www.maptiler.com/"
+          target="_blank"
+          rel="noopener"
+          className="absolute left-2.5 z-10 md:bottom-2.5 md:left-[25rem]"
+          style={{ bottom: bosluk.alt ? bosluk.alt + 10 : undefined }}
+        >
+          <img src={`${import.meta.env.BASE_URL}maptiler-logo.svg`} alt="MapTiler" width={67} height={20} />
+        </a>
       )}
 
       <aside
@@ -171,6 +207,18 @@ export default function App() {
               <Crosshair data-icon="inline-start" />
               {noktaModu ? 'Nokta seçimini iptal et' : 'Binam haritada yok, konumu işaretleyeceğim'}
             </Button>
+
+            {uydu && (
+              <p className="text-body-sm text-pretty text-muted-foreground">
+                Uydu görüntüsü MapTiler&apos;dan yükleniyor; baktığınız bölge MapTiler&apos;a iletilir.
+                Kapatmak için uydu düğmesine yeniden dokunun.
+              </p>
+            )}
+            {uyduHatasi && (
+              <p className="text-body-sm text-pretty text-error" role="alert">
+                Uydu görüntüsü şu an alınamıyor. Koyu haritayla devam edebilirsiniz.
+              </p>
+            )}
 
             {secim && (
               <SecimKarti secim={secim} bolgeAdi={paket.kayit.ad} ss={ss} onKaldir={() => setSecim(null)} />

@@ -38,6 +38,8 @@ değiştirilmez. Kanonik roadmap `docs/Roadmap.md` dışında bir dosyaysa `stat
   hızlı yöntemler rehberi.
 - **Git:** yerel kimlik noreply (`218348029+Scryne@users.noreply.github.com`) ayarlı; remote
   `github.com/Scryne/YapiRisk` (**private**), varsayılan dal `main`. Public'e geçiş yalnız Faz 7'de Scryne'ın açık onayıyla.
+- **Uydu anahtarı:** kökte `.env` (git dışı) içinde `VITE_MAPTILER_ANAHTARI=`; Scryne'ın MapTiler hesabı. Yoksa uydu
+  düğmesi görünmez, uydu e2e testi atlanır (CI'da böyle). K-16.
 - **Komutlar:** `npm run ci` (lint + typecheck + design:lint + test + build), `npm run test:e2e`, `npm run tokens`
   (DESIGN.md → `src/styles/tokens.css`; token elle yazılmaz); pipeline: `cd pipeline && uv run pytest`.
 - **Tuzaklar (bu projede yaşandı):**

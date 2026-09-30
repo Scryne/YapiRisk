@@ -120,6 +120,9 @@ Faz 9–11 olaya bağlıdır; hook bunları "sıradaki iş" saymaz.
     `#konum=enlem,boylam` (nokta seçer), `#harita=z/enlem/boylam`; uygulama yalnız okur, adrese konum yazmaz.
   - MapLibre (~1 MB) tembel yüklenen ayrı parçada; ana paket 364 KB.
   - Faz 5'e: seçimin `localStorage`'a yazılması ve "Temizle" form işiyle birlikte yapılacak.
+  - Ek (Scryne isteği, K-16): isteğe bağlı uydu katmanı (MapTiler), varsayılan kapalı; açmadan MapTiler'a 0 istek,
+    açınca logo + gizlilik notu (e2e, anahtar yoksa atlanır). Uydu açıkken taban haritanın yol/alan çizgileri gizlenir,
+    etiketler kalır. Manisa'da z17 net, z18 üstü büyütme.
 
 ### Faz 5: Form (~4 gün)
 - **İşler:** Şekil A.1'den SVG çizimler (K-14; çerçeve/perde, yumuşak kat, düşeyde düzensizlik, ağır çıkma,
@@ -133,14 +136,15 @@ Faz 9–11 olaya bağlıdır; hook bunları "sıradaki iş" saymaz.
 - **İşler:** sonuç kartı (DESIGN.md: bant başlıkta, puan değil); TDTH rehberi (S1'de Scryne'ın izlediği akış:
   Raporlama → DD-2 → zemin → Değerleri Hesapla → SDS); yazdırma CSS'i (açık tema, cam yok); Yöntem ve isabet
   sayfası (`dogrulama.json`: n = 154, AUC ≈ 0,70, kat sayısı eşdeğerliği, ölçülemeyen kusurlar, bant başına oran
-  ve yanlılık notu); Veri ve lisanslar; Hakkında/feragat (6306, "tekil binada kullanılamaz", aydınlatma notu:
-  taban harita istekleri). Denetim pasları: `fixing-accessibility`, `fixing-motion-performance` (cam),
+  ve yanlılık notu); Veri ve lisanslar (MapTiler atfı dahil); Hakkında/feragat (6306, "tekil binada kullanılamaz",
+  aydınlatma notu: taban harita ve isteğe bağlı MapTiler uydu istekleri). Denetim pasları: `fixing-accessibility`, `fixing-motion-performance` (cam),
   `ux-writing`, `gorsel-dogrulama`; `urun-dogrulama` ile faz kapanışı.
 - **Bitti Kriteri:** tablodaki satır.
 - **Notlar:**
 
 ### Faz 7: Yayın (~1 gün)
-- **İşler:** `yayin-oncesi` (git geçmişi, commit kimlikleri noreply, kişisel veri, belge meta verisi;
+- **İşler:** MapTiler anahtarı GitHub Actions değişkeni `VITE_MAPTILER_ANAHTARI` olarak derlemeye; MapTiler
+  panelinde origin kısıtı (`scryne.github.io`) yabancı origin'le denenir. `yayin-oncesi` (git geçmişi, commit kimlikleri noreply, kişisel veri, belge meta verisi;
   `spike/S*/veri` ve `docs/arastirma/kaynak` gitignore'da mı), `fixing-metadata`, Scryne'dan açık onay → repo
   public + Pages; canlı adreste duman testi.
 - **Bitti Kriteri:** tablodaki satır.

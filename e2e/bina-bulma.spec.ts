@@ -147,3 +147,25 @@ test('S1: 10 ilçe merkezinde gösterilen SS spike değeriyle ±0,001', async ({
     expect(Math.abs(ss - beklenen.get(no)!), ilce).toBeLessThanOrEqual(0.001)
   }
 })
+
+test("uydu katmanı yalnız açılınca MapTiler'a istek atar; logo ve not görünür", async ({ page }) => {
+  const maptiler: string[] = []
+  page.on('request', (r) => r.url().startsWith('https://api.maptiler.com/') && maptiler.push(r.url()))
+  await page.goto('/#harita=18/38.6140/27.4303')
+  await hazirBekle(page)
+  const dugme = page.getByRole('button', { name: 'Uydu görünümü' })
+  test.skip((await dugme.count()) === 0, 'MapTiler anahtarı yok (VITE_MAPTILER_ANAHTARI); uydu düğmesi gizli')
+
+  await expect(page.locator('main')).toHaveAttribute('data-yakinlik', '18.0', { timeout: 20_000 })
+  expect(maptiler).toEqual([])
+
+  await dugme.click()
+  await expect(dugme).toHaveAttribute('aria-pressed', 'true')
+  await expect(page.getByRole('link', { name: 'MapTiler' })).toBeVisible()
+  await expect(page.getByText('baktığınız bölge MapTiler')).toBeVisible()
+  await expect.poll(() => maptiler.length, { timeout: 15_000 }).toBeGreaterThan(0)
+  await expect(page.getByRole('alert')).toHaveCount(0)
+
+  await dugme.click()
+  await expect(page.getByRole('link', { name: 'MapTiler' })).toBeHidden()
+})
