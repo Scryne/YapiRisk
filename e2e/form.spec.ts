@@ -55,13 +55,13 @@ test('form klavyeyle baştan sona dolduruluyor; ön sonuç motorla aynı', async
     await page.keyboard.press('Enter')
   }
 
-  await expect(page.getByRole('heading', { name: 'Cevaplarınız' })).toBeFocused()
+  await expect(page.getByRole('heading', { name: 'Sonuç', exact: true })).toBeFocused()
   // Motor bu cevap setini Manisa merkezinde −10 … 20 (yüksek öncelik) verir; aynı değerler
   // src/form/taslak.test.ts'te motordan hesaplanıp doğrulanıyor (e2e, JSON içe aktaran motoru yükleyemiyor).
   const tr = new Intl.NumberFormat('tr-TR', { maximumFractionDigits: 0 })
   await expect(page.getByTestId('pp-araligi')).toHaveText(`${tr.format(-10)} – ${tr.format(20)}`)
-  await expect(page.getByTestId('on-sonuc')).toContainText('Yüksek öncelik')
-  await expect(page.getByText('1998–2006')).toBeVisible()
+  await expect(page.getByTestId('bant')).toContainText('Yüksek öncelik')
+  await expect(page.getByRole('main').getByText('1998–2006', { exact: true })).toBeVisible()
 
   expect(yabanci).toEqual([])
   expect(hatalar).toEqual([])

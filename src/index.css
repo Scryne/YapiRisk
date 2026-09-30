@@ -91,3 +91,31 @@
     left: 0;
   }
 }
+
+/* Rapor (src/sonuc/Rapor.tsx): A4, beyaz kâğıt; ekran arayüzü print:hidden. */
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm 14mm 16mm;
+  }
+  body {
+    background: var(--color-paper);
+    color: var(--color-paper-ink);
+  }
+}
+
+/* Haritasız sayfaların zemini (DESIGN.md): ışık sol üstten, camgöbeği ve gri-mavi; yoğunluk düşük, metin düz zeminde okunur. */
+.zemin-mesh {
+  background-color: var(--color-background);
+  background-image:
+    radial-gradient(
+      60rem 36rem at 0% 0%,
+      color-mix(in oklab, var(--color-primary) 12%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      48rem 40rem at 100% 100%,
+      color-mix(in oklab, var(--color-uncertainty) 10%, transparent),
+      transparent 70%
+    );
+}

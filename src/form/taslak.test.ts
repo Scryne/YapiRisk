@@ -115,6 +115,7 @@ describe('kayıt (localStorage)', () => {
       secim: { tip: 'nokta' as const, merkez: [27.43, 38.61] as [number, number] },
       taslak: dolu({ nizam: 'bitisik', katSeviyesi: 'bilmiyorum', donem: '1998-2006' }),
       adim: 5,
+      tdthSs: 1.158,
     }
     kayitYaz(kayit)
     expect(kayitOku()).toEqual(kayit)
@@ -138,6 +139,7 @@ describe('kayıt (localStorage)', () => {
       secim: null,
       taslak: { kalite: 'orta', kusurlar: { agirCikma: true } },
       adim: ADIMLAR.length,
+      tdthSs: null,
     })
   })
 
@@ -148,7 +150,7 @@ describe('kayıt (localStorage)', () => {
       },
     })
     expect(kayitOku()).toBeNull()
-    expect(() => kayitYaz({ secim: null, taslak: bosTaslak(), adim: 0 })).not.toThrow()
+    expect(() => kayitYaz({ secim: null, taslak: bosTaslak(), adim: 0, tdthSs: null })).not.toThrow()
     expect(() => kayitSil()).not.toThrow()
   })
 

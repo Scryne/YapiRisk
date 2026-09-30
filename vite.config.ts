@@ -9,7 +9,18 @@ export default defineConfig({
   // MapLibre worker'ı ES modülü olarak yüklenir ({ type: 'module' }).
   worker: { format: 'es' },
   // MapLibre GL tek başına ~1 MB; tembel yüklenen Harita parçasında kalır, bölünemez.
-  build: { chunkSizeWarningLimit: 1100 },
+  // Bilgi sayfaları ayrı HTML: GitHub Pages'te yönlendirici gerekmez, her sayfa kendi adresinde.
+  build: {
+    chunkSizeWarningLimit: 1100,
+    rollupOptions: {
+      input: {
+        index: 'index.html',
+        yontem: 'yontem.html',
+        veri: 'veri.html',
+        hakkinda: 'hakkinda.html',
+      },
+    },
+  },
   resolve: {
     alias: { '@': path.resolve(import.meta.dirname, './src') },
   },

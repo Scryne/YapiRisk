@@ -12,6 +12,8 @@ export interface Kayit {
   taslak: Taslak
   /** ADIMLAR içindeki konum; ADIMLAR.length = özet. */
   adim: number
+  /** Kullanıcının girdiği AFAD TDTH S_S değeri (seçili konum için); yoksa null. */
+  tdthSs: number | null
 }
 
 const BILMIYORUM = 'bilmiyorum'
@@ -81,7 +83,11 @@ export function kayitOku(): Kayit | null {
     if (!metin) return null
     const ham = nesne(JSON.parse(metin))
     const adim = Number.isInteger(ham.adim) ? Math.min(Math.max(ham.adim as number, 0), ADIMLAR.length) : 0
-    return { secim: secimDogrula(ham.secim), taslak: taslakDogrula(ham.taslak), adim }
+    const tdthSs =
+      typeof ham.tdthSs === 'number' && ham.tdthSs > 0 && ham.tdthSs <= 4 && secimDogrula(ham.secim)
+        ? ham.tdthSs
+        : null
+    return { secim: secimDogrula(ham.secim), taslak: taslakDogrula(ham.taslak), adim, tdthSs }
   } catch {
     return null
   }

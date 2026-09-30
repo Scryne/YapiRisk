@@ -28,7 +28,7 @@ değiştirilmez. Kanonik roadmap `docs/Roadmap.md` dışında bir dosyaysa `stat
 
 ## Başlarken (2026-09-30 itibarıyla)
 
-- **Kararların yeri:** K-1…K-11 `docs/Proje-Fikri.md`, K-12…K-15 + stack + mimari `docs/Final-Dokuman.md`.
+- **Kararların yeri:** K-1…K-11 `docs/Proje-Fikri.md`, K-12…K-17 + stack + mimari `docs/Final-Dokuman.md`.
   Bir kararı değiştirmeden önce ilgili satırı oku; değişirse aynı tabloda güncelle.
 - **Spike'lar referanstır:** `spike/S1–S4/README.md` ölçümleri, `spike/S3/ryteie.py` puan fonksiyonunun
   Python sürümü (Faz 2'de TS portunun eşdeğerlik referansı). `spike/*/veri/` git dışında; README'lerdeki
@@ -68,6 +68,9 @@ değiştirilmez. Kanonik roadmap `docs/Roadmap.md` dışında bir dosyaysa `stat
     `@/lib/utils`'teki yapılandırılmış `cn` kullanılır, oxlint `"cn"` importunu yasaklar (`shadcn add` sonrası düzelt).
   - shadcn `Button` `type` vermez: `<form>` içinde `submit` olur, radyoda Enter ilk düğmeyi ("Haritaya dön") tetikledi →
     form içindeki gönderme dışı her düğmeye `type="button"`.
+  - e2e motoru (`src/yontem/*`) içe aktaramaz: JSON importu Node ESM'de `with { type: 'json' }` ister → beklenen değeri
+    Vitest'te motordan hesaplayıp e2e'ye sabit yaz (ör. `taslak.test.ts` ↔ `form.spec.ts`). e2e'de göreli import `.ts` uzantılı.
+  - Playwright `page.pdf()` baskı ortamını kullanır; öncesinde `emulateMedia({ media: 'screen' })` kalırsa ekran basılır.
   - `document.fonts.check()` font hiç tanımlı değilse de `true` döner → font testi yüklenen yüzlere bakar.
   - OSM'de Manisa'da "mahalle" adlı çöp `place` düğümleri var → mahalle dizininde ele.
   - TDTH değerleri yalnız e-Devlet ile, Scryne'ın elinden alınır (Raporlama → DD-2 → zemin → Değerleri

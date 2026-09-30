@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, Map as HaritaIkonu } from 'lucide-react'
 import { useEffect, useId, useRef, useState, type FormEvent } from 'react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import type { Sonuc } from '@/sonuc/sonuc'
 import { KapsamDisiEkrani } from './KapsamDisiEkrani'
 import { Ozet } from './Ozet'
 import { KAT_SEVIYESI, SORULAR, type Soru } from './sorular'
@@ -13,15 +14,20 @@ import { TemizleDugmesi } from './TemizleDugmesi'
 interface Props {
   taslak: Taslak
   adim: number
-  /** Seçili binanın S_S değeri; bina seçili değilse ya da bölge dışındaysa null. */
-  ss: number | null
+  /** Cevaplar tamam ve bina bölge içindeyse sonuç; değilse null. */
+  sonuc: Sonuc | null
+  /** Seçili binanın konumu [boylam, enlem]; seçim yoksa null. */
+  merkez: [number, number] | null
   onTaslak: (t: Taslak) => void
   onAdim: (a: number) => void
   onHaritaya: () => void
   onTemizle: () => void
+  onTdth: (ss: number | null) => void
+  onYazdir: () => void
 }
 
-export function Form({ taslak, adim, ss, onTaslak, onAdim, onHaritaya, onTemizle }: Props) {
+export function Form(p: Props) {
+  const { taslak, adim, onTaslak, onAdim, onHaritaya, onTemizle } = p
   const [hata, setHata] = useState(false)
   const [kapsamGoster, setKapsamGoster] = useState(false)
   const baslikRef = useRef<HTMLHeadingElement>(null)
@@ -81,7 +87,16 @@ export function Form({ taslak, adim, ss, onTaslak, onAdim, onHaritaya, onTemizle
     return (
       <div className="flex flex-col gap-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
         {ust}
-        <Ozet taslak={taslak} ss={ss} baslikRef={baslikRef} onGit={git} onHaritaya={onHaritaya} />
+        <Ozet
+          taslak={taslak}
+          sonuc={p.sonuc}
+          merkez={p.merkez}
+          baslikRef={baslikRef}
+          onGit={git}
+          onHaritaya={onHaritaya}
+          onTdth={p.onTdth}
+          onYazdir={p.onYazdir}
+        />
       </div>
     )
 

@@ -87,6 +87,8 @@ export interface TamCevaplar {
   zemin: ZeminCevabi
   /** Malzeme "bilmiyorum": betonarme varsayılarak değerlendirildi, sonuçta yazılır. */
   malzemeVarsayildi: boolean
+  /** İsteğe bağlı; puana girmez (K-10). */
+  donem?: Cevap<Donem>
 }
 
 /** Zorunlu sorular cevaplanmış ve bina kapsamdaysa motor girdisi; değilse null. */
@@ -103,6 +105,7 @@ export function tamCevaplar(t: Taslak): TamCevaplar | null {
     },
     zemin: t.zemin!,
     malzemeVarsayildi: t.malzeme === 'bilmiyorum',
+    donem: t.donem,
   }
 }
 

@@ -120,13 +120,19 @@ export function sdsAraligi(a: number, b: number, zemin: ZeminCevabi): [number, n
   return [Math.min(...degerler), Math.max(...degerler)]
 }
 
+/**
+ * ESHM20 S_S'i S1 bandıyla aralığa açılır. TDTH (AFAD) değeri kesindir: rapordaki S_S girilirse SDS formdaki
+ * zeminle hesaplanır (zemin bilinmiyorsa K-9 adayları), SDS girilirse olduğu gibi kullanılır.
+ */
 export type TehlikeGirdisi =
-  { kaynak: 'eshm20'; ss: number; zemin: ZeminCevabi } | { kaynak: 'tdth'; sds: number; zemin: ZeminCevabi }
+  | { kaynak: 'eshm20'; ss: number; zemin: ZeminCevabi }
+  | { kaynak: 'tdth'; ss: number; zemin: ZeminCevabi }
+  | { kaynak: 'tdth'; sds: number; zemin: ZeminCevabi }
 
 export interface TehlikeSonucu {
   kaynak: TehlikeGirdisi['kaynak']
   zemin: ZeminCevabi
-  /** Yalnız ESHM20'de: S1 bandıyla tahmini TDTH SS aralığı. */
+  /** ESHM20'de S1 bandıyla tahmini TDTH S_S aralığı; TDTH S_S girildiyse tek değer. SDS girildiyse yok. */
   ssAraligi?: [number, number]
   sdsAraligi: [number, number]
   /** Kötü uç: en yüksek SDS'in bölgesi. */
@@ -136,6 +142,17 @@ export interface TehlikeSonucu {
 }
 
 export function tehlike(girdi: TehlikeGirdisi): TehlikeSonucu {
+  if (girdi.kaynak === 'tdth' && 'ss' in girdi) {
+    const sdsAr = sdsAraligi(girdi.ss, girdi.ss, girdi.zemin)
+    return {
+      kaynak: 'tdth',
+      zemin: girdi.zemin,
+      ssAraligi: [girdi.ss, girdi.ss],
+      sdsAraligi: sdsAr,
+      bolgeKotu: tehlikeBolgesi(sdsAr[1], girdi.zemin),
+      bolgeIyi: tehlikeBolgesi(sdsAr[0], girdi.zemin),
+    }
+  }
   if (girdi.kaynak === 'tdth') {
     const b = tehlikeBolgesi(girdi.sds, girdi.zemin)
     return {

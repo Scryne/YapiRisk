@@ -194,6 +194,21 @@ describe('tehlike()', () => {
     expect(t.sdsAraligi[1]).toBeCloseTo(sds(0.722 / 0.72, 'ZC'), 12)
     expect([t.bolgeKotu, t.bolgeIyi]).toEqual(['I', 'III'])
   })
+  it('TDTH S_S girilince SDS formdaki zeminle; S1 raporlarının SDS_ZC değeriyle ±0,001', () => {
+    for (const r of csvOku('spike/S1/tdth-okumalar.csv')) {
+      const t = tehlike({ kaynak: 'tdth', ss: Number(r.SS), zemin: 'ZC' })
+      expect(t.ssAraligi).toEqual([Number(r.SS), Number(r.SS)])
+      expect(t.sdsAraligi[0]).toBe(t.sdsAraligi[1])
+      expect(Math.abs(t.sdsAraligi[0] - Number(r.SDS_ZC)), r.ilce).toBeLessThanOrEqual(0.001 + 1e-9)
+      expect(t.bolgeKotu).toBe(t.bolgeIyi)
+    }
+  })
+  it('TDTH S_S ile zemin bilinmiyorsa iki uçta da adayların en büyük SDS değeri (K-9), zayıf zemin bölgesi', () => {
+    const t = tehlike({ kaynak: 'tdth', ss: 0.6, zemin: 'bilmiyorum' })
+    const enBuyuk = Math.max(...(['ZC', 'ZD', 'ZE'] as const).map((z) => sds(0.6, z)))
+    expect(t.sdsAraligi).toEqual([enBuyuk, enBuyuk])
+    expect(t.bolgeKotu).toBe(tehlikeBolgesi(enBuyuk, 'ZE'))
+  })
   it('TDTH SDS girilince tek değer, bant yok', () => {
     const t = tehlike({ kaynak: 'tdth', sds: 1.172, zemin: 'ZC' })
     expect(t).toEqual({

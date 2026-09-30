@@ -20,7 +20,7 @@ Tahmin ~22 iş günü; her fazın sonunda "Notlar" doldurulur ve sonraki fazlar 
 | 3 | Veri boru hattı | ✅ Tamamlandı | `pipeline/` tek komutla `public/data/manisa/` üretiyor: tehlike ızgarası, ayak izi parçaları, mahalle dizini, `dogrulama.json`, `kaynak.json` (sürüm, lisans, sha256); iki kez çalıştırınca aynı sha256; `public/data/LISANSLAR.md` |
 | 4 | Harita ve bina bulma | ✅ Tamamlandı | Telefonda ve masaüstünde: mahalle aranıyor, harita gidiyor, ayak izine tıklanınca bina seçiliyor, ayak izi yoksa nokta seçiliyor; S1'deki 10 ilçe merkezinde uygulamanın gösterdiği SS, `spike/S1` değerleriyle ±0,001 aynı; ağ panelinde taban harita dışında üçüncü taraf isteği yok |
 | 5 | Form | ✅ Tamamlandı | 11 soru Şekil A.1 tabanlı SVG çizimlerle; yığma/çelik/prefabrik ve 8+ kat kapsam dışı mesajına düşüyor; her soruda "Bilmiyorum"; cevaplar `localStorage`'da, "Temizle" siliyor; klavye ve ekran okuyucuyla doldurulabiliyor (`fixing-accessibility` bulgusuz) |
-| 6 | Sonuç, rapor ve bilgi sayfaları | ⏳ Bekliyor | Sonuç kartı (bant, aralık, kalem kalem katkı, belirsizlik, isabet notu); TDTH SDS girişi adım adım rehberle; yazdırma görünümü A4'te okunur PDF; Yöntem ve isabet, Veri ve lisanslar, Hakkında/feragat sayfaları; `gorsel-dogrulama` 4 genişlik × tema çıkış 0; Playwright duman testi uçtan uca geçiyor |
+| 6 | Sonuç, rapor ve bilgi sayfaları | ✅ Tamamlandı | Sonuç kartı (bant, aralık, kalem kalem katkı, belirsizlik, isabet notu); TDTH SDS girişi adım adım rehberle; yazdırma görünümü A4'te okunur PDF; Yöntem ve isabet, Veri ve lisanslar, Hakkında/feragat sayfaları; `gorsel-dogrulama` 4 genişlik × tema çıkış 0; Playwright duman testi uçtan uca geçiyor |
 | 7 | Yayın | ⏳ Bekliyor | `yayin-oncesi` çıkış 0 ya da her bulgu kararlı; `fixing-metadata` geçti; Scryne'ın açık onayıyla repo public ve GitHub Pages'te canlı; canlı adreste 10 S1 noktasından biriyle uçtan uca rapor alındı |
 | 8 | Gerçek kullanım | ⏳ Bekliyor | Proje-Fikri'deki "bitti = kullanıldı" cümlesi gerçekleşti (Scryne'ın seçtiği ≥ 5 kişi yardımsız rapor aldı, sonucu öncelik olarak doğru okudu); bulgular roadmap'e işlendi |
 | 9 | TDTH ızgarası entegrasyonu (tetiklemeli) | ⏳ Bekliyor | Tetik: AFAD CIMER başvurusu olumlu döner. Resmî grid paketlenir, K-5 bandı Manisa'da kalkar, S1 karşılaştırması yeniden koşulur |
@@ -164,7 +164,29 @@ Faz 9–11 olaya bağlıdır; hook bunları "sıradaki iş" saymaz.
   aydınlatma notu: taban harita ve isteğe bağlı MapTiler uydu istekleri). Denetim pasları: `fixing-accessibility`, `fixing-motion-performance` (cam),
   `ux-writing`, `gorsel-dogrulama`; `urun-dogrulama` ile faz kapanışı.
 - **Bitti Kriteri:** tablodaki satır.
-- **Notlar:**
+- **Notlar:** (2026-09-30)
+  - Sonuç kartı (`src/sonuc/`): bant rozeti (renk + desen + metin; desen SVG, baskıda da görünür), tek cümlelik
+    anlam, PP aralığı, kalem kalem katkı tablosu (iki uç ayrı sütun, farklı olan kalem belirsizlik renginde),
+    belirsizlik (S_S/S_DS aralığı, kaynak, "Bilmiyorum" kalemleri, perde ve malzeme varsayımları), isabet notu +
+    RYTEİE A.1.1 "tekil binada kullanılamaz" kaydı, yapım dönemi notu (K-10), lisanslı kuruluş yolu, yazdır düğmesi.
+  - Karar K-17 (Final-Doküman): TDTH girişi SDS değil S_S; SDS formdaki zeminle hesaplanır, zemin bilinmiyorsa K-9
+    aynen. Rehber: e-Devlet ile tdth.afad.gov.tr → Raporlama → koordinat (kopyala düğmesi) → DD-2 → Değerleri Hesapla.
+    Okunamayan değer hata, ESHM20'nin 0,6–1,6 katı dışı uyarı (SDS/PGA satırı girilmiş olabilir). Değer seçilen
+    konuma bağlı, kayıtta kalır.
+  - Rapor: `print:` görünümü, A4, beyaz kâğıt; Chromium PDF'i 2 sayfa, metin katmanlı (pymupdf ile okundu).
+  - Bilgi sayfaları Vite çok sayfalı girişle ayrı HTML (`yontem.html`, `veri.html`, `hakkinda.html`): GitHub
+    Pages'te yönlendirici gerekmez. Sayılar `dogrulama.json` ve `kaynak.json`'dan okunuyor (e2e JSON ile karşılaştırıyor).
+  - Denetimler: `fixing-accessibility` (TDTH uygula/kaldır sonrası odak, yeni sekme uyarısı, içeriğe geç
+    bağlantısı; ağaç Playwright ile okundu), `fixing-motion-performance` (AlertDialog örtüsünde animasyonlu tam ekran
+    blur kaldırıldı), `gorsel-dogrulama` 4 rota × 4 genişlik × 2 tema çıkış 0, telefonda kaynak tablosu listeye çevrildi.
+  - `urun-dogrulama`: CI yerelde yeşil (Vitest 150, pipeline 12), Playwright 24/24 ×2; test gevşetme taraması tek
+    bulgu (`hazirBekle` silinmedi, `e2e/yardim.ts`'e taşındı); duman testi: mahalle → binaya dokun → form → sonuç
+    (70–90) → TDTH 1,158 → 70 → yeniden yükle → rapor PDF. Kaynak bağlantıları curl ile çözüldü (ESHM20 bağlantısı
+    Apache varsayılan sayfası açan servis kökünden DOI'ye çevrildi).
+  - Kontrol edilemeyen: TDTH arayüzündeki adım adları e-Devlet girişinin arkasında; S1'de Scryne'ın izlediği akıştan
+    yazıldı, yeniden denenmedi → Faz 7/8'de Scryne bir kez rehberle izlesin.
+  - Faz 7'ye: `vite.config` `base` (Pages alt yolu) ayarlanınca bilgi sayfası bağlantıları `BASE_URL` ile çalışıyor;
+    favicon yolu `/favicon.svg` mutlak, `fixing-metadata`'da ele alınmalı.
 
 ### Faz 7: Yayın (~1 gün)
 - **İşler:** MapTiler anahtarı GitHub Actions değişkeni `VITE_MAPTILER_ANAHTARI` olarak derlemeye; MapTiler

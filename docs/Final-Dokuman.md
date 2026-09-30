@@ -64,7 +64,7 @@ en iyi/en kötü) → PP aralığı → bant (kötü durum) → sonuç ve rapor.
 `bolgeler.json` kaydı. Yeni il = boru hattını o il için çalıştırmak.
 
 **Hesap sözleşmesi (K-9, K-12):**
-- Tehlike: SS_TDTH ∈ [SS_ESHM20 / 1,25 ; SS_ESHM20 / 0,72]; kullanıcı SDS girerse bu adım atlanır.
+- Tehlike: SS_TDTH ∈ [SS_ESHM20 / 1,25 ; SS_ESHM20 / 0,72]; kullanıcı TDTH raporundaki S_S'i girerse bu adım atlanır (K-17).
 - Zemin "bilmiyorum": bölge için ZC/ZD/ZE grubu; SDS için ZC, ZD, ZE Fs'lerinden en büyüğü.
 - Sistem "bilmiyorum": BAÇ (A.2.1.1). Diğer kusurlarda "bilmiyorum": var/yok iki uç hesaplanır.
 - PP aralığı [PP_min, PP_max]; bant PP_min ile belirlenir, aralık iki banda yayılıyorsa sonuç kartında yazar.
@@ -78,6 +78,7 @@ en iyi/en kötü) → PP aralığı → bant (kötü durum) → sonuç ve rapor.
 | K-14 | **Şekil A.1 çizimleri temiz SVG olarak yeniden çizilir, kaynak gösterilir.** | FSEK md. 31 (mevzuat metninden teyit): resmen yayımlanan yönetmelik, tebliğ ve benzeri düzenleyici metinlerin çoğaltılması ve işlenmesi serbest; RYTEİE Resmî Gazete'de yayımlanmış düzenleyici metin. Tarama 1-bit ve kaba; temiz çizim tema ve baskı için şart. |
 | K-15 | **Stack yukarıdaki tablo; bölge paketi dosyaları repoya girer** (tehlike ~51 KB, ayak izi ~15 MB, mahalle dizini küçük), NC/ND ham veri girmez. | K-2 "sürümlü statik dosya"nın doğal hali; derleme CI'da 220 MB indirme gerektirmez. Microsoft (CDLA Permissive 2.0), ESHM20 (CC BY), OSM (ODbL) yeniden dağıtımı atıfla serbest; lisans metinleri `public/data/LISANSLAR.md`. |
 | K-16 | **Uydu görünümü isteğe bağlı katman: MapTiler (ücretsiz plan), varsayılan kapalı.** Haritadaki "Uydu" düğmesiyle açılır; açıkken panelde "baktığınız bölge MapTiler'a iletilir" notu görünür. Anahtar istemcide açık, MapTiler panelinde origin kısıtlı; derlemeye `VITE_MAPTILER_ANAHTARI` ile girer, repoya girmez. 256 px karo, en fazla z18. Kota dolarsa katman kapanır, koyu harita devam eder. | Scryne binaları uydu görüntüsünde görmek istedi (2026-09-30). Araştırma (`arastirmaci`, 09-30): anahtarsız ve bina çözünürlüğünde, şartları açık bir kaynak yok; MapTiler Free ticari olmayan kullanımı açıkça kapsıyor, kart istemiyor, aşımda ücret yerine askıya alıyor, ziyaretçi IP'sini işlemediğini belgeliyor. Manisa'da z17'de binalar net, ayak izleriyle örtüşüyor; z19'da pikselleşiyor (ölçüldü). K-1 istisnası kullanıcının açık seçimine bağlı: açmayanın isteği yalnız OpenFreeMap'e gider (e2e ile doğrulanıyor). |
+| K-17 | **TDTH girişi SDS değil S_S ile (K-5'in uygulaması).** Kullanıcı AFAD TDTH raporundaki S_S değerini girer; SDS formdaki zeminle TBDY Tablo 2.1'den hesaplanır, zemin bilinmiyorsa K-9 kuralı (ZC/ZD/ZE'nin en büyüğü) aynen işler. Motor SDS girişini de kabul eder. ESHM20'den 0,6–1,6 kat dışında bir değer uyarı verir (SDS ya da PGA satırı girilmiş olabilir), engellemez. Değer seçilen konuma bağlıdır, seçim değişince düşer. | S_S zeminden bağımsızdır; SDS girişi TDTH'de seçilen zeminle formdaki zeminin çelişmesine açık kapı bırakırdı ve zemini bilmeyen kullanıcı TDTH'de ZC/ZD/ZE'yi ayrı ayrı denemek zorunda kalırdı. S1'deki 10 raporda S_S'ten hesaplanan SDS_ZC rapordakiyle ±0,001 aynı (Vitest). |
 
 ## Kapsam (v1)
 
