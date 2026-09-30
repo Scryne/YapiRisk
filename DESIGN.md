@@ -194,7 +194,10 @@ Bu dosya YapiRisk'i ayıran katmanı kaydeder.
 - **Form soruları:** her soru bir çizim çifti (yok / var) + üç seçenek (Yok / Var / Bilmiyorum); seçim
   büyük dokunma alanlı kartlarla, telefonda tek sütun.
 - **Harita panelleri:** masaüstünde solda sabit cam panel, telefonda alttan açılan sayfa (bottom sheet);
-  harita her zaman görünür kalır.
+  harita her zaman görünür kalır. Harita merkezi panelin kapatmadığı alana göre hesaplanır (dolgu).
+- **Harita katmanları:** bina ayak izi `text` tonunda soluk dolgu + ince çizgi; seçili bina ve nokta `primary`.
+  Taban haritanın kendi bina katmanı gizlenir (tek dokunulabilir çizim). İl sınırı `text-muted` kesikli çizgi.
+  Denetimler (yakınlaştırma, atıf) `surface` + `line` kenarlı; telefonda atıf (i) düğmesine kapalı başlar.
 - **Kaynak künyesi:** her sayısal değerin yanında küçük bir "kaynak" ipucu (ESHM20, TDTH, RYTEİE Tablo A.x).
 
 ## Do's and Don'ts

@@ -1,14 +1,25 @@
 import { expect, test } from '@playwright/test'
 
-test('boş kabuk açılıyor, font yerelden yükleniyor, konsol hatası ve dış istek yok', async ({
+test('kabuk açılıyor, font yerelden yükleniyor, konsol hatası yok, dış istek yalnız taban haritaya', async ({
   page,
   baseURL,
 }) => {
   const hatalar: string[] = []
+  const fontIstekleri: string[] = []
   const disIstekler: string[] = []
   page.on('console', (m) => m.type() === 'error' && hatalar.push(m.text()))
   page.on('pageerror', (e) => hatalar.push(e.message))
-  page.on('request', (r) => !r.url().startsWith(baseURL!) && disIstekler.push(r.url()))
+  page.on('request', (r) => {
+    const u = r.url()
+    if (r.resourceType() === 'font') fontIstekleri.push(u)
+    // K-1: taban harita (OpenFreeMap) dışında üçüncü taraf isteği yok.
+    if (
+      !u.startsWith(baseURL!) &&
+      !u.startsWith('https://tiles.openfreemap.org/') &&
+      !/^(data|blob):/.test(u)
+    )
+      disIstekler.push(u)
+  })
 
   await page.goto('/')
   await expect(page).toHaveTitle('YapiRisk')
@@ -21,7 +32,10 @@ test('boş kabuk açılıyor, font yerelden yükleniyor, konsol hatası ve dış
       return [...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family.replace(/"/g, ''))
     })
   await expect.poll(yuklenenAileler).toContain('IBM Plex Sans')
+  // Arayüz fontları kendi sunucumuzdan; harita etiket glifleri (pbf) taban haritadan gelir, font isteği değildir.
+  expect(fontIstekleri.filter((u) => !u.startsWith(page.url().split('#')[0].replace(/\/$/, '')))).toEqual([])
 
-  expect(hatalar).toEqual([])
+  await expect(page.locator('main')).not.toHaveAttribute('data-yakinlik', '0.0', { timeout: 20_000 })
   expect(disIstekler).toEqual([])
+  expect(hatalar).toEqual([])
 })

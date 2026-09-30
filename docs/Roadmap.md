@@ -18,7 +18,7 @@ Tahmin ~22 iş günü; her fazın sonunda "Notlar" doldurulur ve sonraki fazlar 
 | 1 | İskelet ve sağlık | ✅ Tamamlandı | Repo GitHub'da (private); CI (lint + typecheck + test + build + boru hattı testi) varsayılan dalda yeşil; `.github/dependabot.yml` (npm + uv); `npm run dev` boş kabuğu açıyor; DESIGN.md token'ları frontmatter'da ve lint geçiyor |
 | 2 | Puan motoru | ✅ Tamamlandı | `src/yontem/` RYTEİE Tablo A.1–A.4, Tablo A.2 bölge, TBDY Fs/F1, S1 bandı, "bilmiyorum" aralığı ve K-12 bantları; Vitest resmî tablo hücrelerini ve spike'la eşdeğerliği (ACI-133'teki 154 binanın PP'si Python ile birebir) geçiyor |
 | 3 | Veri boru hattı | ✅ Tamamlandı | `pipeline/` tek komutla `public/data/manisa/` üretiyor: tehlike ızgarası, ayak izi parçaları, mahalle dizini, `dogrulama.json`, `kaynak.json` (sürüm, lisans, sha256); iki kez çalıştırınca aynı sha256; `public/data/LISANSLAR.md` |
-| 4 | Harita ve bina bulma | ⏳ Bekliyor | Telefonda ve masaüstünde: mahalle aranıyor, harita gidiyor, ayak izine tıklanınca bina seçiliyor, ayak izi yoksa nokta seçiliyor; S1'deki 10 ilçe merkezinde uygulamanın gösterdiği SS, `spike/S1` değerleriyle ±0,001 aynı; ağ panelinde taban harita dışında üçüncü taraf isteği yok |
+| 4 | Harita ve bina bulma | ✅ Tamamlandı | Telefonda ve masaüstünde: mahalle aranıyor, harita gidiyor, ayak izine tıklanınca bina seçiliyor, ayak izi yoksa nokta seçiliyor; S1'deki 10 ilçe merkezinde uygulamanın gösterdiği SS, `spike/S1` değerleriyle ±0,001 aynı; ağ panelinde taban harita dışında üçüncü taraf isteği yok |
 | 5 | Form | ⏳ Bekliyor | 11 soru Şekil A.1 tabanlı SVG çizimlerle; yığma/çelik/prefabrik ve 8+ kat kapsam dışı mesajına düşüyor; her soruda "Bilmiyorum"; cevaplar `localStorage`'da, "Temizle" siliyor; klavye ve ekran okuyucuyla doldurulabiliyor (`fixing-accessibility` bulgusuz) |
 | 6 | Sonuç, rapor ve bilgi sayfaları | ⏳ Bekliyor | Sonuç kartı (bant, aralık, kalem kalem katkı, belirsizlik, isabet notu); TDTH SDS girişi adım adım rehberle; yazdırma görünümü A4'te okunur PDF; Yöntem ve isabet, Veri ve lisanslar, Hakkında/feragat sayfaları; `gorsel-dogrulama` 4 genişlik × tema çıkış 0; Playwright duman testi uçtan uca geçiyor |
 | 7 | Yayın | ⏳ Bekliyor | `yayin-oncesi` çıkış 0 ya da her bulgu kararlı; `fixing-metadata` geçti; Scryne'ın açık onayıyla repo public ve GitHub Pages'te canlı; canlı adreste 10 S1 noktasından biriyle uçtan uca rapor alındı |
@@ -107,7 +107,19 @@ Faz 9–11 olaya bağlıdır; hook bunları "sıradaki iş" saymaz.
   `DecompressionStream` ile yükleme ve önbellek; bina seçimi (poligon merkezi) ve "haritada nokta seç" yedeği;
   masaüstünde sol cam panel, telefonda alt sayfa.
 - **Bitti Kriteri:** tablodaki satır.
-- **Notlar:**
+- **Notlar:** (2026-09-30)
+  - Uçtan uca (Playwright, masaüstü + Pixel 7): mahalle arama → harita gider → binaya dokununca bina seçilir;
+    nokta modu; bölge dışı uyarı; klavyeyle arama; S1'in 10 ilçe merkezinde gösterilen SS spike ile ±0,001;
+    taban harita (tiles.openfreemap.org) dışında dış istek yok. 5 tekrar × 4 paralel işçide 50/50.
+  - Tuzaklar (CLAUDE.md'ye yazıldı): MapLibre worker'ı Vite paketlemiyor (`?worker&url` + `setWorkerUrl`);
+    MapLibre CSS'i katmansız, Tailwind `absolute`'u eziyor (sarmalayıcı); `setPadding` süren `flyTo`'yu kesiyor
+    (dolgu uçuşa verilir); stil yüklenmeden dokunuşta `queryRenderedFeatures` hata fırlatıyordu (korundu).
+  - Taban haritanın OSM `building` katmanı kaldırıldı: Microsoft ayak izleriyle çakışıp hangi çizime dokunulacağını
+    karıştırıyordu. Telefonda atıf sol üstte, ilk çizimden sonra (i) düğmesine kapanır.
+  - Arama: Türkçe katlama + Damerau–Levenshtein; "Mahallesi", "Köyü" ve bölge adı yok sayılır. Bağlantı:
+    `#konum=enlem,boylam` (nokta seçer), `#harita=z/enlem/boylam`; uygulama yalnız okur, adrese konum yazmaz.
+  - MapLibre (~1 MB) tembel yüklenen ayrı parçada; ana paket 364 KB.
+  - Faz 5'e: seçimin `localStorage`'a yazılması ve "Temizle" form işiyle birlikte yapılacak.
 
 ### Faz 5: Form (~4 gün)
 - **İşler:** Şekil A.1'den SVG çizimler (K-14; çerçeve/perde, yumuşak kat, düşeyde düzensizlik, ağır çıkma,

@@ -48,6 +48,14 @@ değiştirilmez. Kanonik roadmap `docs/Roadmap.md` dışında bir dosyaysa `stat
     model alanı Suriye sınırında bitiyor (Maraş ızgarasında boş hücre).
   - `du` 3.669 küçük parçayı küme boyutuyla 22 MB gösteriyor; gerçek toplam 14,5 MB (`find -printf %s`).
   - Windows konsolunda Python çıktısında Türkçe bozuluyorsa `PYTHONIOENCODING=utf-8`; dosyalar UTF-8'dir.
+  - MapLibre 6 worker'ını kendi dosyasının yanında arar, Vite paketlemez ("Worker failed to load") →
+    `import url from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url'` + `setWorkerUrl(url)`, `worker.format: 'es'`.
+  - MapLibre CSS'i katmansız; `.maplibregl-map { position: relative }` Tailwind'in katmanlı `absolute`'unu ezer →
+    harita kabını mutlak konumlu sarmalayıcıya koy; denetim stillerini `.maplibregl-map` önekiyle yaz.
+  - `map.setPadding` süren `flyTo`'yu keser (telefonda panel boyu değişince) → dolguyu `flyTo({ padding })` ile ver.
+    Haritaya tıklamak da uçuşu durdurur: testte `main[data-yakinlik]` hedefe ulaşmadan tıklama.
+  - shadcn `add` mevcut dosya için soru sorar ve stdin kapalıysa durur → `(printf 'n
+'; sleep 60) | npx shadcn add ...`.
   - Bash `while read` ile dosyadan URL okurken `\r` ve son satırda newline eksikliği satır kaybettirdi →
     `tr -d '\r'`, dosyayı `\n` ile bitir.
   - Windows'ta `design.md` komutu (npx ya da npm bin) kökteki `DESIGN.md` dosyasını açmaya çalışıp asılı kalıyor

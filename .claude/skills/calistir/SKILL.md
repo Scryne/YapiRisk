@@ -15,5 +15,7 @@ description: YapiRisk'i yerelde başlatma, durdurma ve duman testi tarifi. "Uygu
 - **Tüm yerel CI:** `npm run ci`; pipeline: `cd pipeline && uv run ruff check . && uv run pytest`.
 - **Durdurma (Windows):** arka planda başlatılan Vite'ı PowerShell ile kapat:
   `Get-CimInstance Win32_Process -Filter "Name='node.exe'" | ? { $_.CommandLine -match 'vite.*<port>' } | % { Stop-Process -Id $_.ProcessId -Force }`
+- **Doğrudan konuma git:** `http://localhost:5173/#konum=38.6140,27.4303` (nokta seçer) ya da
+  `#harita=19/38.614/27.430` (yalnız harita). Harita durunca `main[data-yakinlik]` güncellenir.
 - **Beklenen:** başlık "YapiRisk", h1 "YapiRisk", IBM Plex yüklü, konsol hatası yok, taban harita (Faz 4+) dışında
   dış istek yok.
