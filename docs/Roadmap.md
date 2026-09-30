@@ -15,7 +15,7 @@ Tahmin ~22 iş günü; her fazın sonunda "Notlar" doldurulur ve sonraki fazlar 
 
 | Faz | Adı | Durum | Bitti Kriteri |
 | --- | --- | --- | --- |
-| 1 | İskelet ve sağlık | 🔄 Devam Ediyor | Repo GitHub'da (private); CI (lint + typecheck + test + build + boru hattı testi) varsayılan dalda yeşil; `.github/dependabot.yml` (npm + uv); `npm run dev` boş kabuğu açıyor; DESIGN.md token'ları frontmatter'da ve lint geçiyor |
+| 1 | İskelet ve sağlık | ✅ Tamamlandı | Repo GitHub'da (private); CI (lint + typecheck + test + build + boru hattı testi) varsayılan dalda yeşil; `.github/dependabot.yml` (npm + uv); `npm run dev` boş kabuğu açıyor; DESIGN.md token'ları frontmatter'da ve lint geçiyor |
 | 2 | Puan motoru | ⏳ Bekliyor | `src/yontem/` RYTEİE Tablo A.1–A.4, Tablo A.2 bölge, TBDY Fs/F1, S1 bandı, "bilmiyorum" aralığı ve K-12 bantları; Vitest resmî tablo hücrelerini ve spike'la eşdeğerliği (ACI-133'teki 154 binanın PP'si Python ile birebir) geçiyor |
 | 3 | Veri boru hattı | ⏳ Bekliyor | `pipeline/` tek komutla `public/data/manisa/` üretiyor: tehlike ızgarası, ayak izi parçaları, mahalle dizini, `dogrulama.json`, `kaynak.json` (sürüm, lisans, sha256); iki kez çalıştırınca aynı sha256; `public/data/LISANSLAR.md` |
 | 4 | Harita ve bina bulma | ⏳ Bekliyor | Telefonda ve masaüstünde: mahalle aranıyor, harita gidiyor, ayak izine tıklanınca bina seçiliyor, ayak izi yoksa nokta seçiliyor; S1'deki 10 ilçe merkezinde uygulamanın gösterdiği SS, `spike/S1` değerleriyle ±0,001 aynı; ağ panelinde taban harita dışında üçüncü taraf isteği yok |
@@ -48,6 +48,10 @@ Faz 9–11 olaya bağlıdır; hook bunları "sıradaki iş" saymaz.
   - Playwright duman testi CI'da (Chromium, masaüstü + telefon): font yerelden yükleniyor, konsol hatası ve dış
     istek yok. Faz 4'te taban harita istekleri bu testin izin listesine girer.
   - GitHub Pages için Vite `base` (`/YapiRisk/`) Faz 7'de ayarlanacak; favicon mutlak yolla bağlı.
+  - Kapanış: `github.com/Scryne/YapiRisk` (private, `main`); CI run 36698345489 yeşil (web + pipeline).
+    gh token'ına `workflow` yetkisi eklendi. `astral-sh/setup-uv` ana sürüm etiketi yayınlamıyor → tam sürüm sabit.
+  - Dependabot ilk gün TypeScript 7 (#1) ve @types/node 26 (#2) PR'ları açtı; @types/node ana sürümü artık yok
+    sayılıyor (Node 24). TS 7 kararı Scryne'da.
 
 ### Faz 2: Puan motoru (~2 gün)
 - **İşler:** `src/yontem/ryteie-2019.json` (Tablo A.1–A.4, kaynak künyesiyle), `ryteie.ts` (`puan`, kat grubu,
