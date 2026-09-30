@@ -36,15 +36,23 @@ değiştirilmez. Kanonik roadmap `docs/Roadmap.md` dışında bir dosyaysa `stat
 - **Birincil kaynaklar (git dışı, yerel):** `docs/arastirma/kaynak/` — RYTEİE Resmî Gazete eki (taranmış;
   Ek-A s. 30–35, Şekil A.1 s. 32–33, yığma s. 35–36; metin katmanı yok, sayfa görüntüsü olarak oku) ve ÇŞB 2025
   hızlı yöntemler rehberi.
-- **Git:** yerel kimlik noreply (`218348029+Scryne@users.noreply.github.com`) ayarlı; henüz remote yok.
-  Faz 1'de private repo; public'e geçiş yalnız Faz 7'de Scryne'ın açık onayıyla.
+- **Git:** yerel kimlik noreply (`218348029+Scryne@users.noreply.github.com`) ayarlı; remote
+  `github.com/Scryne/YapiRisk` (**private**), varsayılan dal `main`. Public'e geçiş yalnız Faz 7'de Scryne'ın açık onayıyla.
+- **Komutlar:** `npm run ci` (lint + typecheck + design:lint + test + build), `npm run test:e2e`, `npm run tokens`
+  (DESIGN.md → `src/styles/tokens.css`; token elle yazılmaz); pipeline: `cd pipeline && uv run pytest`.
 - **Tuzaklar (bu projede yaşandı):**
   - EFEHR `/v1/maps` nokta sorgusu noktayı değil 10×10 ızgarayı döndürür → `/v1/maps/area` kullan;
     SA sorguları 70–120 sn sürer (arka planda çalıştır).
   - Overpass ana sunucusu 504 verebiliyor → `https://overpass.private.coffee/api/interpreter` yedeği.
   - Bash `while read` ile dosyadan URL okurken `\r` ve son satırda newline eksikliği satır kaybettirdi →
     `tr -d '\r'`, dosyayı `\n` ile bitir.
-  - `npx @google/design.md lint` 09-30'da iki kez zaman aşımına uğradı → Faz 1'de `npm i -D` ile yerel dene.
+  - Windows'ta `design.md` komutu (npx ya da npm bin) kökteki `DESIGN.md` dosyasını açmaya çalışıp asılı kalıyor
+    (09-30'daki "zaman aşımı" buydu) → her zaman `designmd` takma adını kullan (`npm run design:lint`).
+  - `@google/design.md` 0.4.0 ayrıştırıcısı birimsiz `lineHeight` ve `fontFeature`'ı düşürüyor, `export` da
+    `font-display` ağırlık/aile çakışması üretiyor → token'lar `scripts/tokens.mjs` ile YAML'dan üretilir.
+  - shadcn artık `cn` paketinden import ediyor; özel `text-<token>` sınıflarını renk sanıp boyutu siliyor →
+    `@/lib/utils`'teki yapılandırılmış `cn` kullanılır, oxlint `"cn"` importunu yasaklar (`shadcn add` sonrası düzelt).
+  - `document.fonts.check()` font hiç tanımlı değilse de `true` döner → font testi yüklenen yüzlere bakar.
   - OSM'de Manisa'da "mahalle" adlı çöp `place` düğümleri var → mahalle dizininde ele.
   - TDTH değerleri yalnız e-Devlet ile, Scryne'ın elinden alınır (Raporlama → DD-2 → zemin → Değerleri
     Hesapla; çıktı PDF'inde metin katmanı yok, görüntü olarak okunur).

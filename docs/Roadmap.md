@@ -15,7 +15,7 @@ Tahmin ~22 iş günü; her fazın sonunda "Notlar" doldurulur ve sonraki fazlar 
 
 | Faz | Adı | Durum | Bitti Kriteri |
 | --- | --- | --- | --- |
-| 1 | İskelet ve sağlık | ⏳ Bekliyor | Repo GitHub'da (private); CI (lint + typecheck + test + build + boru hattı testi) varsayılan dalda yeşil; `.github/dependabot.yml` (npm + uv); `npm run dev` boş kabuğu açıyor; DESIGN.md token'ları frontmatter'da ve lint geçiyor |
+| 1 | İskelet ve sağlık | 🔄 Devam Ediyor | Repo GitHub'da (private); CI (lint + typecheck + test + build + boru hattı testi) varsayılan dalda yeşil; `.github/dependabot.yml` (npm + uv); `npm run dev` boş kabuğu açıyor; DESIGN.md token'ları frontmatter'da ve lint geçiyor |
 | 2 | Puan motoru | ⏳ Bekliyor | `src/yontem/` RYTEİE Tablo A.1–A.4, Tablo A.2 bölge, TBDY Fs/F1, S1 bandı, "bilmiyorum" aralığı ve K-12 bantları; Vitest resmî tablo hücrelerini ve spike'la eşdeğerliği (ACI-133'teki 154 binanın PP'si Python ile birebir) geçiyor |
 | 3 | Veri boru hattı | ⏳ Bekliyor | `pipeline/` tek komutla `public/data/manisa/` üretiyor: tehlike ızgarası, ayak izi parçaları, mahalle dizini, `dogrulama.json`, `kaynak.json` (sürüm, lisans, sha256); iki kez çalıştırınca aynı sha256; `public/data/LISANSLAR.md` |
 | 4 | Harita ve bina bulma | ⏳ Bekliyor | Telefonda ve masaüstünde: mahalle aranıyor, harita gidiyor, ayak izine tıklanınca bina seçiliyor, ayak izi yoksa nokta seçiliyor; S1'deki 10 ilçe merkezinde uygulamanın gösterdiği SS, `spike/S1` değerleriyle ±0,001 aynı; ağ panelinde taban harita dışında üçüncü taraf isteği yok |
@@ -40,7 +40,14 @@ Faz 9–11 olaya bağlıdır; hook bunları "sıradaki iş" saymaz.
   token'ları Tailwind temasından frontmatter'a, `npx @google/design.md lint` (09-30'da npx zaman aşımı verdi;
   yerel `npm i -D` ile dene).
 - **Bitti Kriteri:** tablodaki satır. CI adımları push'tan önce yerelde koşulur.
-- **Notlar:**
+- **Notlar:** (2026-09-30)
+  - Plandan sapmalar: ESLint yerine Vite şablonunun oxlint'i (+ Prettier); fontlar `public/fonts/` yerine
+    `@fontsource` paketlerinden Vite ile paketleniyor (yine kendi sunucumuzdan, latin + latin-ext); token akışı
+    ters çevrildi: DESIGN.md frontmatter tek kaynak, `scripts/tokens.mjs` Tailwind `@theme` üretir, `design:lint`
+    uyumsuzlukta düşer. Adlı spacing üretilmiyor (`max-w-md` çakışması); spacing token'ları Tailwind'in 4px ölçeği.
+  - Playwright duman testi CI'da (Chromium, masaüstü + telefon): font yerelden yükleniyor, konsol hatası ve dış
+    istek yok. Faz 4'te taban harita istekleri bu testin izin listesine girer.
+  - GitHub Pages için Vite `base` (`/YapiRisk/`) Faz 7'de ayarlanacak; favicon mutlak yolla bağlı.
 
 ### Faz 2: Puan motoru (~2 gün)
 - **İşler:** `src/yontem/ryteie-2019.json` (Tablo A.1–A.4, kaynak künyesiyle), `ryteie.ts` (`puan`, kat grubu,
