@@ -24,7 +24,6 @@ import {
   ZEMIN_ADI,
 } from './metinler'
 import { katkiSatirlari, type Sonuc } from './sonuc'
-import { S1_BANDI } from '@/yontem/tehlike'
 
 const g3 = ondalik(3)
 const iki = ondalik(2)
@@ -141,7 +140,8 @@ export function Rapor({ sonuc, secim, taslak, bolgeAdi }: Props) {
           <>
             Kaynak: ESHM20 (EFEHR, CC BY 4.0), 475 yıl, kaya; seçilen noktada S<sub>S</sub>{' '}
             <span className="font-mono">{g3.format(sonuc.ssEshm20)} g</span>. {tehlikeFarkiNotu(sonuc)} (oran{' '}
-            {iki.format(S1_BANDI.altOran)}–{iki.format(S1_BANDI.ustOran)}). AFAD’ın resmî değeri değildir.
+            {iki.format(d.tehlike.bant!.altOran)}–{iki.format(d.tehlike.bant!.ustOran)}). AFAD’ın resmî değeri
+            değildir.
           </>
         )}
       </p>

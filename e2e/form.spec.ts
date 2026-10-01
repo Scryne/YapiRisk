@@ -56,10 +56,10 @@ test('form klavyeyle baştan sona dolduruluyor; ön sonuç motorla aynı', async
   }
 
   await expect(page.getByRole('heading', { name: 'Sonuç', exact: true })).toBeFocused()
-  // Motor bu cevap setini Manisa merkezinde −10 … 40 (yüksek öncelik) verir; aynı değerler
+  // Motor bu cevap setini Manisa merkezinde −10 … 20 (yüksek öncelik) verir; aynı değerler
   // src/form/taslak.test.ts'te motordan hesaplanıp doğrulanıyor (e2e, JSON içe aktaran motoru yükleyemiyor).
   const tr = new Intl.NumberFormat('tr-TR', { maximumFractionDigits: 0 })
-  await expect(page.getByTestId('pp-araligi')).toHaveText(`${tr.format(-10)} – ${tr.format(40)}`)
+  await expect(page.getByTestId('pp-araligi')).toHaveText(`${tr.format(-10)} – ${tr.format(20)}`)
   await expect(page.getByTestId('bant')).toContainText('Yüksek öncelik')
   await expect(page.getByRole('main').getByText('1998–2006', { exact: true })).toBeVisible()
 
@@ -134,7 +134,7 @@ test('yığma bina Şekil A.2 sorularıyla değerlendiriliyor; sonuç yığma mo
   await page.getByRole('button', { name: 'Cevapları gözden geçir' }).click()
 
   await expect(page.getByRole('heading', { name: 'Sonuç', exact: true })).toBeFocused()
-  await expect(page.getByTestId('pp-araligi')).toHaveText('50 – 70')
+  await expect(page.getByTestId('pp-araligi')).toHaveText('50 – 60')
   await expect(page.getByTestId('bant')).toContainText('Orta öncelik')
   const kart = page.getByTestId('sonuc-karti')
   await expect(kart.getByText('A.6–A.10 (olumsuzluklar)')).toBeVisible()

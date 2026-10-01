@@ -99,7 +99,7 @@ Oran ortalaması 0,98 (0,81–1,34). Okuma denetimi: 10 raporda SDS ve SD1, SS v
 → bant iki ilin 20 ölçümünü kapsayacak şekilde 0,72–1,34 (`S1_BANDI`). Öncelik bandı kötü uçtan seçildiği için
 hiçbir sonuç değişmez; yalnız PP aralığının elverişli ucu genişler. Vitest: `tehlike.test.ts` "S1 İzmir".
 
-## Aydın (Roadmap Faz 6.6, 2026-10-01): okuma bekliyor
+## Aydın (Roadmap Faz 6.6, 2026-10-01)
 
 Üçüncü il Aydın. S1 bandının (0,72–1,34) Aydın'da geçerliliği için 10 ilçe merkezi seçildi
 (`aydin-tdth-okumalar.csv`; koordinatlar OSM `admin_centre` düğümleri, Efeler için ilçe etiketi, Didim için
@@ -110,3 +110,26 @@ Nazilli, Buharkent) ve güneye (Karacasu, Bozdoğan, Çine) kapsanıyor; on nokt
 **DD-2** → zemin **ZC** → Değerleri Hesapla. Rapordan SS, S1, PGA, PGV, SDS, SD1 CSV'nin boş sütunlarına.
 En az 5 okuma Faz 6.6'yı kapatır; o zamana kadar uygulama Aydın'da "Bu ilde AFAD'la karşılaştırma henüz
 yapılmadı" notunu gösterir ve bandı Manisa + İzmir'in 20 ölçümünden alır.
+
+**Aydın sonucu (2026-10-02; Scryne 10 raporu e-Devlet ile aldı, DD-2, ZC; ESHM20 Aydın bölge paketinin ızgarasından):**
+
+| İlçe | SS TDTH | SS ESHM20 | oran | SDS_ZC TDTH → bölge | ESHM20 → bölge |
+| --- | --- | --- | --- | --- | --- |
+| Efeler | 1,445 | 1,152 | 0,797 | 1,734 → I | I |
+| Kuşadası | 1,069 | 0,861 | 0,805 | 1,283 → I | I |
+| Söke | 1,263 | 0,906 | 0,717 | 1,516 → I | I |
+| Didim | 0,846 | 0,440 | 0,520 | 1,015 → I | **III** (güvensiz yön) |
+| Germencik | 1,325 | 0,975 | 0,736 | 1,590 → I | I |
+| Nazilli | 1,333 | 1,289 | 0,967 | 1,600 → I | I |
+| Buharkent | 1,365 | 1,110 | 0,813 | 1,638 → I | I |
+| Karacasu | 1,014 | 0,788 | 0,777 | 1,217 → I | **II** (güvensiz yön) |
+| Bozdoğan | 0,933 | 0,678 | 0,727 | 1,120 → I | **II** (güvensiz yön) |
+| Çine | 0,848 | 0,603 | 0,711 | 1,018 → I | **II** (güvensiz yön) |
+
+Oran ortalaması 0,76 (0,52–0,97). Okuma denetimi: 10 raporda SDS ve SD1, SS ve S1'den TBDY ZC katsayısıyla
+±0,0005 tutuyor; koordinatlar CSV'yle birebir. **Karar:** ortak bandın güvensiz yön sınırı (0,72) Aydın'da tutmadı
+(Didim, Çine). Fark ilden ile değiştiği için bant il başına o ilde ölçülen aralık oldu, alt sınır hiçbir ilde 0,72'nin
+üstüne çıkmaz; ölçülmemiş ilde 30 noktanın birleşimi 0,52–1,34 (`tehlike.ts` `ilBandi`, `S1_BANDI`; `bolgeler.json`
+`tdthOran`). Not: ESHM20 güneyde ve kıyıda (Didim) AFAD'dan en çok sapıyor; 0,1° ızgara Büyük Menderes grabenini
+ve yarımadayı kaba çözüyor olabilir.
+

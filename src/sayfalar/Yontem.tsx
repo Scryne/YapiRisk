@@ -4,7 +4,7 @@ import type { ReactNode } from 'react'
 import { BantRozeti } from '@/sonuc/BantRozeti'
 import { ondalik, TEKIL_BINA_KAYDI } from '@/sonuc/metinler'
 import type { Bant } from '@/yontem/bant'
-import { S1_BANDI } from '@/yontem/tehlike'
+import { GUVENSIZ_YON_TAVANI, S1_BANDI } from '@/yontem/tehlike'
 import { useJson } from './json'
 import { Bolum, Sayfa, Tablo } from './Sayfa'
 
@@ -44,6 +44,13 @@ const YIGMA_OLCUMU = {
     [120, 279, 24],
   ],
 } as const
+
+/** spike/S1 (README, il il): SS_ESHM20 / SS_TDTH; "kayan" = ESHM20 ile Tablo A.2 bölgesi daha az tehlikeli. */
+const TEHLIKE_OLCUMU = [
+  { il: 'Manisa', ort: 0.89, enAz: 0.72, enCok: 1.25, kayan: 3 },
+  { il: 'İzmir', ort: 0.98, enAz: 0.81, enCok: 1.34, kayan: 1 },
+  { il: 'Aydın', ort: 0.76, enAz: 0.52, enCok: 0.97, kayan: 4 },
+] as const
 
 const iki = ondalik(2)
 const uc = ondalik(3)
@@ -142,13 +149,30 @@ export function Yontem() {
           olarak Avrupa modelini (ESHM20) kullanır.
         </p>
         <p>
-          İki modeli Manisa ve İzmir’de 10’ar ilçe merkezinde, toplam 20 noktada karşılaştırdık: ESHM20’nin S
-          <sub>S</sub> değeri AFAD’ınkinin en az <Sayi>{iki.format(S1_BANDI.altOran)}</Sayi>, en çok{' '}
-          <Sayi>{iki.format(S1_BANDI.ustOran)}</Sayi> katı çıktı (ortalama Manisa’da <Sayi>0,89</Sayi>,
-          İzmir’de <Sayi>0,98</Sayi>). Yalnız ESHM20’ye bakılsaydı 20 noktanın 4’ünde tehlike bölgesi AFAD’a
-          göre daha düşük tehlikeli bir bölgeye düşerdi. YapiRisk bu yüzden ESHM20 değerini bu oran aralığıyla
-          bir aralığa açar; 20 noktanın hepsinde AFAD’ın değeri aralığın içinde kaldı. AFAD raporundaki S
-          <sub>S</sub> değerini girerseniz aralık kalkar.
+          İki modeli her ilde 10 ilçe merkezinde, toplam 30 noktada karşılaştırdık. ESHM20’nin S<sub>S</sub>{' '}
+          değerinin AFAD’ınkine oranı ilden ile belirgin değişiyor; Aydın’da ESHM20 tehlikeyi en çok yarıya
+          yakın düşük gösterdi. Yalnız ESHM20’ye bakılsaydı 30 noktanın 8’inde tehlike bölgesi AFAD’a göre
+          daha düşük tehlikeli bir bölgeye düşerdi.
+        </p>
+        <Tablo
+          baslik="ESHM20 / AFAD oranı, il başına 10 nokta"
+          sutunlar={['İl', 'Ortalama', 'En az', 'En çok', 'Bölgesi kayan nokta']}
+          sayisal={[1, 2, 3, 4]}
+          satirlar={TEHLIKE_OLCUMU.map(({ il, ort, enAz, enCok, kayan }) => [
+            il,
+            iki.format(ort),
+            iki.format(enAz),
+            iki.format(enCok),
+            kayan,
+          ])}
+        />
+        <p>
+          YapiRisk bu yüzden ESHM20 değerini binanın bulunduğu ilde ölçülen oran aralığıyla bir aralığa açar.
+          On nokta ilin en elverişsiz yerini kaçırabileceği için aralığın elverişsiz ucu hiçbir ilde{' '}
+          <Sayi>{iki.format(GUVENSIZ_YON_TAVANI)}</Sayi>’den dar tutulmaz. Ölçüm yapılmamış bir ilde bütün
+          ölçümlerin birleşimi kullanılır (<Sayi>{iki.format(S1_BANDI.altOran)}</Sayi>–
+          <Sayi>{iki.format(S1_BANDI.ustOran)}</Sayi>). 30 noktanın hepsinde AFAD’ın değeri aralığın içinde
+          kaldı. AFAD raporundaki S<sub>S</sub> değerini girerseniz aralık kalkar.
         </p>
         <p>
           Zemin katsayısı Türkiye Bina Deprem Yönetmeliği (2018) Tablo 2.1’den gelir. Zemin sınıfını

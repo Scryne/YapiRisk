@@ -6,6 +6,8 @@ import {
   f1,
   fs,
   IzgaraDisiHatasi,
+  GUVENSIZ_YON_TAVANI,
+  ilBandi,
   S1_BANDI,
   sd1,
   sds,
@@ -193,7 +195,7 @@ describe('tehlike()', () => {
     expect(t.ssAraligi![0]).toBeCloseTo(0.722 / S1_BANDI.ustOran, 12)
     expect(t.ssAraligi![1]).toBeCloseTo(0.722 / S1_BANDI.altOran, 12)
     expect(t.sdsAraligi[0]).toBeCloseTo(sds(0.722 / S1_BANDI.ustOran, 'ZC'), 12)
-    expect(t.sdsAraligi[1]).toBeCloseTo(sds(0.722 / 0.72, 'ZC'), 12)
+    expect(t.sdsAraligi[1]).toBeCloseTo(sds(0.722 / S1_BANDI.altOran, 'ZC'), 12)
     expect([t.bolgeKotu, t.bolgeIyi]).toEqual(['I', 'III'])
   })
   it('TDTH S_S girilince SDS formdaki zeminle; S1 raporlarının SDS_ZC değeriyle ±0,001', () => {
@@ -223,31 +225,77 @@ describe('tehlike()', () => {
   })
 })
 
-describe('S1 İzmir: 10 AFAD TDTH raporu (DD-2, ZC), bölge paketindeki ESHM20 ızgarasıyla', () => {
-  const raporlar = csvOku('spike/S1/izmir-tdth-okumalar.csv')
-  const { izgaralar } = JSON.parse(readFileSync('public/data/izmir/tehlike-eshm20.json', 'utf8')) as {
-    izgaralar: { SS: Izgara }
-  }
-  const sira = ['I', 'II', 'III', 'IV']
-
-  it('10 okuma var; her raporda SDS ve SD1, SS ve S1 ile tutarlı (okuma hatası yok)', () => {
-    expect(raporlar).toHaveLength(10)
-    for (const r of raporlar) {
-      expect(Math.abs(sds(Number(r.SS), 'ZC') - Number(r.SDS_ZC)), r.ilce).toBeLessThanOrEqual(0.001 + 1e-9)
-      expect(Math.abs(sd1(Number(r.S1), 'ZC') - Number(r.SD1_ZC)), r.ilce).toBeLessThanOrEqual(0.001 + 1e-9)
-    }
+describe('ilBandi(): il il ölçülen bant', () => {
+  it('ölçülen aralık; güvensiz yön sınırı 0,72’nin üstüne çıkmaz', () => {
+    expect(ilBandi([0.8, 1.34])).toEqual({ altOran: GUVENSIZ_YON_TAVANI, ustOran: 1.34 })
+    expect(ilBandi([0.52, 0.97])).toEqual({ altOran: 0.52, ustOran: 0.97 })
   })
-
-  it('TDTH SS her noktada bandın içinde; TDTH bölgesi kötü ve iyi uç arasında', () => {
-    for (const r of raporlar) {
-      const ss = bilineer(izgaralar.SS, Number(r.enlem), Number(r.boylam))
-      const oran = ss / Number(r.SS)
-      expect(oran, r.ilce).toBeGreaterThanOrEqual(S1_BANDI.altOran)
-      expect(oran, r.ilce).toBeLessThanOrEqual(S1_BANDI.ustOran)
-      const t = tehlike({ kaynak: 'eshm20', ss, zemin: 'ZC' })
-      const gercek = sira.indexOf(tehlikeBolgesi(Number(r.SDS_ZC), 'ZC'))
-      expect(gercek, r.ilce).toBeGreaterThanOrEqual(sira.indexOf(t.bolgeKotu))
-      expect(gercek, r.ilce).toBeLessThanOrEqual(sira.indexOf(t.bolgeIyi))
+  it('ölçülmemiş ilde bütün ölçümlerin birleşimi', () => {
+    const { bolgeler } = JSON.parse(readFileSync('public/data/bolgeler.json', 'utf8')) as {
+      bolgeler: { tdthOran: [number, number] | null }[]
     }
+    const olculen = bolgeler.flatMap((b) => (b.tdthOran ? [b.tdthOran] : []))
+    expect(ilBandi(null)).toBe(S1_BANDI)
+    expect(S1_BANDI.altOran).toBe(Math.min(...olculen.map((o) => o[0])))
+    expect(S1_BANDI.ustOran).toBe(Math.max(...olculen.map((o) => o[1])))
+  })
+  it('kayıttaki bant ESHM20 aralığına geçiyor', () => {
+    const t = tehlike({ kaynak: 'eshm20', ss: 1, zemin: 'ZC', bant: { altOran: 0.5, ustOran: 1 } })
+    expect(t.ssAraligi).toEqual([1, 2])
+    expect(t.bant).toEqual({ altOran: 0.5, ustOran: 1 })
   })
 })
+
+const S1_OKUMALARI = [
+  ['manisa', 'spike/S1/tdth-okumalar.csv'],
+  ['izmir', 'spike/S1/izmir-tdth-okumalar.csv'],
+  ['aydin', 'spike/S1/aydin-tdth-okumalar.csv'],
+] as const
+
+describe.each(S1_OKUMALARI)(
+  'S1 %s: 10 AFAD TDTH raporu (DD-2, ZC), bölge paketindeki ESHM20 ızgarasıyla',
+  (il, csv) => {
+    const raporlar = csvOku(csv)
+    const { izgaralar } = JSON.parse(readFileSync(`public/data/${il}/tehlike-eshm20.json`, 'utf8')) as {
+      izgaralar: { SS: Izgara }
+    }
+    const { bolgeler } = JSON.parse(readFileSync('public/data/bolgeler.json', 'utf8')) as {
+      bolgeler: { kimlik: string; tdthNokta: number; tdthOran: [number, number] }[]
+    }
+    const kayit = bolgeler.find((b) => b.kimlik === il)!
+    const bant = ilBandi(kayit.tdthOran)
+    const sira = ['I', 'II', 'III', 'IV']
+
+    it('10 okuma var, kayıtta 10 nokta; her raporda SDS ve SD1, SS ve S1 ile tutarlı (okuma hatası yok)', () => {
+      expect(raporlar).toHaveLength(10)
+      expect(kayit.tdthNokta).toBe(10)
+      for (const r of raporlar) {
+        expect(Math.abs(sds(Number(r.SS), 'ZC') - Number(r.SDS_ZC)), r.ilce).toBeLessThanOrEqual(0.001 + 1e-9)
+        expect(Math.abs(sd1(Number(r.S1), 'ZC') - Number(r.SD1_ZC)), r.ilce).toBeLessThanOrEqual(0.001 + 1e-9)
+      }
+    })
+
+    it('kayıttaki oran aralığı ölçümü kapsıyor ve en fazla 0,01 geniş', () => {
+      const oranlar = raporlar.map(
+        (r) => bilineer(izgaralar.SS, Number(r.enlem), Number(r.boylam)) / Number(r.SS),
+      )
+      expect(kayit.tdthOran[0]).toBeLessThanOrEqual(Math.min(...oranlar))
+      expect(kayit.tdthOran[1]).toBeGreaterThanOrEqual(Math.max(...oranlar))
+      expect(Math.min(...oranlar) - kayit.tdthOran[0]).toBeLessThan(0.01)
+      expect(kayit.tdthOran[1] - Math.max(...oranlar)).toBeLessThan(0.01)
+    })
+
+    it('TDTH SS her noktada ilin bandında; TDTH bölgesi kötü ve iyi uç arasında', () => {
+      for (const r of raporlar) {
+        const ss = bilineer(izgaralar.SS, Number(r.enlem), Number(r.boylam))
+        const oran = ss / Number(r.SS)
+        expect(oran, r.ilce).toBeGreaterThanOrEqual(bant.altOran)
+        expect(oran, r.ilce).toBeLessThanOrEqual(bant.ustOran)
+        const t = tehlike({ kaynak: 'eshm20', ss, zemin: 'ZC', bant })
+        const gercek = sira.indexOf(tehlikeBolgesi(Number(r.SDS_ZC), 'ZC'))
+        expect(gercek, r.ilce).toBeGreaterThanOrEqual(sira.indexOf(t.bolgeKotu))
+        expect(gercek, r.ilce).toBeLessThanOrEqual(sira.indexOf(t.bolgeIyi))
+      }
+    })
+  },
+)

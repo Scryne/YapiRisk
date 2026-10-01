@@ -10,11 +10,30 @@ export type ZeminCevabi = Zemin | 'bilmiyorum'
 /** K-9: zemin bilinmiyorsa bölge için zayıf zemin grubu, katsayı için bu grubun en büyüğü. */
 export const BILINMEYEN_ZEMIN_ADAYLARI: readonly Zemin[] = ['ZC', 'ZD', 'ZE']
 
+/** SS_ESHM20 / SS_TDTH oran aralığı: gerçek SS ∈ [SS_ESHM20 / ustOran ; SS_ESHM20 / altOran]. */
+export interface S1Bandi {
+  altOran: number
+  ustOran: number
+}
+
 /**
- * S1: SS_ESHM20 / SS_TDTH oranı Manisa'da (10 ilçe merkezi) 0,72 … 1,25, İzmir'de (10 ilçe merkezi) 0,81 … 1,34
- * ölçüldü; bant iki ilin 20 ölçümünü kapsar. Gerçek SS ∈ [SS_ESHM20 / 1,34 ; SS_ESHM20 / 0,72].
+ * S1: oran il il ölçüldü (10'ar ilçe merkezi): Manisa 0,72 … 1,25, İzmir 0,80 … 1,34, Aydın 0,52 … 0,97. Fark ile
+ * değişiyor (ortalama 0,89 / 0,98 / 0,76), bu yüzden her ilde kendi bandı kullanılır. Ölçülmemiş ilde bütün
+ * ölçümlerin birleşimi: bu sabit.
  */
-export const S1_BANDI = { altOran: 0.72, ustOran: 1.34 } as const
+export const S1_BANDI: S1Bandi = { altOran: 0.52, ustOran: 1.34 }
+
+/**
+ * Güvensiz yön sınırının tavanı: 10 noktalık ölçüm ilin en kötü noktasını kaçırabilir, bu yüzden hiçbir ilde alt oran
+ * ilk iki ilde doğrulanan 0,72'nin üstüne çıkmaz (İzmir'de ölçülen 0,80 yerine 0,72).
+ */
+export const GUVENSIZ_YON_TAVANI = 0.72
+
+/** Bir ilin bandı; ölçülmemişse birleşik bant. */
+export function ilBandi(olculen: readonly [number, number] | null | undefined): S1Bandi {
+  if (!olculen) return S1_BANDI
+  return { altOran: Math.min(olculen[0], GUVENSIZ_YON_TAVANI), ustOran: olculen[1] }
+}
 
 /** Düzenli enlem/boylam ızgarası; `degerler[i][j]` = `enlemler[i]`, `boylamlar[j]` (ikisi de artan). */
 export interface Izgara {
@@ -125,13 +144,15 @@ export function sdsAraligi(a: number, b: number, zemin: ZeminCevabi): [number, n
  * zeminle hesaplanır (zemin bilinmiyorsa K-9 adayları), SDS girilirse olduğu gibi kullanılır.
  */
 export type TehlikeGirdisi =
-  | { kaynak: 'eshm20'; ss: number; zemin: ZeminCevabi }
+  | { kaynak: 'eshm20'; ss: number; zemin: ZeminCevabi; /** Varsayılan S1_BANDI. */ bant?: S1Bandi }
   | { kaynak: 'tdth'; ss: number; zemin: ZeminCevabi }
   | { kaynak: 'tdth'; sds: number; zemin: ZeminCevabi }
 
 export interface TehlikeSonucu {
   kaynak: TehlikeGirdisi['kaynak']
   zemin: ZeminCevabi
+  /** ESHM20 kaynaklıysa kullanılan oran bandı. */
+  bant?: S1Bandi
   /** ESHM20'de S1 bandıyla tahmini TDTH S_S aralığı; TDTH S_S girildiyse tek değer. SDS girildiyse yok. */
   ssAraligi?: [number, number]
   sdsAraligi: [number, number]
@@ -163,11 +184,13 @@ export function tehlike(girdi: TehlikeGirdisi): TehlikeSonucu {
       bolgeIyi: b,
     }
   }
-  const ssAraligi: [number, number] = [girdi.ss / S1_BANDI.ustOran, girdi.ss / S1_BANDI.altOran]
+  const bant = girdi.bant ?? S1_BANDI
+  const ssAraligi: [number, number] = [girdi.ss / bant.ustOran, girdi.ss / bant.altOran]
   const sdsAr = sdsAraligi(ssAraligi[0], ssAraligi[1], girdi.zemin)
   return {
     kaynak: 'eshm20',
     zemin: girdi.zemin,
+    bant,
     ssAraligi,
     sdsAraligi: sdsAr,
     bolgeKotu: tehlikeBolgesi(sdsAr[1], girdi.zemin),

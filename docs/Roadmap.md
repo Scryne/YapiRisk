@@ -22,7 +22,7 @@ Tahmin ~22 iş günü; her fazın sonunda "Notlar" doldurulur ve sonraki fazlar 
 | 5 | Form | ✅ Tamamlandı | 11 soru Şekil A.1 tabanlı SVG çizimlerle; yığma/çelik/prefabrik ve 8+ kat kapsam dışı mesajına düşüyor; her soruda "Bilmiyorum"; cevaplar `localStorage`'da, "Temizle" siliyor; klavye ve ekran okuyucuyla doldurulabiliyor (`fixing-accessibility` bulgusuz) |
 | 6 | Sonuç, rapor ve bilgi sayfaları | ✅ Tamamlandı | Sonuç kartı (bant, aralık, kalem kalem katkı, belirsizlik, isabet notu); TDTH SDS girişi adım adım rehberle; yazdırma görünümü A4'te okunur PDF; Yöntem ve isabet, Veri ve lisanslar, Hakkında/feragat sayfaları; `gorsel-dogrulama` 4 genişlik × tema çıkış 0; Playwright duman testi uçtan uca geçiyor |
 | 6.5 | İkinci il paketi | ✅ Tamamlandı | İl Scryne'la seçildi; boru hattı o il için paketi üretiyor (iki kez aynı sha256); S1 benzeri TDTH karşılaştırması o ilde ≥ 5 noktada yapıldı ve bant (0,72–1,25) geçerli ya da yeniden ölçüldü; uygulama il seçiyor, arama ve harita iki ilde çalışıyor; Manisa'ya özgü metinler bölgeden okunuyor |
-| 6.6 | Üçüncü il paketi (Aydın) | 🔄 Devam Ediyor | Boru hattı Aydın paketini üretiyor (iki kez aynı sha256); uygulama üç ilde arıyor ve haritada gösteriyor; Scryne'dan ≥ 5 TDTH okumasıyla S1 bandı (0,72–1,34) Aydın'da geçerli ya da yeniden ölçüldü, `tdthNokta` dolduruldu |
+| 6.6 | Üçüncü il paketi (Aydın) | ✅ Tamamlandı | Boru hattı Aydın paketini üretiyor (iki kez aynı sha256); uygulama üç ilde arıyor ve haritada gösteriyor; Scryne'dan ≥ 5 TDTH okumasıyla S1 bandı (0,72–1,34) Aydın'da geçerli ya da yeniden ölçüldü, `tdthNokta` dolduruldu |
 | 7 | Yayın | ⏳ Bekliyor | Faz 6.5 bitti (Scryne'ın kararı, 2026-09-30: yalnız Manisa'yı gösteren site yayına çıkmaz). `yayin-oncesi` çıkış 0 ya da her bulgu kararlı; `fixing-metadata` geçti; Scryne'ın açık onayıyla repo public ve GitHub Pages'te canlı; canlı adreste 10 S1 noktasından biriyle uçtan uca rapor alındı |
 | 8 | Gerçek kullanım | ⏳ Bekliyor | Proje-Fikri'deki "bitti = kullanıldı" cümlesi gerçekleşti (Scryne'ın seçtiği ≥ 5 kişi yardımsız rapor aldı, sonucu öncelik olarak doğru okudu); bulgular roadmap'e işlendi |
 | 9 | TDTH ızgarası entegrasyonu (tetiklemeli) | ⏳ Bekliyor | Tetik: AFAD CIMER başvurusu olumlu döner. Resmî grid paketlenir, K-5 bandı kapsanan illerde kalkar, S1 karşılaştırması yeniden koşulur |
@@ -230,8 +230,18 @@ Faz 9–11 olaya bağlıdır; hook bunları "sıradaki iş" saymaz.
   - Testler: Vitest bütün bölge paketlerini dolaşıyor (ızgara kutusu, ≥ 500 mahalle, ≥ 15 ilçe, parça dosyası);
     e2e: Aydın'da arama (Camikebir, Kuşadası) → Efeler'de değerlendirme → "Bu ilde AFAD'la karşılaştırma henüz
     yapılmadı; aralık İzmir ve Manisa'da ölçülen farktan geliyor" notu ve raporda il adı.
-  - **Bekleyen:** Scryne'ın 10 TDTH okuması (`spike/S1/aydin-tdth-okumalar.csv`, yol `spike/S1/README.md`).
-    Okumalar gelince `karsilastir.py` → oranlar → bant geçerli mi / genişler mi → `bolgeler.py` `tdth_nokta=10`.
+  - TDTH (Scryne, 10 rapor, 2026-10-01): okumalar SDS/SD1 tutarlılığıyla denetlendi (±0,0005). ESHM20/TDTH oranı
+    **0,52–0,97 (ort. 0,76)**: Didim 0,52 ve Çine 0,71 eski güvensiz yön sınırının (0,72) altında; 4/10 noktada ESHM20
+    bölgeyi daha az tehlikeli gösteriyor (Didim: AFAD I, ESHM20 III).
+  - Karar (K-5 revize): tek ortak bant yerine **il başına bant**, o ilde ölçülen aralık (`bolgeler.json` `tdthOran`,
+    dışa yuvarlanmış); alt sınır hiçbir ilde 0,72'nin üstüne çıkmaz (`GUVENSIZ_YON_TAVANI`; İzmir 0,80 → 0,72);
+    ölçülmemiş il bütün ölçümlerin birleşimi `S1_BANDI` 0,52–1,34. Gerekçe: fark il ile değişiyor (ort. Manisa 0,89,
+    İzmir 0,98, Aydın 0,76); ortak bandı 0,52'ye indirmek Manisa ve İzmir'de her sonucu gereksiz genişletirdi.
+  - Etki: Manisa'da üst oran 1,34 → 1,25 (ölçülen); elverişli uç daralıyor, öncelik (kötü uç) değişmiyor. e2e
+    betonarme örneği −10 … 40 → −10 … 20 (yüksek), yığma örneği 50 … 70 → 50 … 60 (orta). Aydın'da aralık
+    0,97 / 0,52 kat geniş.
+  - Testler: S1 testleri üç ilde (`describe.each`): okuma tutarlılığı, kayıttaki aralık ölçümü kapsıyor (≤ 0,01
+    geniş), her noktada AFAD bölgesi kötü ve iyi uç arasında; `ilBandi` ve birleşim; e2e Aydın bandının oranı.
 
 ### Faz 7: Yayın (~1 gün)
 - **İşler:** MapTiler anahtarı GitHub Actions değişkeni `VITE_MAPTILER_ANAHTARI` olarak derlemeye; MapTiler

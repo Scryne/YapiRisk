@@ -170,7 +170,7 @@ test('ikinci il: İzmir mahallesi aranıyor, tehlike İzmir ızgarasından, fark
   expect(hatalar).toEqual([])
 })
 
-test('üçüncü il: Aydın mahallesi aranıyor; AFAD farkı ölçülmediği için not diğer illerin ölçümünü gösteriyor', async ({
+test('üçüncü il: Aydın mahallesi aranıyor, tehlike Aydın ızgarası ve Aydın bandıyla', async ({
   page,
   baseURL,
 }) => {
@@ -188,8 +188,14 @@ test('üçüncü il: Aydın mahallesi aranıyor; AFAD farkı ölçülmediği iç
   await page.getByRole('button', { name: 'Sorulara başla' }).click()
   await doldur(page, KUSURSUZ_4_KAT)
   await expect(page.getByTestId('sonuc-karti')).toContainText(
-    'Bu ilde AFAD’la karşılaştırma henüz yapılmadı; aralık İzmir ve Manisa’da ölçülen farktan geliyor',
+    'AFAD’ın resmî değeriyle farkı Aydın’da 10 noktada ölçüldü ve aralığa katıldı',
   )
+  // Aydın bandı 0,52–0,97: S_S aralığının üst ucu alt ucunun 0,97 / 0,52 katı (Manisa'da 1,25 / 0,72 olurdu).
+  const [alt, ust] = (await page.getByTestId('ss-kullanilan').innerText())
+    .replace(' g', '')
+    .split(' – ')
+    .map((x) => Number(x.replace(',', '.')))
+  expect(ust / alt).toBeCloseTo(0.97 / 0.52, 2)
   await page.emulateMedia({ media: 'print' })
   await expect(page.getByRole('article')).toContainText('Aydın')
 

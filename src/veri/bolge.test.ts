@@ -30,6 +30,7 @@ describe('tehlike farkı notu (S1 ölçümü bölge kaydından)', () => {
     yakinlik: 8,
     sinirKutusu: [0, 0, 1, 1],
     tdthNokta,
+    tdthOran: tdthNokta ? [0.72, 1.25] : null,
   })
   const manisa = kayit('Manisa', 10)
   const izmir = kayit('İzmir', 0)

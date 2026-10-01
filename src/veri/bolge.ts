@@ -13,6 +13,8 @@ export interface BolgeKaydi {
   sinirKutusu: [number, number, number, number]
   /** Bu bölgede ESHM20'nin AFAD TDTH ile karşılaştırıldığı nokta sayısı (S1); 0 = ölçülmedi. */
   tdthNokta: number
+  /** O noktalarda ölçülen SS_ESHM20 / SS_TDTH oranının en küçüğü ve en büyüğü; null = ölçülmedi. */
+  tdthOran: [number, number] | null
 }
 
 export interface TehlikePaketi {

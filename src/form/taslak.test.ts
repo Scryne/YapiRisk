@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { degerlendir, degerlendirYigma } from '@/yontem/degerlendir'
-import { bilineer, type Izgara } from '@/yontem/tehlike'
+import { bilineer, ilBandi, type Izgara } from '@/yontem/tehlike'
 import { KUSURLAR } from '@/yontem/ryteie'
 import yigmaTablo from '@/yontem/ryteie-2019-yigma.json'
 import { YIGMA_ALANLARI } from '@/yontem/yigma'
@@ -130,6 +130,15 @@ describe('taslak → motor girdisi', () => {
   })
 })
 
+/** Uygulamanın Manisa'da kullandığı bant (bölge kaydından, sonucHesapla gibi). */
+const MANISA_BANDI = ilBandi(
+  (
+    JSON.parse(readFileSync('public/data/bolgeler.json', 'utf8')) as {
+      bolgeler: { kimlik: string; tdthOran: [number, number] }[]
+    }
+  ).bolgeler.find((b) => b.kimlik === 'manisa')!.tdthOran,
+)
+
 const manisaMerkeziSs = () => {
   const { izgaralar } = JSON.parse(readFileSync('public/data/manisa/tehlike-eshm20.json', 'utf8')) as {
     izgaralar: { SS: Izgara }
@@ -137,7 +146,7 @@ const manisaMerkeziSs = () => {
   return bilineer(izgaralar.SS, 38.614, 27.4303)
 }
 
-it('e2e/form.spec.ts cevap seti, Manisa merkezi (38,614; 27,4303): PP −10 … 40, yüksek öncelik', () => {
+it('e2e/form.spec.ts cevap seti, Manisa merkezi (38,614; 27,4303): PP −10 … 20, yüksek öncelik', () => {
   const t = betonarme(
     dolu({
       sistem: 'bilmiyorum',
@@ -149,8 +158,13 @@ it('e2e/form.spec.ts cevap seti, Manisa merkezi (38,614; 27,4303): PP −10 … 
       donem: '1998-2006',
     }),
   )
-  const d = degerlendir(t.cevaplar, { kaynak: 'eshm20', ss: manisaMerkeziSs(), zemin: t.zemin })
-  expect([d.kotu.pp, d.iyi.pp, d.bant.bant]).toEqual([-10, 40, 'yuksek'])
+  const d = degerlendir(t.cevaplar, {
+    kaynak: 'eshm20',
+    ss: manisaMerkeziSs(),
+    zemin: t.zemin,
+    bant: MANISA_BANDI,
+  })
+  expect([d.kotu.pp, d.iyi.pp, d.bant.bant]).toEqual([-10, 20, 'yuksek'])
 })
 
 describe('yığma taslağı (Faz 10)', () => {
@@ -220,11 +234,16 @@ it('e2e/form.spec.ts yığma cevap seti, Manisa merkezi: motorun değeri e2e bek
     ),
   )
   if (t?.yontem !== 'yigma') throw new Error('yığma bekleniyordu')
-  const d = degerlendirYigma(t.cevaplar, { kaynak: 'eshm20', ss: manisaMerkeziSs(), zemin: t.zemin })
+  const d = degerlendirYigma(t.cevaplar, {
+    kaynak: 'eshm20',
+    ss: manisaMerkeziSs(),
+    zemin: t.zemin,
+    bant: MANISA_BANDI,
+  })
   expect([d.kotu.pp, d.iyi.pp, d.bant.bant, d.belirsiz]).toMatchInlineSnapshot(`
     [
       50,
-      70,
+      60,
       "orta",
       [
         "duzlemDisi",
