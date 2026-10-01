@@ -22,9 +22,10 @@ Tahmin ~22 iş günü; her fazın sonunda "Notlar" doldurulur ve sonraki fazlar 
 | 5 | Form | ✅ Tamamlandı | 11 soru Şekil A.1 tabanlı SVG çizimlerle; yığma/çelik/prefabrik ve 8+ kat kapsam dışı mesajına düşüyor; her soruda "Bilmiyorum"; cevaplar `localStorage`'da, "Temizle" siliyor; klavye ve ekran okuyucuyla doldurulabiliyor (`fixing-accessibility` bulgusuz) |
 | 6 | Sonuç, rapor ve bilgi sayfaları | ✅ Tamamlandı | Sonuç kartı (bant, aralık, kalem kalem katkı, belirsizlik, isabet notu); TDTH SDS girişi adım adım rehberle; yazdırma görünümü A4'te okunur PDF; Yöntem ve isabet, Veri ve lisanslar, Hakkında/feragat sayfaları; `gorsel-dogrulama` 4 genişlik × tema çıkış 0; Playwright duman testi uçtan uca geçiyor |
 | 6.5 | İkinci il paketi | ✅ Tamamlandı | İl Scryne'la seçildi; boru hattı o il için paketi üretiyor (iki kez aynı sha256); S1 benzeri TDTH karşılaştırması o ilde ≥ 5 noktada yapıldı ve bant (0,72–1,25) geçerli ya da yeniden ölçüldü; uygulama il seçiyor, arama ve harita iki ilde çalışıyor; Manisa'ya özgü metinler bölgeden okunuyor |
+| 6.6 | Üçüncü il paketi (Aydın) | 🔄 Devam Ediyor | Boru hattı Aydın paketini üretiyor (iki kez aynı sha256); uygulama üç ilde arıyor ve haritada gösteriyor; Scryne'dan ≥ 5 TDTH okumasıyla S1 bandı (0,72–1,34) Aydın'da geçerli ya da yeniden ölçüldü, `tdthNokta` dolduruldu |
 | 7 | Yayın | ⏳ Bekliyor | Faz 6.5 bitti (Scryne'ın kararı, 2026-09-30: yalnız Manisa'yı gösteren site yayına çıkmaz). `yayin-oncesi` çıkış 0 ya da her bulgu kararlı; `fixing-metadata` geçti; Scryne'ın açık onayıyla repo public ve GitHub Pages'te canlı; canlı adreste 10 S1 noktasından biriyle uçtan uca rapor alındı |
 | 8 | Gerçek kullanım | ⏳ Bekliyor | Proje-Fikri'deki "bitti = kullanıldı" cümlesi gerçekleşti (Scryne'ın seçtiği ≥ 5 kişi yardımsız rapor aldı, sonucu öncelik olarak doğru okudu); bulgular roadmap'e işlendi |
-| 9 | TDTH ızgarası entegrasyonu (tetiklemeli) | ⏳ Bekliyor | Tetik: AFAD CIMER başvurusu olumlu döner. Resmî grid paketlenir, K-5 bandı Manisa'da kalkar, S1 karşılaştırması yeniden koşulur |
+| 9 | TDTH ızgarası entegrasyonu (tetiklemeli) | ⏳ Bekliyor | Tetik: AFAD CIMER başvurusu olumlu döner. Resmî grid paketlenir, K-5 bandı kapsanan illerde kalkar, S1 karşılaştırması yeniden koşulur |
 | 10 | Yığma binalar, RYTEİE Ek-A.2.2 | ✅ Tamamlandı | Koşul (Faz 8 kanıtı) Scryne'ın kararıyla kaldırıldı, 2026-10-01. Yığma yöntemi motor + form + test olarak eklendi; Tablo A.5–A.10 hücreleri JSON'dan bağımsız testte; e2e yığma akışı motorla aynı PP'yi veriyor; isabet Gaziantep yığma verisinde ölçülüp Yöntem sayfasına yazıldı |
 | 11 | B2B talep testi (koşullu) | ⏳ Bekliyor | Koşul: v1 bitti. Manisa/Ege'de 3–5 değerleme/dönüşüm ofisiyle görüşme notları; talep varsa v2 kapsamı yazıldı, yoksa proje v1'de kapandı |
 
@@ -211,6 +212,26 @@ Faz 9–11 olaya bağlıdır; hook bunları "sıradaki iş" saymaz.
     bölgesi 10 noktada da uygulamanın aralığında; yalnız ESHM20 Torbalı'da bölgeyi güvensiz yönde kaydırırdı.
     Ayrıntı `spike/S1/README.md`. Manisa'nın e2e örneği −10 … 20 → −10 … 40 (elverişli uç bölge II).
   - Kapanış: Vitest 163, pipeline 13, e2e 26/26; İzmir kaydı `tdthNokta: 10`, sonuç notu "İzmir'de 10 noktada ölçüldü".
+
+### Faz 6.6: Üçüncü il paketi (Aydın, 2026-10-01)
+- **Neden:** Scryne ürün kararlarını devretti (2026-10-01). Aydın: Manisa ve İzmir'e komşu, yüksek tehlikeli (Büyük
+  Menderes grabeni), Ege'nin büyük illerinden; bölge bitişik kalıyor.
+- **Notlar:**
+  - OSM il ilişkisi 223166 (Nominatim; Overpass ana sunucu ve private.coffee bu sırada hata döndü).
+  - İl paketlerini tembel yükleme **yapılmadı**: il başına açılış yükü gzip ~50 KB (tehlike, mahalle, sınır, bina
+    dizini); üç ilde ~150 KB. Arama ve sınır çizimi zaten bütün illeri istiyor. ~10 ilde yeniden bakılır.
+  - CIMER taslağı Türkiye geneli, olmazsa Manisa + İzmir + Aydın istiyor.
+  - Paket: 17 ilçe, 871 mahalle/köy, 457.487 bina (2.258 parça, 13 MB), ESHM20 ızgarası 12×22. İki kez üretildi,
+    bütün dosyaların sha256'sı aynı; Manisa ve İzmir paketleri değişmedi.
+  - Overpass yedeği private.coffee (OSM verisi 2026-07-24) ilçe alan sorgusuna geçerli ama **boş** cevap verdi ve
+    önbelleğe girdi (ilk çalıştırmada "0 ilçe, 0 mahalle"). `osm.dolu_overpass_gecerli`: sonucu boş olamayacak
+    sorgularda boş cevap sıradaki sunucuya geçer; pytest'e eklendi.
+  - Meta açıklamaları ve paylaşım görseli "Aydın, İzmir ve Manisa'daki binalar için".
+  - Testler: Vitest bütün bölge paketlerini dolaşıyor (ızgara kutusu, ≥ 500 mahalle, ≥ 15 ilçe, parça dosyası);
+    e2e: Aydın'da arama (Camikebir, Kuşadası) → Efeler'de değerlendirme → "Bu ilde AFAD'la karşılaştırma henüz
+    yapılmadı; aralık İzmir ve Manisa'da ölçülen farktan geliyor" notu ve raporda il adı.
+  - **Bekleyen:** Scryne'ın 10 TDTH okuması (`spike/S1/aydin-tdth-okumalar.csv`, yol `spike/S1/README.md`).
+    Okumalar gelince `karsilastir.py` → oranlar → bant geçerli mi / genişler mi → `bolgeler.py` `tdth_nokta=10`.
 
 ### Faz 7: Yayın (~1 gün)
 - **İşler:** MapTiler anahtarı GitHub Actions değişkeni `VITE_MAPTILER_ANAHTARI` olarak derlemeye; MapTiler

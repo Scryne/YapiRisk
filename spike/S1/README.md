@@ -98,3 +98,15 @@ Oran ortalaması 0,98 (0,81–1,34). Okuma denetimi: 10 raporda SDS ve SD1, SS v
 ±0,0005 tutuyor. **Karar:** güvensiz yön sınırı (0,72) İzmir'de de tuttu; üst oran Konak'ta 1,25'i aştı (güvenli yön)
 → bant iki ilin 20 ölçümünü kapsayacak şekilde 0,72–1,34 (`S1_BANDI`). Öncelik bandı kötü uçtan seçildiği için
 hiçbir sonuç değişmez; yalnız PP aralığının elverişli ucu genişler. Vitest: `tehlike.test.ts` "S1 İzmir".
+
+## Aydın (Roadmap Faz 6.6, 2026-10-01): okuma bekliyor
+
+Üçüncü il Aydın. S1 bandının (0,72–1,34) Aydın'da geçerliliği için 10 ilçe merkezi seçildi
+(`aydin-tdth-okumalar.csv`; koordinatlar OSM `admin_centre` düğümleri, Efeler için ilçe etiketi, Didim için
+ilçe merkezi). Batı kıyıdan (Kuşadası, Söke, Didim) Büyük Menderes grabeni boyunca doğuya (Germencik, Efeler,
+Nazilli, Buharkent) ve güneye (Karacasu, Bozdoğan, Çine) kapsanıyor; on noktanın hepsi il sınırı içinde.
+
+**Okuma (Scryne, e-Devlet):** Manisa ve İzmir'deki akışın aynısı: tdth.afad.gov.tr → Raporlama → koordinat →
+**DD-2** → zemin **ZC** → Değerleri Hesapla. Rapordan SS, S1, PGA, PGV, SDS, SD1 CSV'nin boş sütunlarına.
+En az 5 okuma Faz 6.6'yı kapatır; o zamana kadar uygulama Aydın'da "Bu ilde AFAD'la karşılaştırma henüz
+yapılmadı" notunu gösterir ve bandı Manisa + İzmir'in 20 ölçümünden alır.

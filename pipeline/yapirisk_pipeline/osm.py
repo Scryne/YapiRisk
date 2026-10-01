@@ -37,14 +37,20 @@ def overpass_gecerli(icerik: bytes) -> bool:
     return isinstance(d, dict) and "elements" in d and "error" not in str(d.get("remark", "")).lower()
 
 
-def overpass(ad: str, sorgu: str) -> OsmSonucu:
+def dolu_overpass_gecerli(icerik: bytes) -> bool:
+    """Alan sorgusu için: alan dizini eksik bir yedek sunucu (private.coffee, 2026-10-01) geçerli ama boş cevap
+    döndürdü. Sonucu boş olamayacak sorgularda boş cevap da sıradaki sunucuya geçer."""
+    return overpass_gecerli(icerik) and bool(json.loads(icerik)["elements"])
+
+
+def overpass(ad: str, sorgu: str, bos_olamaz: bool = True) -> OsmSonucu:
     yol, meta = indir(
         ad,
         OVERPASS,
         veri={"data": sorgu},
         yedek_urller=OVERPASS_YEDEK,
         zaman_asimi=600,
-        gecerli=overpass_gecerli,
+        gecerli=dolu_overpass_gecerli if bos_olamaz else overpass_gecerli,
     )
     return _oku(yol, meta)
 

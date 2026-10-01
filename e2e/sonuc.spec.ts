@@ -169,3 +169,30 @@ test('ikinci il: İzmir mahallesi aranıyor, tehlike İzmir ızgarasından, fark
   expect(yabanci).toEqual([])
   expect(hatalar).toEqual([])
 })
+
+test('üçüncü il: Aydın mahallesi aranıyor; AFAD farkı ölçülmediği için not diğer illerin ölçümünü gösteriyor', async ({
+  page,
+  baseURL,
+}) => {
+  const { yabanci, hatalar } = istekleriIzle(page, baseURL!)
+  await page.goto('/')
+  await hazirBekle(page)
+  const arama = page.getByRole('combobox', { name: 'Mahalle ya da köy ara' })
+  await arama.fill('camikebir')
+  await page.getByRole('option', { name: /Camikebir.*Kuşadası/ }).click()
+  await expect(arama).toHaveValue('Camikebir, Kuşadası')
+
+  // Aydın merkezi (Efeler): bölge Aydın, S_S Aydın ızgarasından.
+  await page.goto('/#konum=37.8444,27.8458')
+  await expect(page.getByTestId('ss-degeri')).toBeVisible()
+  await page.getByRole('button', { name: 'Sorulara başla' }).click()
+  await doldur(page, KUSURSUZ_4_KAT)
+  await expect(page.getByTestId('sonuc-karti')).toContainText(
+    'Bu ilde AFAD’la karşılaştırma henüz yapılmadı; aralık İzmir ve Manisa’da ölçülen farktan geliyor',
+  )
+  await page.emulateMedia({ media: 'print' })
+  await expect(page.getByRole('article')).toContainText('Aydın')
+
+  expect(yabanci).toEqual([])
+  expect(hatalar).toEqual([])
+})

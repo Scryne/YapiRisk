@@ -122,6 +122,14 @@ def test_duzenli_izgara_eksik_hucre_hata():
         tehlike.bilineer(iz, 38.15, 27.05)
 
 
+def test_overpass_bos_alan_cevabi_onbellege_girmez():
+    from yapirisk_pipeline.osm import dolu_overpass_gecerli
+
+    assert not dolu_overpass_gecerli(b'{"version": 0.6, "elements": []}')
+    assert not dolu_overpass_gecerli(b"<html>too busy</html>")
+    assert dolu_overpass_gecerli(b'{"elements": [{"type": "relation", "id": 1}]}')
+
+
 def test_overpass_mesgul_cevabi_onbellege_girmez():
     from yapirisk_pipeline.osm import overpass_gecerli
 

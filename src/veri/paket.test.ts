@@ -78,3 +78,40 @@ describe('Manisa mahalle dizini', () => {
     expect(kayitlar.some((k) => k.ad.toLocaleLowerCase('tr') === 'mahalle')).toBe(false)
   })
 })
+
+describe('bütün bölge paketleri', () => {
+  const { bolgeler } = JSON.parse(readFileSync('public/data/bolgeler.json', 'utf8')) as {
+    bolgeler: { kimlik: string; sinirKutusu: [number, number, number, number] }[]
+  }
+
+  it('kayıtta Aydın, İzmir ve Manisa var', () => {
+    expect(bolgeler.map((b) => b.kimlik).sort()).toEqual(['aydin', 'izmir', 'manisa'])
+  })
+
+  it.each(bolgeler.map((b) => [b.kimlik, b] as const))(
+    '%s: ızgara kutuyu kapsıyor, dizinler dolu',
+    (k, b) => {
+      const tehlike = JSON.parse(readFileSync(`public/data/${k}/tehlike-eshm20.json`, 'utf8')) as {
+        izgaralar: { SS: Izgara }
+      }
+      const [bmin, emin, bmax, emax] = b.sinirKutusu
+      for (const [e, bo] of [
+        [emin, bmin],
+        [emin, bmax],
+        [emax, bmin],
+        [emax, bmax],
+      ])
+        expect(() => bilineer(tehlike.izgaralar.SS, e, bo)).not.toThrow()
+      const { kayitlar } = JSON.parse(readFileSync(`public/data/${k}/mahalleler.json`, 'utf8')) as {
+        kayitlar: { ilce: string }[]
+      }
+      expect(kayitlar.length).toBeGreaterThan(500)
+      expect(new Set(kayitlar.map((m) => m.ilce)).size).toBeGreaterThanOrEqual(15)
+      const dizin = JSON.parse(readFileSync(`public/data/${k}/bina/dizin.json`, 'utf8')) as {
+        parcalar: [number, number, number][]
+      }
+      const [x, y] = dizin.parcalar[0]
+      expect(readFileSync(`public/data/${k}/bina/${x}/${y}.json.gz`).length).toBeGreaterThan(0)
+    },
+  )
+})

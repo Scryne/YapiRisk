@@ -17,6 +17,7 @@ class Bolge:
 
 
 BOLGELER = {
+    "aydin": Bolge(kimlik="aydin", ad="Aydın", osm_iliski=223166, merkez=(27.85, 37.8), yakinlik=8.5),
     "izmir": Bolge(
         kimlik="izmir", ad="İzmir", osm_iliski=223167, merkez=(27.25, 38.45), yakinlik=8.5, tdth_nokta=10
     ),

@@ -22,8 +22,9 @@ yönlendirir.
 Bu kapsamda 4982 sayılı Bilgi Edinme Hakkı Kanunu uyarınca aşağıdaki bilgileri talep ediyorum:
 
 1. Türkiye Deprem Tehlike Haritası'nın (TBDY-2018) sayısal ızgara verisinin (SS, S1, PGA, PGV; DD-1, DD-2,
-   DD-3, DD-4) Manisa ili sınırlarını kapsayan kısmının, Kurumunuzda mevcut olduğu biçimiyle (ör. CSV,
-   GeoTIFF, metin dosyası) tarafıma iletilmesi mümkün müdür? Mümkünse iletilmesini rica ederim.
+   DD-3, DD-4) Kurumunuzda mevcut olduğu biçimiyle (ör. CSV, GeoTIFF, metin dosyası) tarafıma iletilmesi
+   mümkün müdür? Türkiye geneli verinin paylaşılması mümkün değilse Manisa, İzmir ve Aydın illerinin
+   sınırlarını kapsayan kısmının iletilmesini rica ederim.
 2. Bu verinin üçüncü kişilerce kullanımına ilişkin koşullar (atıf, ticari olmayan kullanım, yeniden dağıtım)
    nelerdir?
 3. Verinin paylaşımı bu başvuru yoluyla mümkün değilse, araştırmacı veya geliştiricilere veri sağlanan bir
