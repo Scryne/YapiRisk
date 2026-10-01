@@ -5,13 +5,13 @@ import { Button } from '@/components/ui/button'
 import type { KapsamDisi } from './taslak'
 
 const NEDENLER: Record<KapsamDisi, string> = {
-  yigma:
-    'YapiRisk’in kullandığı RYTEİE Ek-A yöntemi yalnız betonarme binalar içindir. Yığma binalar için yönetmelikte ayrı bir yöntem var; YapiRisk’e henüz eklenmedi.',
   celik:
-    'YapiRisk’in kullandığı RYTEİE Ek-A yöntemi yalnız betonarme binalar içindir. Yönetmelikte çelik yapılar için bu tür hızlı bir yöntem yok.',
+    'YapiRisk’in kullandığı RYTEİE Ek-A hızlı yöntemleri betonarme ve yığma binalar içindir. Yönetmelikte çelik yapılar için bu tür hızlı bir yöntem yok.',
   prefabrik:
-    'YapiRisk’in kullandığı RYTEİE Ek-A yöntemi yalnız betonarme binalar içindir. Yönetmelikte prefabrik yapılar için bu tür hızlı bir yöntem yok.',
+    'YapiRisk’in kullandığı RYTEİE Ek-A hızlı yöntemleri betonarme ve yığma binalar içindir. Yönetmelikte prefabrik yapılar için bu tür hızlı bir yöntem yok.',
   kat: 'YapiRisk’in kullandığı RYTEİE Ek-A yöntemi 1 ile 7 serbest katlı betonarme binalar içindir. Daha yüksek binalar bu yöntemle değerlendirilmez.',
+  yigmaKat:
+    'RYTEİE Ek-A’nın yığma yöntemi 1 ile 5 serbest katlı yığma binalar içindir. Daha yüksek yığma binalar bu yöntemle değerlendirilmez.',
 }
 
 interface Props {

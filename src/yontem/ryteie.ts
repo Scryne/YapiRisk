@@ -1,6 +1,7 @@
 // RYTEİE 2019 Ek-A.2.1 betonarme performans puanı: PP = TP + Σ(Oᵢ · OPᵢ) + YSP (Denklem A2.1).
 // Tablolar ryteie-2019.json'da; bu dosya yalnız formülü ve kalem kalem katkıyı uygular.
 import tablo from './ryteie-2019.json'
+import type { YigmaParametre } from './yigma'
 
 export type Bolge = 'I' | 'II' | 'III' | 'IV'
 export type KatGrubu = '1-2' | '3' | '4' | '5' | '6-7'
@@ -31,7 +32,9 @@ export interface KesinGirdi {
   nizam: Nizam
 }
 
-export type Parametre = 'tabanPuani' | 'yapisalSistem' | 'gorunenKalite' | Kusur | 'yapiNizami'
+export type BetonarmeParametre = 'tabanPuani' | 'yapisalSistem' | 'gorunenKalite' | Kusur | 'yapiNizami'
+/** Kalem adları; iki yöntemde ortak olanlar (taban puanı, yumuşak kat, nizam) aynı adı taşır. */
+export type Parametre = BetonarmeParametre | YigmaParametre
 
 export interface Kalem {
   parametre: Parametre
@@ -74,7 +77,7 @@ export function nizamPuani(grup: KatGrubu, nizam: Nizam): { deger: number; puan:
 
 export function puan(bolge: Bolge, girdi: KesinGirdi): PuanSonucu {
   const grup = katGrubu(girdi.kat)
-  const kalem = (parametre: Parametre, deger: number, p: number): Kalem => ({
+  const kalem = (parametre: BetonarmeParametre, deger: number, p: number): Kalem => ({
     parametre,
     deger,
     puan: p,

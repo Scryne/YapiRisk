@@ -16,9 +16,10 @@ export function Hakkinda() {
       baslik="Hakkında"
       giris={
         <p>
-          YapiRisk, {iller ? bulunma(iller) + 'ki' : 'kapsadığı illerdeki'} betonarme binalar için deprem
-          riskinin ön değerlendirmesini yapar: binanızı haritada bulursunuz, dışarıdan bakarak cevaplanabilen
-          soruları cevaplarsınız, resmî bir yöntemle hesaplanan profesyonel inceleme önceliğini görürsünüz.
+          YapiRisk, {iller ? bulunma(iller) + 'ki' : 'kapsadığı illerdeki'} betonarme ve yığma binalar için
+          deprem riskinin ön değerlendirmesini yapar: binanızı haritada bulursunuz, dışarıdan bakarak
+          cevaplanabilen soruları cevaplarsınız, resmî bir yöntemle hesaplanan profesyonel inceleme önceliğini
+          görürsünüz.
         </p>
       }
     >
@@ -72,8 +73,8 @@ export function Hakkinda() {
       <Bolum id="kapsam" baslik="Kapsam">
         <p>
           Şimdilik yalnız {iller ?? 'kapsanan illerin'} {iller ? 'için veri var' : 'verisi var'}. Yöntem 1–7
-          serbest katlı betonarme binalar içindir; yığma, çelik, prefabrik ve 8 ya da daha fazla katlı binalar
-          değerlendirilmez.
+          serbest katlı betonarme ve 1–5 serbest katlı yığma binalar içindir; çelik ve prefabrik binalar, 8 ya
+          da daha fazla katlı betonarme ve 6 ya da daha fazla katlı yığma binalar değerlendirilmez.
         </p>
       </Bolum>
     </Sayfa>

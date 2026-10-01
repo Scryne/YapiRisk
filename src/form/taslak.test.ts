@@ -1,10 +1,23 @@
 import { readFileSync } from 'node:fs'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { degerlendir } from '@/yontem/degerlendir'
+import { degerlendir, degerlendirYigma } from '@/yontem/degerlendir'
 import { bilineer, type Izgara } from '@/yontem/tehlike'
 import { KUSURLAR } from '@/yontem/ryteie'
+import { YIGMA_ALANLARI } from '@/yontem/yigma'
 import { KAYIT_ANAHTARI, kayitOku, kayitSil, kayitYaz, taslakDogrula } from './kayit'
-import { ADIMLAR, bosTaslak, cevaplandi, ilkEksik, kapsamDisi, tamCevaplar, type Taslak } from './taslak'
+import {
+  adimlar,
+  BETONARME_ADIMLARI,
+  bosMu,
+  bosTaslak,
+  cevaplandi,
+  ilkEksik,
+  kapsamDisi,
+  tamCevaplar,
+  YIGMA_ADIMLARI,
+  type Taslak,
+  type YigmaTaslagi,
+} from './taslak'
 
 const dolu = (ek: Partial<Taslak> = {}): Taslak => ({
   malzeme: 'betonarme',
@@ -17,9 +30,46 @@ const dolu = (ek: Partial<Taslak> = {}): Taslak => ({
   ...ek,
 })
 
+const yigmaDolu = (ek: YigmaTaslagi = {}, t: Partial<Taslak> = {}): Taslak => ({
+  malzeme: 'yigma',
+  kat: 2,
+  kusurlar: {},
+  nizam: 'ayrik',
+  zemin: 'ZC',
+  ...t,
+  yigma: {
+    tur: 'donatisiz',
+    malzemeKalitesi: 'iyi',
+    duvarIsciligi: 'iyi',
+    mevcutHasar: false,
+    plan: 'duzenli',
+    duvarMiktari: 'cok',
+    yatayHatil: 'duvarUstu',
+    boslukDuzeni: 'duzenli',
+    cepheKatFarki: false,
+    yumusakKat: false,
+    doseme: 'betonarme',
+    harc: 'cimento',
+    duvarDuvar: 'iyi',
+    duvarDoseme: 'iyi',
+    cati: 'kiremit',
+    ...ek,
+  },
+})
+
+/** Betonarme taslağının motor girdisi (tip daraltmalı). */
+function betonarme(t: Taslak) {
+  const c = tamCevaplar(t)
+  if (c?.yontem !== 'betonarme') throw new Error('betonarme bekleniyordu')
+  return c
+}
+
 describe('kapsam ayıklama (K-8)', () => {
   it.each([
-    [{ malzeme: 'yigma' }, 'yigma'],
+    [{ malzeme: 'yigma' }, null],
+    [{ malzeme: 'yigma', kat: 5 }, null],
+    [{ malzeme: 'yigma', kat: 6 }, 'yigmaKat'],
+    [{ malzeme: 'yigma', kat: '8+' }, 'yigmaKat'],
     [{ malzeme: 'celik' }, 'celik'],
     [{ malzeme: 'prefabrik' }, 'prefabrik'],
     [{ kat: '8+' }, 'kat'],
@@ -28,8 +78,9 @@ describe('kapsam ayıklama (K-8)', () => {
   ] as const)('%o → %s', (ek, beklenen) => expect(kapsamDisi({ ...bosTaslak(), ...ek })).toBe(beklenen))
 
   it('kapsam dışı taslak motora gitmez', () => {
-    expect(tamCevaplar(dolu({ malzeme: 'yigma' }))).toBeNull()
+    expect(tamCevaplar(dolu({ malzeme: 'celik' }))).toBeNull()
     expect(tamCevaplar(dolu({ kat: '8+' }))).toBeNull()
+    expect(tamCevaplar(yigmaDolu({}, { kat: 6 }))).toBeNull()
   })
 })
 
@@ -39,7 +90,7 @@ describe('taslak → motor girdisi', () => {
     expect(tamCevaplar(dolu({ zemin: undefined }))).toBeNull()
     expect(tamCevaplar(dolu())).not.toBeNull()
     expect(ilkEksik(dolu())).toBeNull()
-    expect(ilkEksik(dolu({ kalite: undefined }))).toBe(ADIMLAR.indexOf('kalite'))
+    expect(ilkEksik(dolu({ kalite: undefined }))).toBe(BETONARME_ADIMLARI.indexOf('kalite'))
   })
 
   it('bitişik nizam döşeme seviyesi cevaplanmadan tamamlanmış sayılmaz', () => {
@@ -49,12 +100,12 @@ describe('taslak → motor girdisi', () => {
   })
 
   it('Şekil A.1 nizamı: bitişik = orta, köşede bitişik = kenar', () => {
-    expect(tamCevaplar(dolu({ nizam: 'bitisik', katSeviyesi: 'farkli' }))!.cevaplar.nizam).toEqual({
+    expect(betonarme(dolu({ nizam: 'bitisik', katSeviyesi: 'farkli' })).cevaplar.nizam).toEqual({
       tip: 'bitisik',
       konum: 'orta',
       katSeviyesi: 'farkli',
     })
-    expect(tamCevaplar(dolu({ nizam: 'kosede', katSeviyesi: 'ayni' }))!.cevaplar.nizam).toEqual({
+    expect(betonarme(dolu({ nizam: 'kosede', katSeviyesi: 'ayni' })).cevaplar.nizam).toEqual({
       tip: 'bitisik',
       konum: 'kenar',
       katSeviyesi: 'ayni',
@@ -64,20 +115,28 @@ describe('taslak → motor girdisi', () => {
   it('malzeme "bilmiyorum" betonarme varsayılarak değerlendirilir ve işaretlenir', () => {
     expect(tamCevaplar(dolu())!.malzemeVarsayildi).toBe(false)
     expect(tamCevaplar(dolu({ malzeme: 'bilmiyorum' }))!.malzemeVarsayildi).toBe(true)
+    expect(tamCevaplar(dolu({ malzeme: 'bilmiyorum' }))!.yontem).toBe('betonarme')
   })
 
   it('K-12 örneği formdan: 4 katlı BAÇ, bölge I, yumuşak kat + orta kalite → PP 25', () => {
-    const t = tamCevaplar(
+    const t = betonarme(
       dolu({ kalite: 'orta', kusurlar: { ...dolu().kusurlar, yumusakKat: true }, zemin: 'ZC' }),
-    )!
+    )
     const d = degerlendir(t.cevaplar, { kaynak: 'tdth', sds: 1.2, zemin: t.zemin })
     expect(d.kotu.pp).toBe(25)
     expect(d.bant.bant).toBe('yuksek')
   })
 })
 
+const manisaMerkeziSs = () => {
+  const { izgaralar } = JSON.parse(readFileSync('public/data/manisa/tehlike-eshm20.json', 'utf8')) as {
+    izgaralar: { SS: Izgara }
+  }
+  return bilineer(izgaralar.SS, 38.614, 27.4303)
+}
+
 it('e2e/form.spec.ts cevap seti, Manisa merkezi (38,614; 27,4303): PP −10 … 40, yüksek öncelik', () => {
-  const t = tamCevaplar(
+  const t = betonarme(
     dolu({
       sistem: 'bilmiyorum',
       kalite: 'orta',
@@ -87,13 +146,74 @@ it('e2e/form.spec.ts cevap seti, Manisa merkezi (38,614; 27,4303): PP −10 … 
       zemin: 'bilmiyorum',
       donem: '1998-2006',
     }),
-  )!
-  const { izgaralar } = JSON.parse(readFileSync('public/data/manisa/tehlike-eshm20.json', 'utf8')) as {
-    izgaralar: { SS: Izgara }
-  }
-  const ss = bilineer(izgaralar.SS, 38.614, 27.4303)
-  const d = degerlendir(t.cevaplar, { kaynak: 'eshm20', ss, zemin: t.zemin })
+  )
+  const d = degerlendir(t.cevaplar, { kaynak: 'eshm20', ss: manisaMerkeziSs(), zemin: t.zemin })
   expect([d.kotu.pp, d.iyi.pp, d.bant.bant]).toEqual([-10, 40, 'yuksek'])
+})
+
+describe('yığma taslağı (Faz 10)', () => {
+  it('yığmada adımlar Şekil A.2 soruları, ortak sorular yerinde', () => {
+    expect(adimlar(yigmaDolu())).toBe(YIGMA_ADIMLARI)
+    expect(adimlar(dolu())).toBe(BETONARME_ADIMLARI)
+    expect(adimlar(dolu({ malzeme: 'bilmiyorum' }))).toBe(BETONARME_ADIMLARI)
+    expect(YIGMA_ADIMLARI.slice(0, 2)).toEqual(['malzeme', 'kat'])
+    expect(YIGMA_ADIMLARI.slice(-3)).toEqual(['nizam', 'zemin', 'donem'])
+    expect(YIGMA_ADIMLARI).toHaveLength(2 + YIGMA_ALANLARI.length + 3)
+  })
+
+  it('tam yığma taslağı yığma motoruna gider; eksik alan varken null', () => {
+    expect(tamCevaplar(yigmaDolu())!.yontem).toBe('yigma')
+    expect(ilkEksik(yigmaDolu())).toBeNull()
+    expect(tamCevaplar(yigmaDolu({ cati: undefined }))).toBeNull()
+    expect(ilkEksik(yigmaDolu({ cati: undefined }))).toBe(YIGMA_ADIMLARI.indexOf('yigma.cati'))
+    expect(cevaplandi(yigmaDolu({ harc: 'bilmiyorum' }), 'yigma.harc')).toBe(true)
+  })
+
+  it('malzeme değişince betonarme cevapları yığma girdisine karışmaz', () => {
+    const c = tamCevaplar(yigmaDolu({}, { sistem: 'BACP', kusurlar: { yumusakKat: true } }))!
+    expect(c.yontem).toBe('yigma')
+    expect(c.cevaplar).not.toHaveProperty('sistem')
+    expect(c.cevaplar).not.toHaveProperty('kusurlar')
+  })
+
+  it('yığma cevabı olan taslak boş sayılmaz', () => {
+    expect(bosMu({ kusurlar: {}, yigma: { cati: 'toprak' } })).toBe(false)
+    expect(bosMu({ kusurlar: {}, yigma: {} })).toBe(true)
+  })
+})
+
+it('e2e/form.spec.ts yığma cevap seti, Manisa merkezi: motorun değeri e2e beklentisine yazıldı', () => {
+  // Cevaplar e2e/form.spec.ts "yığma bina" testindekiyle aynı tutulur.
+  const t = tamCevaplar(
+    yigmaDolu(
+      {
+        tur: 'bilmiyorum',
+        mevcutHasar: true,
+        malzemeKalitesi: 'orta',
+        duvarIsciligi: 'orta',
+        harc: 'camur',
+        duvarMiktari: 'orta',
+        yatayHatil: 'yok',
+        doseme: 'betonarme',
+        duvarDuvar: 'kotu',
+        duvarDoseme: 'bilmiyorum',
+        cati: 'toprak',
+      },
+      { zemin: 'bilmiyorum' },
+    ),
+  )
+  if (t?.yontem !== 'yigma') throw new Error('yığma bekleniyordu')
+  const d = degerlendirYigma(t.cevaplar, { kaynak: 'eshm20', ss: manisaMerkeziSs(), zemin: t.zemin })
+  expect([d.kotu.pp, d.iyi.pp, d.bant.bant, d.belirsiz]).toMatchInlineSnapshot(`
+    [
+      50,
+      70,
+      "orta",
+      [
+        "duzlemDisi",
+      ],
+    ]
+  `)
 })
 
 describe('kayıt (localStorage)', () => {
@@ -123,6 +243,12 @@ describe('kayıt (localStorage)', () => {
     expect(kayitOku()).toBeNull()
   })
 
+  it('yığma taslağını olduğu gibi okur', () => {
+    const kayit = { secim: null, taslak: yigmaDolu({ harc: 'bilmiyorum' }), adim: 7, tdthSs: null }
+    kayitYaz(kayit)
+    expect(kayitOku()).toEqual(kayit)
+  })
+
   it('bozuk ya da yabancı değerleri atar', () => {
     depo.set(KAYIT_ANAHTARI, '{bozuk')
     expect(kayitOku()).toBeNull()
@@ -138,7 +264,32 @@ describe('kayıt (localStorage)', () => {
     expect(kayitOku()).toEqual({
       secim: null,
       taslak: { kalite: 'orta', kusurlar: { agirCikma: true } },
-      adim: ADIMLAR.length,
+      adim: BETONARME_ADIMLARI.length,
+      tdthSs: null,
+    })
+  })
+
+  it('yığma alanlarında tanınmayanları atar; adım yığma listesine göre sınırlanır', () => {
+    depo.set(
+      KAYIT_ANAHTARI,
+      JSON.stringify({
+        secim: null,
+        taslak: {
+          malzeme: 'yigma',
+          kusurlar: {},
+          yigma: { tur: 'kusatilmis', mevcutHasar: true, cati: 'saman', harc: 'bilmiyorum', bilinmeyen: 1 },
+        },
+        adim: 99,
+      }),
+    )
+    expect(kayitOku()).toEqual({
+      secim: null,
+      taslak: {
+        malzeme: 'yigma',
+        kusurlar: {},
+        yigma: { tur: 'kusatilmis', mevcutHasar: true, harc: 'bilmiyorum' },
+      },
+      adim: YIGMA_ADIMLARI.length,
       tdthSs: null,
     })
   })

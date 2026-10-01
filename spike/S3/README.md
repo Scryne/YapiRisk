@@ -27,6 +27,28 @@ konum + hasar (ve mümkünse görsel kusurlar) içeren, erişilebilir bina bazl�
 katlı kamu binası, pozitif (ağır hasar) sınıfta 3+ katlı BA bina çok az. Tek başına "ölçülmüş isabet" iddiasını
 taşımaz; yardımcı set.
 
+### Yığma ölçümü (Faz 10, 2026-10-01, `gaziantep_yigma.py`, `sonuc-gaziantep-yigma.csv`)
+RYTEİE Ek-A.2.2 yığma yöntemi için tek erişilebilir hasar verisi bu set. Kapsam: yığma, değerlendirilmiş, 1–5 kat
+→ 414 bina (345'i tek katlı); hedef "ağır hasar ve üstü" 72/414. Zemin sınıfı yok → K-9; yığma türü yok →
+donatısız (YSP 0); Tablo A.6'nın gözlem parametrelerinin hiçbiri yok. Ölçülen şey **taban puanı** (kat + tehlike).
+
+| Skor | AUC |
+| --- | --- |
+| Taban puanı, tehlike ESHM20 ham / ÷0,72 (kötü uç) | 0,676 / 0,708 |
+| Yalnız kat sayısı | 0,515 |
+| Yalnız ESHM20 S_S | 0,762 |
+| Harç kireç/çamur (harcı bilinen 263 bina) | 0,477 |
+
+**Okuma:**
+- ACI-133'ün tersine burada ayırmayı **tehlike terimi** yapıyor: ağır hasar oranı Nurdağı'nda (faya yakın, bölge I)
+  %55, Nizip'te %8, Araban'da %11. Kat sayısı neredeyse hiç ayırmıyor (binaların %83'ü tek katlı).
+- Tablo A.5'in iki sütunlu çözünürlüğü (I ↔ II-III) S_S'in sürekli değerinden bilgi kaybediyor (0,71 < 0,76).
+- **Bant uyarısı:** kusur bilgisi olmadan 411/414 bina "düşük öncelik"e (PP ≥ 100) düşüyor ve bu grupta ağır hasar
+  %17; taban puanı 110 olan grupta (1 kat, bölge I) %35. Yani kusursuz kabul edilen yığma bina yüksek tehlike
+  bölgesinde bile düşük öncelik alıyor; sonuç kartındaki öncelik ancak gözlem soruları cevaplanınca anlam kazanır.
+  K-12 sınırları değiştirilmedi (veri kusurları içermediği için sınır kalibre edilemez), Yöntem sayfasına yazıldı.
+- Örneklem kamu binası ağırlıklı ve hasar gözlemi için seçilmiş; sayı mutlak isabet değil, sıralama gücü.
+
 ## Aday 2 — ACI-133 (Hariri-Ardebili 2024, Zenodo 13386343) → **kullanıldı**
 - **Lisans:** CC BY 4.0. 242 betonarme bina, 2023 Kahramanmaraş; ACI 133 ekibinin saha verisi.
 - **Alanlar:** yaş, kat, kritik kat kolon/perde/dolgu duvar alanları, hasar (5 sınıf N/L/M/S/C, 3 sınıf, kritik

@@ -1,0 +1,67 @@
+{
+  "kaynak": {
+    "ad": "Riskli Yapıların Tespit Edilmesine İlişkin Esaslar (RYTEİE) 2019, Ek-A.2.2 Yığma Binalar",
+    "yayin": "Resmî Gazete 16.02.2019, sayı 30688 (mükerrer değil), ek s. 35–41 (Şekil A.2 s. 37–38)",
+    "url": "https://www.resmigazete.gov.tr/eskiler/2019/02/20190216-1-1.pdf",
+    "dogrulama": "A.2.2.4–A.2.2.13 ve Tablo A.5–A.10 taranmış sayfa görüntüsünden hücre hücre okundu, 2026-10-01"
+  },
+  "katAraligi": [1, 5],
+  "tabloA5": {
+    "aciklama": "Taban puanı. Sütunlar Tablo A.2 tehlike bölgesinden (A.2.2.2, A.2.2.3-12); II ve III aynı sütun.",
+    "tabanPuani": {
+      "1": { "I": 110, "II-III": 120, "IV": 130 },
+      "2": { "I": 100, "II-III": 110, "IV": 120 },
+      "3": { "I": 90, "II-III": 100, "IV": 110 },
+      "4": { "I": 80, "II-III": 90, "IV": 100 },
+      "5": { "I": 70, "II-III": 80, "IV": 90 }
+    }
+  },
+  "yapisalSistemPuani": {
+    "aciklama": "A.2.2.4",
+    "donatisiz": 0,
+    "karma": 0,
+    "kusatilmis": 30,
+    "donatili": 60
+  },
+  "tabloA6": {
+    "aciklama": "Olumsuzluk parametre değerleri Oᵢ (A.2.2.5–A.2.2.10).",
+    "yapiNizami": { "ayrik": 0, "bitisik": 1 },
+    "malzemeKalitesi": { "iyi": 0, "orta": 1, "kotu": 2 },
+    "duvarIsciligi": { "iyi": 0, "orta": 1, "kotu": 2 },
+    "mevcutHasar": { "yok": 0, "var": 1 },
+    "plan": { "duzenli": 0, "duzensiz": 1, "asiriDuzensiz": 2 },
+    "yatayHatil": { "duvarUstu": 0, "pencereUstu": 0, "yok": 1 },
+    "duvarMiktari": { "cok": 0, "orta": 1, "az": 2 },
+    "boslukDuzeni": { "duzenli": 0, "azDuzenli": 1, "duzensiz": 2 },
+    "cepheKatFarki": { "yok": 0, "var": 1 },
+    "yumusakKat": { "yok": 0, "var": 1 },
+    "doseme": { "betonarme": 0, "ahsap": 1, "volto": 1 },
+    "harc": { "cimento": 0, "kirec": 1, "camur": 1, "yok": 1 },
+    "duvarDuvar": { "iyi": 0, "kotu": 1 },
+    "duvarDoseme": { "iyi": 0, "kotu": 1 },
+    "cati": { "kiremit": 0, "sac": 0, "beton": 0, "toprak": 1 }
+  },
+  "duzlemDisi": {
+    "aciklama": "A.2.2.9 ve A.2.2.12: Tablo A.6'daki 11–14 numaralı parametrelerin toplamı ≥ 3 ise Oᵢ = 1, OPᵢ = −10.",
+    "parametreler": ["doseme", "harc", "duvarDuvar", "duvarDoseme"],
+    "esik": 3,
+    "puan": -10
+  },
+  "toprakDam": {
+    "aciklama": "A.2.2.8 ve A.2.2.13: toprak tavan döşemesi (Tablo A.6, 15 çatı malzemesi) varsa OPᵢ = −10.",
+    "puan": -10
+  },
+  "tabloA7": { "malzemeKalitesi": -10, "duvarIsciligi": -5, "mevcutHasar": -5 },
+  "tabloA8": {
+    "aciklama": "Basılı tabloda satır başlığı yok; beş satır Tablo A.5 ve A.9 gibi 1–5 kat okunur.",
+    "plan": { "1": -5, "2": -10, "3": -10, "4": -15, "5": -20 },
+    "duvarMiktari": { "1": -5, "2": -5, "3": -10, "4": -10, "5": -15 },
+    "yatayHatil": { "1": -5, "2": -5, "3": -5, "4": -5, "5": -5 }
+  },
+  "tabloA9": {
+    "boslukDuzeni": { "1": 0, "2": -5, "3": -5, "4": -10, "5": -10 },
+    "cepheKatFarki": { "1": -5, "2": -5, "3": -5, "4": -5, "5": -5 },
+    "yumusakKat": { "1": 0, "2": -5, "3": -5, "4": -10, "5": -10 }
+  },
+  "tabloA10": { "ayni-orta": 0, "ayni-kenar": -5, "farkli-orta": -5, "farkli-kenar": -10 }
+}

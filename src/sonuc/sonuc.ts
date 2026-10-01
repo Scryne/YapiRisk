@@ -1,8 +1,9 @@
 // Formdan sonuca: tehlike kaynağı (ESHM20 tahmini ya da kullanıcının girdiği TDTH S_S'i) × cevaplar → değerlendirme.
 import { tamCevaplar, type TamCevaplar, type Taslak } from '@/form/taslak'
 import type { BolgeKaydi } from '@/veri/bolge'
-import { degerlendir, type Degerlendirme } from '@/yontem/degerlendir'
+import { degerlendir, degerlendirYigma, type Degerlendirme } from '@/yontem/degerlendir'
 import type { Parametre } from '@/yontem/ryteie'
+import type { TehlikeGirdisi } from '@/yontem/tehlike'
 
 export interface Sonuc {
   tam: TamCevaplar
@@ -25,12 +26,11 @@ export function sonucHesapla(
 ): Sonuc | null {
   const tam = tamCevaplar(taslak)
   if (!tam || ssEshm20 === null) return null
-  const d = degerlendir(
-    tam.cevaplar,
+  const t: TehlikeGirdisi =
     tdthSs === null
       ? { kaynak: 'eshm20', ss: ssEshm20, zemin: tam.zemin }
-      : { kaynak: 'tdth', ss: tdthSs, zemin: tam.zemin },
-  )
+      : { kaynak: 'tdth', ss: tdthSs, zemin: tam.zemin }
+  const d = tam.yontem === 'yigma' ? degerlendirYigma(tam.cevaplar, t) : degerlendir(tam.cevaplar, t)
   return { tam, d, ssEshm20, tdthSs, bolge, olculenBolgeler: bolgeler.filter((b) => b.tdthNokta > 0) }
 }
 

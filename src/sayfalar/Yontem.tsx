@@ -27,6 +27,24 @@ interface Dogrulama {
   veri: { ad: string; yazar: string; lisans: string; url: string }
 }
 
+/**
+ * spike/S3/gaziantep_yigma.py (2026-10-01). Veri NC/ND lisanslı olduğu için boru hattına girmez; yalnız bu toplu
+ * sayılar yayımlanır. Taban puanı tehlikeyi S1 bandının elverişsiz ucuyla (÷0,72) alır, uygulamanın kötü ucu gibi.
+ */
+const YIGMA_OLCUMU = {
+  url: 'https://doi.org/10.7910/DVN/OQCPWF',
+  n: 414,
+  pozitif: 72,
+  auc: { tabanPuani: 0.708, katSayisi: 0.515, ss: 0.762 },
+  /** [taban puanı, bina, ağır hasar ve üstü] */
+  tabanPuanlari: [
+    [90, 3, 1],
+    [100, 18, 7],
+    [110, 114, 40],
+    [120, 279, 24],
+  ],
+} as const
+
 const iki = ondalik(2)
 const uc = ondalik(3)
 const yuzde = new Intl.NumberFormat('tr-TR', { style: 'percent', maximumFractionDigits: 0 })
@@ -78,9 +96,42 @@ export function Yontem() {
           vermez; puanlar büyükten küçüğe sıralanır (A.2.1.8). {TEKIL_BINA_KAYDI}
         </p>
         <p>
-          Kapsam: betonarme, 1–7 serbest katlı binalar. Yığma, çelik, prefabrik ve 8 ya da daha fazla katlı
-          binalar bu yöntemle değerlendirilmez.
+          Kapsam: 1–7 serbest katlı betonarme binalar (Ek-A.2.1) ve 1–5 serbest katlı yığma binalar
+          (Ek-A.2.2). Çelik ve prefabrik binalar, 8 ya da daha fazla katlı betonarme ve 6 ya da daha fazla
+          katlı yığma binalar bu yöntemlerle değerlendirilmez.
         </p>
+      </Bolum>
+
+      <Bolum id="yigma" baslik="Yığma binalar">
+        <p>
+          Yükü duvarların taşıdığı binalar için yönetmelikte ayrı bir hızlı yöntem var (Ek-A.2.2). Puan aynı
+          denklemle toplanır: taban puanı kat sayısına ve tehlike bölgesine göre Tablo A.5’ten okunur;
+          duvarlar beton kolon ve hatılla kuşatılmışsa <Sayi>30</Sayi>, içinde donatı varsa <Sayi>60</Sayi>{' '}
+          puan eklenir; donatısız ve karma binalar ek puan almaz (A.2.2.4). Malzeme ve işçilik kalitesi,
+          mevcut hasar, planda düzensizlik, zemin kattaki duvar miktarı, yatay hatıl, pencerelerin düşey
+          düzeni, cepheye göre kat farkı ve yumuşak kat için puan düşülür (Tablo A.6–A.10).
+        </p>
+        <p>
+          Döşeme tipi, harç, duvarların birbirine ve döşemeye bağlantısından en az üçü olumsuzsa duvarların
+          düzlem dışına devrilme eğilimi olduğu kabul edilir ve <Sayi>10</Sayi> puan düşülür (A.2.2.9). Toprak
+          dam da <Sayi>10</Sayi> puan düşürür (A.2.2.13).
+        </p>
+        <p>Resmî metinde açık kalan üç yeri şöyle okuduk:</p>
+        <ul className="list-disc pl-5">
+          <li>
+            Tablo A.5’in başlığında yalnız S<sub>DS</sub> sınırları yazıyor, ama metin bölgenin zemin
+            sınıfıyla belirleneceğini söylüyor (A.2.2.2, A.2.2.3-12). Bölge betonarmedeki gibi Tablo A.2’den
+            bulunur; bölge II ve III tablonun aynı sütunudur.
+          </li>
+          <li>
+            Tablo A.8’in (planda olumsuzluklar) beş satırının başlığı basılmamış; hem Resmî Gazete ekinde hem
+            Bakanlığın 2019 metninde böyle. Satırları, yanındaki Tablo A.5 ve A.9 gibi 1–5 kat olarak okuduk.
+          </li>
+          <li>
+            Yığma bina türü bilinmiyorsa, betonarmedeki perde kuralı gibi ek puan vermeyen donatısız tür esas
+            alınır.
+          </li>
+        </ul>
       </Bolum>
 
       <Bolum id="tehlike" baslik="Deprem tehlikesi">
@@ -107,10 +158,11 @@ export function Yontem() {
 
       <Bolum id="bilmiyorum" baslik="“Bilmiyorum” cevapları">
         <p>
-          Perde sorusu bilinmiyorsa yönetmelik gereği perdesiz çerçeve kabul edilir (A.2.1.1). Diğer sorularda
-          “Bilmiyorum”, puanı iki uca açar: kusur varmış gibi hesaplanan elverişsiz uç ve yokmuş gibi
-          hesaplanan elverişli uç. Deprem tehlikesi aralığı da bu iki uca katılır. Öncelik elverişsiz uçtan
-          seçilir; belirsizlik sizi daha sonraki sıraya değil, daha önceki sıraya taşır.
+          Perde sorusu bilinmiyorsa yönetmelik gereği perdesiz çerçeve, yığma bina türü bilinmiyorsa donatısız
+          yığma kabul edilir (A.2.1.1). Diğer sorularda “Bilmiyorum”, puanı iki uca açar: kusur varmış gibi
+          hesaplanan elverişsiz uç ve yokmuş gibi hesaplanan elverişli uç. Deprem tehlikesi aralığı da bu iki
+          uca katılır. Öncelik elverişsiz uçtan seçilir; belirsizlik sizi daha sonraki sıraya değil, daha
+          önceki sıraya taşır.
         </p>
       </Bolum>
 
@@ -129,7 +181,8 @@ export function Yontem() {
           100, Bakanlığın hızlı değerlendirme rehberinde kullanılan sınırdır; YapiRisk bunu bir hüküm olarak
           değil, sıralamada bir işaret olarak kullanır. 50, en yüksek tehlike bölgesinde hiç kusuru olmayan
           6–7 katlı betonarme çerçevenin puanıdır: PP 50’nin altındaysa bina, yöntemin en elverişsiz kusursuz
-          binasından da düşük puan almıştır.
+          binasından da düşük puan almıştır. Yığmada aynı durumdaki 5 katlı donatısız binanın puanı{' '}
+          <Sayi>70</Sayi>; iki yöntemde de aynı sınırlar kullanılır.
         </p>
         <p>
           Bant sayısı bilerek üçte tutuldu. Aşağıdaki ölçüm yöntemin daha ince bir ayrımı desteklemediğini
@@ -215,6 +268,46 @@ export function Yontem() {
         )}
       </Bolum>
 
+      <Bolum id="yigma-isabet" baslik="Yığma binalarda ne kadar tuttu">
+        <p>
+          Yığma yöntemini aynı depremlerden sonra Gaziantep’te incelenen yığma binalarla sınadık (
+          <a href={YIGMA_OLCUMU.url}>Atasever vd. veri seti</a>, CC BY-NC-ND 4.0; lisans gereği yalnız toplu
+          sonuçları yayımlıyoruz). 1–5 katlı <Sayi>{YIGMA_OLCUMU.n}</Sayi> binanın{' '}
+          <Sayi>{YIGMA_OLCUMU.pozitif}</Sayi>’si ağır hasar görmüş ya da yıkılmıştı. Veri setinde zemin
+          sınıfı, yığma türü ve formdaki gözlem soruları yok; ölçülen şey yalnız taban puanıdır, yani kat
+          sayısı ile deprem tehlikesi.
+        </p>
+        <Tablo
+          baslik={`Ağır hasarı ayırma gücü (AUC), ${YIGMA_OLCUMU.n} yığma bina`}
+          sutunlar={['Puan', 'AUC']}
+          sayisal={[1]}
+          satirlar={[
+            ['RYTEİE yığma taban puanı', uc.format(YIGMA_OLCUMU.auc.tabanPuani)],
+            ['Yalnız kat sayısı', uc.format(YIGMA_OLCUMU.auc.katSayisi)],
+            ['Yalnız ESHM20 kısa periyot ivmesi', uc.format(YIGMA_OLCUMU.auc.ss)],
+          ]}
+        />
+        <p>
+          <strong className="font-medium">Okuma:</strong> Betonarme ölçümünün tersine burada ayırmayı deprem
+          tehlikesi yaptı: faya yakın Nurdağı’nda binaların <Sayi>%55</Sayi>’i ağır hasar gördü, Nizip’te{' '}
+          <Sayi>%8</Sayi>’i. Binaların çoğu tek katlı olduğu için kat sayısı tek başına ayırmadı. Taban
+          puanının iki kademeli tehlike ayrımı, ivmenin kendisinden biraz daha az bilgi taşıyor.
+        </p>
+        <Tablo
+          baslik="Taban puanına göre ağır hasar oranı (kusurlar veride yok)"
+          sutunlar={['Taban puanı', 'Bina', 'Ağır hasar ve üstü', 'Oran']}
+          sayisal={[1, 2, 3]}
+          satirlar={YIGMA_OLCUMU.tabanPuanlari.map(([tp, n, agir]) => [tp, n, agir, yuzde.format(agir / n)])}
+        />
+        <p>
+          <strong className="font-medium">Dikkat:</strong> Kusur bilgisi olmadan bu binaların neredeyse hepsi
+          düşük öncelik bandına düşerdi (PP ≥ 100). Taban puanı tek başına, yüksek tehlike bölgesindeki tek
+          katlı yığma binayı bile düşük önceliğe koyar; o grupta ağır hasar oranı <Sayi>%35</Sayi>’ti. Yığma
+          binada sonucu anlamlı kılan duvar, harç, bağlantı ve çatı sorularının cevaplarıdır; bu soruların
+          etkisi resmî tablodan gelir, sınanmadı.
+        </p>
+      </Bolum>
+
       <Bolum id="kaynaklar" baslik="Kaynaklar">
         <ul className="list-disc pl-5">
           <li>
@@ -228,6 +321,10 @@ export function Yontem() {
           <li>
             Hariri-Ardebili (2024), ACI 133 hasar veri seti.{' '}
             <a href="https://zenodo.org/records/13386343">zenodo.org/records/13386343</a>
+          </li>
+          <li>
+            Atasever vd. (2025), Structural Damage Assessment Dataset: 6 Feb 2023 Kahramanmaraş.{' '}
+            <a href={YIGMA_OLCUMU.url}>doi:10.7910/DVN/OQCPWF</a>
           </li>
         </ul>
       </Bolum>

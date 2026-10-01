@@ -78,8 +78,8 @@ lisanslı kuruluşa başvuru yolunu anlatır. "Riskli/güvenli" hükmü vermez.
 
 ## Kapsam Dışı (v1)
 
-- **Yığma, çelik, prefabrik ve 8+ katlı binalar (K-8):** yöntem kapsamı dışında mesajı + lisanslı kuruluş yolu.
-  Yığma (RYTEİE Ek-A.2.2, 1–5 kat) v1.1 adayı.
+- **Çelik, prefabrik, 8+ katlı betonarme ve 6+ katlı yığma binalar (K-8):** yöntem kapsamı dışında mesajı +
+  lisanslı kuruluş yolu. Yığma (RYTEİE Ek-A.2.2, 1–5 kat) 2026-10-01'de eklendi (Faz 10).
 - **Sucuoğlu–Yazgan–Yakut çapraz kontrolü (K-4 revize):** yalnız 3–6 kat, tehlikeden bağımsız, test edilmedi;
   ikinci puan kullanıcıyı karıştırır.
 - Kapı numarasıyla adres araması (S4: Manisa'da veri yok).
@@ -102,7 +102,7 @@ Scryne 09-29'da yön kararlarını verdi (ad YapiRisk, önce bireysel sonra B2B)
 | K-5 | **Tehlike iki kademeli.** Varsayılan ESHM20 + S1 bandı (gerçek SS ∈ SS_ESHM20 / [1,25 … 0,72]; **2026-09-30 İzmir'deki 10 noktayla [1,34 … 0,72]**, güvensiz yön sınırı değişmedi); bant iki bölgeye düşerse puan aralık olur, kötü durum öne çıkar. TDTH SDS'i girilirse tek değer. | S1: ESHM20 TDTH'nin ort. %11 altında, 3/10 noktada bölge güvensiz yönde kayıyor. TDTH'nin yasal açık kaynağı yok (`arastirma/06`); tek yol CIMER (taslak `docs/cimer-dilekce-taslak.md`). |
 | K-6 | **Fark "ölçülüp açıkça yazılmış isabet"; en fazla 3 bant.** Yumuşak kat formda en görünür soru. | S3: ACI-133'te kısmi RYTEİE AUC ≈ 0,70 = kat sayısı; 5 kusur ve tehlike terimi test edilemedi. 5 bant sahte hassasiyet olur. |
 | K-7 | **Bina bulma: mahalle ara → harita → binaya tıkla.** (Finalizasyonda K-13: arama Photon yerine yerel OSM mahalle dizini.) Microsoft ayak izi z14 parçalı gzip (Manisa 474.953 bina, 15,3 MB). | S4: OSM'de il genelinde 779 kapı no, sokakların %8'i adlı; mahalle araması Photon 18/18. |
-| K-8 | **v1 yalnız betonarme, 1–7 serbest kat.** Diğerleri "kapsam dışı" mesajı alır. | RYTEİE Ek-A betonarme yöntemi 1–7 kat içindir; yığma ayrı yöntem (v1.1). 4 haftaya sığdırmak. |
+| K-8 | **v1 yalnız betonarme, 1–7 serbest kat.** Diğerleri "kapsam dışı" mesajı alır. **Revize 2026-10-01 (Faz 10, Scryne):** yığma 1–5 kat Ek-A.2.2 ile eklendi; çelik, prefabrik, 8+ kat betonarme ve 6+ kat yığma kapsam dışı. | RYTEİE Ek-A betonarme yöntemi 1–7 kat içindir; yığma ayrı yöntem (v1.1). 4 haftaya sığdırmak. |
 | K-9 | **Zemin sınıfı "bilmiyorum" → kötü durum:** bölge için ZC/ZD/ZE grubu, SDS için bu üçünden en büyük Fs. Taşıyıcı sistem "bilmiyorum" → BAÇ (resmî kural A.2.1.1). USGS Vs30 yalnız ipucu olarak gösterilir. | Çoğu kullanıcı zemini bilmez; bilinmeyen belirsizlik güvenli yöne değil öncelik yönüne çözülür, resmî metnin sistem kuralıyla aynı mantık. |
 | K-10 | **Yapım yılı puana girmez; isteğe bağlı bilgi olarak yönetmelik dönemi notunu besler.** | RYTEİE yılı kullanmıyor; S3'te yaş tek başına AUC 0,595. Resmî yöntemi değiştirmek "resmî ve açık" farkını bozar. |
 | K-11 | **Hedef yayın: public repo + statik site** (ör. GitHub Pages). Yayın anı `yayin-oncesi` kapısı ve Scryne'ın o anki onayıyla; repo ve site kişisel veri taşımaz, commit kimliği noreply. NC/ND lisanslı ham veri repoya girmez. | "Bitti" 5 kişinin kendi cihazından kullanmasını gerektiriyor; isabet sayfası kamuya açık olmalı. |

@@ -10,9 +10,12 @@ import {
   BANT_SINIRI,
   DONEM_NOTU,
   DONEM_UYARISI,
+  ISABET_OZETI,
   ondalik,
   PARAMETRE_ADI,
   PROFESYONEL_YOL,
+  SISTEM_KABULU,
+  TABLO_KAYNAGI,
   tamsayi,
   TEKIL_BINA_KAYDI,
   tehlikeFarkiNotu,
@@ -142,9 +145,7 @@ export function SonucKarti({ sonuc, merkez, onTdth, onYazdir }: Props) {
             </tr>
           </tfoot>
         </table>
-        <p className="mt-1.5 font-mono text-mono-sm text-muted-foreground">
-          Kaynak: RYTEİE Ek-A Tablo A.1 (taban, sistem), A.3–A.4 (kusurlar)
-        </p>
+        <p className="mt-1.5 font-mono text-mono-sm text-muted-foreground">{TABLO_KAYNAGI[d.yontem]}</p>
       </section>
 
       <section aria-labelledby="belirsizlik-baslik" className="flex flex-col gap-2">
@@ -174,13 +175,11 @@ export function SonucKarti({ sonuc, merkez, onTdth, onYazdir }: Props) {
         {d.belirsiz.length > 0 && (
           <p className="text-body-sm text-pretty">
             “Bilmiyorum” dediğiniz {d.belirsiz.length} soru puanı iki uca açıyor:{' '}
-            {d.belirsiz.map((p) => PARAMETRE_ADI[p as keyof typeof PARAMETRE_ADI]).join(', ')}.
+            {d.belirsiz.map((p) => PARAMETRE_ADI[p]).join(', ')}.
           </p>
         )}
-        {tam.cevaplar.sistem === 'bilmiyorum' && (
-          <p className="text-body-sm text-pretty text-muted-foreground">
-            Perde sorusu “Bilmiyorum”: yönetmelik gereği perdesiz çerçeve kabul edildi (RYTEİE A.2.1.1).
-          </p>
+        {(tam.yontem === 'betonarme' ? tam.cevaplar.sistem : tam.cevaplar.tur) === 'bilmiyorum' && (
+          <p className="text-body-sm text-pretty text-muted-foreground">{SISTEM_KABULU[tam.yontem]}</p>
         )}
         {tam.malzemeVarsayildi && (
           <p className="text-body-sm text-pretty text-muted-foreground">
@@ -195,11 +194,7 @@ export function SonucKarti({ sonuc, merkez, onTdth, onYazdir }: Props) {
         <h3 id="okuma-baslik" className="text-label text-muted-foreground">
           Bu sonucu nasıl okumalı
         </h3>
-        <p className="text-body-sm text-pretty">
-          Sonuç binanız hakkında bir hüküm değil; profesyonel incelemede sıranın neresinde olduğunu gösterir.
-          Yöntemi 2023 depreminden 154 betonarme binada sınadık: ağır hasar görenleri rastgele sıralamadan
-          belirgin iyi ayırdı, ama yalnız kat sayısına bakmak da aynı ayırmayı yaptı.
-        </p>
+        <p className="text-body-sm text-pretty">{ISABET_OZETI[d.yontem]}</p>
         <p className="text-body-sm text-pretty text-muted-foreground">{TEKIL_BINA_KAYDI}</p>
         <a
           href={`${import.meta.env.BASE_URL}yontem.html`}

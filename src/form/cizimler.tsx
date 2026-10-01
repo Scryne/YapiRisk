@@ -502,3 +502,274 @@ function Egim({ dik }: { dik: boolean }) {
 }
 export const EgimYok = () => <Egim dik={false} />
 export const EgimVar = () => <Egim dik />
+
+// ——— Yığma binalar: RYTEİE 2019 Şekil A.2'den (ek s. 38) yeniden çizildi. Taralı = yığma duvar, dolu = betonarme. ———
+
+/** Dikdörtgen boşluk: sol x, genişlik, yükseklik ve bulunduğu katın döşemesinden yüksekliği. */
+type Bosluk = [x: number, genislik: number, yukseklik: number, alt: number]
+
+interface Cephe {
+  x: number
+  /** Zemin çizgisi. */
+  y: number
+  w: number
+  katH: number
+  /** Her kattaki boşluklar, alttan yukarı. */
+  katlar: Bosluk[][]
+  tarama: string
+}
+
+/** Yığma cephe: taralı duvar, boşluklar arkaplanı gösterir, kat çizgileri ince. */
+function cephe({ x, y, w, katH, katlar, tarama }: Cephe) {
+  const ust = y - katlar.length * katH
+  const delikler = katlar.flatMap((k, i) =>
+    k.map(([bx, bw, bh, alt]) => [bx, y - i * katH - alt - bh, bw, bh] as [number, number, number, number]),
+  )
+  return (
+    <>
+      <path
+        d={delikliDuvar(x, ust, w, katlar.length * katH, delikler)}
+        fill={tarama}
+        fillRule="evenodd"
+        stroke="none"
+      />
+      {delikler.map(([a, b, c, d]) => (
+        <rect key={`${a}-${b}`} x={a} y={b} width={c} height={d} {...cizgi()} />
+      ))}
+      {katlar.slice(1).map((_, i) => (
+        <line key={i} x1={x} y1={y - (i + 1) * katH} x2={x + w} y2={y - (i + 1) * katH} {...cizgi()} />
+      ))}
+      <rect x={x} y={ust} width={w} height={katlar.length * katH} {...cizgi(KALIN)} />
+    </>
+  )
+}
+
+/** Şekil A.2 "Yığma bina türü": tek katlı duvar, bir kapı ve bir pencere. */
+const KAPI_PENCERE: Bosluk[] = [
+  [36, 12, 26, 0],
+  [66, 16, 12, 14],
+]
+
+export const YigmaDonatisiz = () => (
+  <Svg viewBox="0 0 120 90">
+    {(t) => (
+      <>
+        {cephe({ x: 24, y: 80, w: 72, katH: 40, katlar: [KAPI_PENCERE], tarama: t })}
+        <Zemin x1={12} x2={108} y={80} />
+      </>
+    )}
+  </Svg>
+)
+
+export const YigmaDonatili = () => (
+  <Svg viewBox="0 0 120 90">
+    {(t) => (
+      <>
+        {cephe({ x: 24, y: 80, w: 72, katH: 40, katlar: [KAPI_PENCERE], tarama: t })}
+        {/* Duvar içindeki düşey ve yatay donatı */}
+        {[29, 54, 61, 90].map((x) => (
+          <line key={x} x1={x} y1={42} x2={x} y2={78} {...cizgi()} />
+        ))}
+        <line x1={26} y1={48} x2={94} y2={48} {...cizgi()} />
+        <Zemin x1={12} x2={108} y={80} />
+      </>
+    )}
+  </Svg>
+)
+
+export const YigmaKusatilmis = () => (
+  <Svg viewBox="0 0 120 90">
+    {(t) => (
+      <>
+        {cephe({ x: 24, y: 80, w: 72, katH: 40, katlar: [KAPI_PENCERE], tarama: t })}
+        {/* Betonarme kuşatma: köşe ve ara kolonları, üst hatıl */}
+        {[24, 56, 92].map((x) => (
+          <rect key={x} x={x} y={40} width={4} height={40} fill="currentColor" />
+        ))}
+        <rect x={24} y={40} width={72} height={4} fill="currentColor" />
+        <Zemin x1={12} x2={108} y={80} />
+      </>
+    )}
+  </Svg>
+)
+
+export const YigmaKarma = () => (
+  <Svg viewBox="0 0 120 90">
+    {(t) => (
+      <>
+        {cerceve({ x: 20, y: 80, acikliklar: [20, 20], katlar: [20, 20], tarama: t, dolgu: hep })}
+        {cephe({ x: 60, y: 80, w: 40, katH: 20, katlar: [[[70, 12, 9, 6]], [[70, 12, 9, 6]]], tarama: t })}
+        <Zemin x1={8} x2={112} y={80} />
+      </>
+    )}
+  </Svg>
+)
+
+// Planda düzensizlik: yığmada üç düzey (Şekil A.2), düzenli çizim betonarmeyle ortak.
+export const PlanYamukL = () => (
+  <Svg viewBox="0 0 120 70">
+    {() => (
+      <>
+        <path d="M8 56 L20 14 H44 L54 56 Z" {...cizgi(KALIN)} />
+        <path d="M66 14 H84 V38 H108 V56 H66 Z" {...cizgi(KALIN)} />
+      </>
+    )}
+  </Svg>
+)
+
+export const PlanCokGirintili = () => (
+  <Svg viewBox="0 0 120 70">
+    {() => (
+      <path d="M10 56 V42 H24 V30 H38 V16 H56 V28 H70 V20 H86 V36 H100 V44 H110 V56 Z" {...cizgi(KALIN)} />
+    )}
+  </Svg>
+)
+
+// Duvar miktarı: zemin kat cephesi; boşluk uzunluğu / cephe uzunluğu (BO) çizimde de bu oranda.
+function DuvarMiktari({ bosluklar }: { bosluklar: Bosluk[] }) {
+  return (
+    <Svg viewBox="0 0 120 90">
+      {(t) => (
+        <>
+          {cephe({ x: 20, y: 80, w: 80, katH: 36, katlar: [bosluklar], tarama: t })}
+          <Zemin x1={8} x2={112} y={80} />
+        </>
+      )}
+    </Svg>
+  )
+}
+/** BO = 22 / 80 ≈ 0,28 */
+export const DuvarCok = () => (
+  <DuvarMiktari
+    bosluklar={[
+      [32, 10, 24, 0],
+      [66, 12, 12, 12],
+    ]}
+  />
+)
+/** BO = 40 / 80 = 0,5 */
+export const DuvarOrta = () => (
+  <DuvarMiktari
+    bosluklar={[
+      [26, 14, 12, 12],
+      [53, 12, 24, 0],
+      [80, 14, 12, 12],
+    ]}
+  />
+)
+/** BO = 58 / 80 ≈ 0,73 */
+export const DuvarAz = () => (
+  <DuvarMiktari
+    bosluklar={[
+      [24, 28, 26, 0],
+      [62, 30, 26, 0],
+    ]}
+  />
+)
+
+// Düşey boşluk düzeni: iki katlı cephe, pencerelerin alt alta gelişi.
+function Bosluklar({ alt, ust }: { alt: Bosluk[]; ust: Bosluk[] }) {
+  return (
+    <Svg viewBox="0 0 120 90">
+      {(t) => (
+        <>
+          {cephe({ x: 22, y: 82, w: 76, katH: 28, katlar: [alt, ust], tarama: t })}
+          <Zemin x1={10} x2={110} y={82} />
+        </>
+      )}
+    </Svg>
+  )
+}
+const pencere = (x: number): Bosluk => [x, 12, 12, 9]
+export const BoslukDuzenli = () => (
+  <Bosluklar
+    alt={[pencere(30), [54, 12, 20, 0], pencere(78)]}
+    ust={[pencere(30), pencere(54), pencere(78)]}
+  />
+)
+export const BoslukAzDuzenli = () => (
+  <Bosluklar
+    alt={[pencere(30), [54, 12, 20, 0], pencere(78)]}
+    ust={[pencere(30), pencere(62), pencere(78)]}
+  />
+)
+export const BoslukDuzensiz = () => (
+  <Bosluklar
+    alt={[pencere(28), [48, 12, 20, 0], pencere(80)]}
+    ust={[pencere(38), pencere(66), [84, 8, 16, 7]]}
+  />
+)
+
+// Yatay hatıl: duvarı saran betonarme kuşak (dolu bant).
+function Hatil({ konum }: { konum: 'pencere' | 'duvar' | null }) {
+  return (
+    <Svg viewBox="0 0 120 90">
+      {(t) => (
+        <>
+          {cephe({ x: 24, y: 80, w: 72, katH: 40, katlar: [KAPI_PENCERE], tarama: t })}
+          {konum === 'pencere' && <rect x={24} y={51} width={72} height={4} fill="currentColor" />}
+          {konum === 'duvar' && <rect x={24} y={40} width={72} height={4} fill="currentColor" />}
+          <Zemin x1={12} x2={108} y={80} />
+        </>
+      )}
+    </Svg>
+  )
+}
+export const HatilPencereUstu = () => <Hatil konum="pencere" />
+export const HatilDuvarUstu = () => <Hatil konum="duvar" />
+export const HatilYok = () => <Hatil konum={null} />
+
+// Cepheye göre kat farklılığı: yan görünüş; sol yanı toprağa gömülü bina solda 1, sağda 2 kat gösterir.
+function CepheKatFarki({ var: varMi }: { var: boolean }) {
+  return (
+    <Svg viewBox="0 0 120 90">
+      {(t) =>
+        varMi ? (
+          <>
+            {cephe({
+              x: 40,
+              y: 80,
+              w: 44,
+              katH: 24,
+              katlar: [[[56, 12, 10, 8]], [[56, 12, 10, 8]]],
+              tarama: t,
+            })}
+            <path d="M8 56 H40 V80" {...cizgi()} opacity={0.7} />
+            <path d="M84 80 H112" {...cizgi()} opacity={0.7} />
+            <Yazi x={24} y={50}>
+              1 kat
+            </Yazi>
+            <Yazi x={98} y={50}>
+              2 kat
+            </Yazi>
+          </>
+        ) : (
+          <>
+            {cephe({
+              x: 40,
+              y: 80,
+              w: 44,
+              katH: 24,
+              katlar: [[[56, 12, 10, 8]], [[56, 12, 10, 8]]],
+              tarama: t,
+            })}
+            <Zemin x1={8} x2={112} y={80} />
+          </>
+        )
+      }
+    </Svg>
+  )
+}
+export const CepheKatFarkiYok = () => <CepheKatFarki var={false} />
+export const CepheKatFarkiVar = () => <CepheKatFarki var />
+
+// Yumuşak kat (yığma): zemin katta duvarın yerini geniş boşluk almış.
+export const YigmaYumusakYok = () => (
+  <Bosluklar
+    alt={[pencere(30), [54, 12, 20, 0], pencere(78)]}
+    ust={[pencere(30), pencere(54), pencere(78)]}
+  />
+)
+export const YigmaYumusakVar = () => (
+  <Bosluklar alt={[[28, 64, 22, 0]]} ust={[pencere(30), pencere(54), pencere(78)]} />
+)

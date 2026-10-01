@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Form } from '@/form/Form'
 import { kayitOku, kayitSil, kayitYaz } from '@/form/kayit'
 import { TemizleDugmesi } from '@/form/TemizleDugmesi'
-import { ADIMLAR, bosMu, bosTaslak, type Taslak } from '@/form/taslak'
+import { adimlar, bosMu, bosTaslak, type Taslak } from '@/form/taslak'
 import { cn } from '@/lib/utils'
 import { Rapor } from '@/sonuc/Rapor'
 import { sonucHesapla } from '@/sonuc/sonuc'
@@ -331,9 +331,9 @@ export default function App() {
                   <Button ref={devamRef} className="h-11" onClick={() => setFormda(true)}>
                     {bosMu(taslak)
                       ? 'Sorulara başla'
-                      : adim >= ADIMLAR.length
+                      : adim >= adimlar(taslak).length
                         ? 'Cevaplarımı göster'
-                        : `Sorulara devam et (${adim + 1} / ${ADIMLAR.length})`}
+                        : `Sorulara devam et (${adim + 1} / ${adimlar(taslak).length})`}
                   </Button>
                 </>
               )}

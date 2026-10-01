@@ -67,15 +67,24 @@ test('form klavyeyle baştan sona dolduruluyor; ön sonuç motorla aynı', async
   expect(hatalar).toEqual([])
 })
 
-test('yığma ve 8+ kat kapsam dışı mesajına düşüyor; cevap değiştirilince devam ediliyor', async ({
+test('çelik, 6+ katlı yığma ve 8+ kat kapsam dışı mesajına düşüyor; cevap değiştirilince devam ediliyor', async ({
   page,
 }) => {
   await formuAc(page)
-  await page.getByRole('radio', { name: /^Yığma/ }).check()
+  await page.getByRole('radio', { name: /^Çelik/ }).check()
   await page.getByRole('button', { name: 'İleri' }).click()
   await expect(page.getByRole('heading', { name: 'Bu bina yöntemin kapsamı dışında' })).toBeFocused()
-  await expect(page.getByText('yalnız betonarme binalar içindir')).toBeVisible()
+  await expect(page.getByText('betonarme ve yığma binalar içindir')).toBeVisible()
   await page.getByRole('button', { name: 'Cevabımı değiştir' }).click()
+
+  await page.getByRole('radio', { name: /^Yığma/ }).check()
+  await page.getByRole('button', { name: 'İleri' }).click()
+  await page.getByRole('radio', { name: '6', exact: true }).check()
+  await page.getByRole('button', { name: 'İleri' }).click()
+  await expect(page.getByText('1 ile 5 serbest katlı yığma')).toBeVisible()
+  await page.getByRole('button', { name: 'Cevabımı değiştir' }).click()
+  await expect(page.getByRole('radio', { name: '6', exact: true })).toBeChecked()
+  await page.getByRole('button', { name: 'Geri' }).click()
 
   await page.getByRole('radio', { name: /^Betonarme/ }).check()
   await page.getByRole('button', { name: 'İleri' }).click()
@@ -86,6 +95,57 @@ test('yığma ve 8+ kat kapsam dışı mesajına düşüyor; cevap değiştirili
   await page.getByRole('radio', { name: '5', exact: true }).check()
   await page.getByRole('button', { name: 'İleri' }).click()
   await expect(page.getByText('Soru 3 / 13')).toBeVisible()
+})
+
+test('yığma bina Şekil A.2 sorularıyla değerlendiriliyor; sonuç yığma motoruyla aynı', async ({ page }) => {
+  const hatalar: string[] = []
+  page.on('console', (m) => m.type() === 'error' && hatalar.push(m.text()))
+  page.on('pageerror', (e) => hatalar.push(e.message))
+  await formuAc(page)
+
+  // Cevaplar src/form/taslak.test.ts "e2e/form.spec.ts yığma cevap seti" ile aynı.
+  const cevaplar: string[] = [
+    'Yığma',
+    '2',
+    'Bilmiyorum', // bina türü
+    'Hayır', // yumuşak kat
+    'Evet', // mevcut hasar
+    'Orta', // malzeme
+    'Orta', // işçilik
+    'Çamur',
+    'Düzenli', // plan
+    'Üçte biri ile üçte ikisi arası',
+    'Düzenli', // pencereler
+    'Yok', // hatıl
+    'Hayır', // cephe kat farkı
+    'Betonarme', // döşeme
+    'Zayıf', // duvar-duvar
+    'Bilmiyorum', // duvar-döşeme
+    'Toprak dam',
+    'Yok, dört yanı açık',
+    'Bilmiyorum', // zemin
+  ]
+  for (const [i, ad] of cevaplar.entries()) {
+    await expect(page.getByText(`Soru ${i + 1} / ${i === 0 ? 13 : 20}`)).toBeVisible()
+    await page.getByRole('radio', { name: ad, exact: true }).check()
+    await page.getByRole('button', { name: 'İleri' }).click()
+  }
+  await expect(page.getByText('Soru 20 / 20 · isteğe bağlı')).toBeVisible()
+  await page.getByRole('button', { name: 'Cevapları gözden geçir' }).click()
+
+  await expect(page.getByRole('heading', { name: 'Sonuç', exact: true })).toBeFocused()
+  await expect(page.getByTestId('pp-araligi')).toHaveText('50 – 70')
+  await expect(page.getByTestId('bant')).toContainText('Orta öncelik')
+  const kart = page.getByTestId('sonuc-karti')
+  await expect(kart.getByText('A.6–A.10 (olumsuzluklar)')).toBeVisible()
+  await expect(kart.getByRole('rowheader', { name: 'Toprak dam' })).toBeVisible()
+  await expect(kart.getByText(/puanı iki uca açıyor: Düzlem dışı davranış\./)).toBeVisible()
+  await expect(kart.getByText('donatısız yığma kabul edildi')).toBeVisible()
+  await expect(kart.getByText(/414 yığma binada/)).toBeVisible()
+  // Özet yığma sorularını listeliyor, betonarme sorularını değil.
+  await expect(page.getByRole('button', { name: 'Değiştir : Yığma bina türü' })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Değiştir : Perde duvar' })).toHaveCount(0)
+  expect(hatalar).toEqual([])
 })
 
 test('cevaplar tarayıcıda kalıyor; Temizle onayla siliyor', async ({ page }) => {

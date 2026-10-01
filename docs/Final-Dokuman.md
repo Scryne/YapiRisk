@@ -46,7 +46,8 @@ pipeline/ (Python, derleme anında, ağ erişimi burada)
   her çıktı: public/data/<bolge>/kaynak.json (lisans, atıf, sürüm, sha256)
 
 src/ (istemci, ağ erişimi yalnız statik dosyalar + taban harita parçaları)
-  yontem/     ryteie-2019.json, ryteie.ts (puan), tehlike.ts (Fs/F1, bölge, S1 bandı), bant.ts (K-12)
+  yontem/     ryteie-2019.json, ryteie.ts (puan), tehlike.ts (Fs/F1, bölge, S1 bandı), bant.ts (K-12);
+              yığma (Faz 10): ryteie-2019-yigma.json, yigma.ts
   veri/       bölge paketini yükleyen katman (tehlike ızgarası, mahalle dizini, ayak izi parçaları)
   harita/     MapLibre, ayak izi katmanı, bina seçimi (poligon merkezi) + "noktadan seç" yedeği
   form/       11 soru, Şekil A.1 tabanlı SVG çizimler, "bilmiyorum"
@@ -66,7 +67,7 @@ en iyi/en kötü) → PP aralığı → bant (kötü durum) → sonuç ve rapor.
 **Hesap sözleşmesi (K-9, K-12):**
 - Tehlike: SS_TDTH ∈ [SS_ESHM20 / 1,34 ; SS_ESHM20 / 0,72] (Manisa + İzmir, 20 nokta); kullanıcı TDTH raporundaki S_S'i girerse bu adım atlanır (K-17).
 - Zemin "bilmiyorum": bölge için ZC/ZD/ZE grubu; SDS için ZC, ZD, ZE Fs'lerinden en büyüğü.
-- Sistem "bilmiyorum": BAÇ (A.2.1.1). Diğer kusurlarda "bilmiyorum": var/yok iki uç hesaplanır.
+- Sistem "bilmiyorum": BAÇ (A.2.1.1); yığma türü "bilmiyorum": donatısız (Faz 10). Diğer kusurlarda "bilmiyorum": var/yok iki uç hesaplanır.
 - PP aralığı [PP_min, PP_max]; bant PP_min ile belirlenir, aralık iki banda yayılıyorsa sonuç kartında yazar.
 
 ## Kararlar (finalizasyon)
@@ -97,7 +98,7 @@ en iyi/en kötü) → PP aralığı → bant (kötü durum) → sonuç ve rapor.
 | ESHM20 TDTH'den sapıyor | Ölçüldü (S1): ort. %11 düşük, 3/10 bölge değişimi | Bant (K-5), TDTH SDS girişi, kötü durum öne; CIMER başvurusu Scryne'da |
 | Yöntemin ayırma gücü sınırlı | Ölçüldü (S3): AUC ≈ 0,70 ≈ kat sayısı | 3 bant (K-6), isabet sayfası, "öncelik" dili |
 | Kullanıcı kusurları yanlış işaretler | Ölçülmedi | Şekil A.1 çizimleri, "bilmiyorum" iki uç hesap; Faz son kullanım testinde "sonucu doğru okudu mu" ile gözlenir |
-| Yöntem kapsamı dışı binalar (yığma, 8+ kat) | Bilinçli | Formun ilk sorularında ayıklanır, kapsam dışı mesajı (K-8) |
+| Yöntem kapsamı dışı binalar (çelik, prefabrik, 8+ kat BA, 6+ kat yığma) | Bilinçli | Formun ilk sorularında ayıklanır, kapsam dışı mesajı (K-8) |
 | Kişisel veri | Tasarımla kapalı (K-1, K-13, K-16) | Arama ve hesap istemcide; dışarı yalnız taban harita parçası istekleri, kullanıcı açarsa MapTiler uydu karoları (aydınlatma notunda) |
 | Yasal çerçeve (6306) | Araştırıldı | "Tespit değildir" feragati, yönetmeliğin "tekil binada kullanılamaz" kaydı, lisanslı kuruluş yolu |
 | Veri kaynağı değişir (EFEHR platform, Microsoft sürüm) | Bilinçli | Paketler sürümlü ve repoda; boru hattı yeniden üretilebilir, `kaynak.json` sha256 |
@@ -106,5 +107,5 @@ en iyi/en kötü) → PP aralığı → bant (kötü durum) → sonuç ve rapor.
 
 ## Kapsam Dışı
 
-`docs/Proje-Fikri.md` "Kapsam Dışı (v1)" bölümü geçerlidir (yığma ve 8+ kat, ikinci yöntem, kapı numarası
+`docs/Proje-Fikri.md` "Kapsam Dışı (v1)" bölümü geçerlidir (çelik, prefabrik, kat sınırı aşan binalar, ikinci yöntem, kapı numarası
 araması, fotoğraf/ML/Street View, hesap ve sunucu, B2B, Manisa dışı iller, mobil uygulama, resmî hüküm).

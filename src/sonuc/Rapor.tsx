@@ -2,7 +2,7 @@
 // renkli zemin yok (DESIGN.md "Rapor"). Tarayıcıda üretilir, hiçbir yere gönderilmez (K-1).
 import { useState } from 'react'
 import { cevapEtiketi, KAT_SEVIYESI, SORULAR } from '@/form/sorular'
-import { ADIMLAR, type Taslak } from '@/form/taslak'
+import { adimlar, type Taslak } from '@/form/taslak'
 import type { Secim } from '@/harita/tipler'
 import { BantRozeti } from './BantRozeti'
 import {
@@ -11,13 +11,16 @@ import {
   BANT_SINIRI,
   DONEM_NOTU,
   DONEM_UYARISI,
+  ISABET_RAPORU,
   ondalik,
   PARAMETRE_ADI,
-  PARAMETRE_KAYNAGI,
+  parametreKaynagi,
   PROFESYONEL_YOL,
   tamsayi,
+  SISTEM_KABULU,
   TEKIL_BINA_KAYDI,
   tehlikeFarkiNotu,
+  YONTEM_ADI,
   ZEMIN_ADI,
 } from './metinler'
 import { katkiSatirlari, type Sonuc } from './sonuc'
@@ -47,7 +50,7 @@ export function Rapor({ sonuc, secim, taslak, bolgeAdi }: Props) {
   const ikiUc = d.kotu.pp !== d.iyi.pp
   // Raporun tarihi: sayfanın açıldığı an (her çizimde değişmesin).
   const [bugun] = useState(() => new Date())
-  const satirlar = ADIMLAR.flatMap((ad) => {
+  const satirlar = adimlar(taslak).flatMap((ad) => {
     const soru = SORULAR[ad]
     const satir = { soru, deger: soru.oku(taslak) }
     return ad === 'nizam' && (taslak.nizam === 'bitisik' || taslak.nizam === 'kosede')
@@ -60,7 +63,7 @@ export function Rapor({ sonuc, secim, taslak, bolgeAdi }: Props) {
       <header className="flex items-baseline justify-between border-b-2 border-paper-ink pb-2">
         <div>
           <h1 className="text-[16pt] font-semibold">YapiRisk · Deprem riski ön değerlendirmesi</h1>
-          <p>RYTEİE 2019 Ek-A (betonarme) hızlı değerlendirme yöntemiyle profesyonel inceleme önceliği</p>
+          <p>{YONTEM_ADI[d.yontem]} hızlı değerlendirme yöntemiyle profesyonel inceleme önceliği</p>
         </div>
         <p className="shrink-0 font-mono">{tarih.format(bugun)}</p>
       </header>
@@ -105,7 +108,7 @@ export function Rapor({ sonuc, secim, taslak, bolgeAdi }: Props) {
                 {s.parametre === 'tabanPuani' &&
                   ` (${tam.cevaplar.kat} kat, bölge ${d.tehlike.bolgeKotu}${d.tehlike.bolgeIyi !== d.tehlike.bolgeKotu ? `–${d.tehlike.bolgeIyi}` : ''})`}
               </td>
-              <td className="py-0.5 font-mono text-[8pt]">{PARAMETRE_KAYNAGI[s.parametre]}</td>
+              <td className="py-0.5 font-mono text-[8pt]">{parametreKaynagi(d.yontem, s.parametre)}</td>
               <td className="py-0.5 text-right font-mono">{tamsayi.format(s.kotu)}</td>
               {ikiUc && <td className="py-0.5 text-right font-mono">{tamsayi.format(s.iyi)}</td>}
             </tr>
@@ -154,9 +157,11 @@ export function Rapor({ sonuc, secim, taslak, bolgeAdi }: Props) {
       </dl>
       {d.belirsiz.length > 0 && (
         <p className="mt-1">
-          “Bilmiyorum” cevapları puanı iki uca açtı:{' '}
-          {d.belirsiz.map((p) => PARAMETRE_ADI[p as keyof typeof PARAMETRE_ADI]).join(', ')}.
+          “Bilmiyorum” cevapları puanı iki uca açtı: {d.belirsiz.map((p) => PARAMETRE_ADI[p]).join(', ')}.
         </p>
+      )}
+      {(tam.yontem === 'betonarme' ? tam.cevaplar.sistem : tam.cevaplar.tur) === 'bilmiyorum' && (
+        <p className="mt-1">{SISTEM_KABULU[tam.yontem]}</p>
       )}
       {tam.malzemeVarsayildi && (
         <p className="mt-1">Taşıyıcı malzeme bilinmediği için bina betonarme varsayıldı.</p>
@@ -168,21 +173,15 @@ export function Rapor({ sonuc, secim, taslak, bolgeAdi }: Props) {
       )}
 
       <Baslik>Bu sonucu nasıl okumalı</Baslik>
-      <p>
-        Sonuç bina hakkında bir hüküm değildir; profesyonel inceleme önceliğini gösterir. Yöntem 2023
-        Kahramanmaraş depremlerinden 154 betonarme binada (ACI 133 veri seti) sınandı: ağır hasar görenleri
-        ayırma gücü AUC ≈ 0,70; yalnız kat sayısı da aynı değeri verdi. Görünen kalite, ağır çıkma, düşeyde ve
-        planda düzensizlik, yapı nizamı ve zemin eğimi veride olmadığı için sınanamadı. Ayrıntı: YapiRisk
-        “Yöntem ve isabet” sayfası.
-      </p>
+      <p>{ISABET_RAPORU[d.yontem]}</p>
       <p className="mt-1">{TEKIL_BINA_KAYDI}</p>
       <p className="mt-1">{PROFESYONEL_YOL}</p>
 
       <Baslik>Kaynaklar</Baslik>
       <ul className="list-disc pl-4 text-[8.5pt]">
         <li>
-          Riskli Yapıların Tespit Edilmesine İlişkin Esaslar (2019), Ek-A.2.1; Resmî Gazete 16.02.2019, sayı
-          30688.
+          Riskli Yapıların Tespit Edilmesine İlişkin Esaslar (2019),{' '}
+          {d.yontem === 'yigma' ? 'Ek-A.2.2' : 'Ek-A.2.1'}; Resmî Gazete 16.02.2019, sayı 30688.
         </li>
         <li>Türkiye Bina Deprem Yönetmeliği (2018), Tablo 2.1 ve 2.2.</li>
         <li>ESHM20, Danciu vd. 2021, EFEHR, doi:10.12686/a15 (CC BY 4.0).</li>

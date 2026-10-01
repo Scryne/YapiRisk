@@ -8,7 +8,7 @@ import type { Sonuc } from '@/sonuc/sonuc'
 import { KapsamDisiEkrani } from './KapsamDisiEkrani'
 import { Ozet } from './Ozet'
 import { KAT_SEVIYESI, SORULAR, type Soru } from './sorular'
-import { ADIMLAR, cevaplandi, istegeBagli, kapsamDisi, type Taslak } from './taslak'
+import { adimlar, cevaplandi, istegeBagli, kapsamDisi, type Taslak } from './taslak'
 import { TemizleDugmesi } from './TemizleDugmesi'
 
 interface Props {
@@ -44,8 +44,9 @@ export function Form(p: Props) {
   }
 
   const kapsam = kapsamDisi(taslak)
-  const ozette = adim >= ADIMLAR.length
-  const ad = ADIMLAR[Math.min(adim, ADIMLAR.length - 1)]
+  const liste = adimlar(taslak)
+  const ozette = adim >= liste.length
+  const ad = liste[Math.min(adim, liste.length - 1)]
 
   const ileri = (e: FormEvent) => {
     e.preventDefault()
@@ -78,7 +79,7 @@ export function Form(p: Props) {
         <KapsamDisiEkrani
           neden={kapsam}
           baslikRef={baslikRef}
-          onDegistir={() => git(ADIMLAR.indexOf(kapsam === 'kat' ? 'kat' : 'malzeme'))}
+          onDegistir={() => git(liste.indexOf(kapsam === 'kat' || kapsam === 'yigmaKat' ? 'kat' : 'malzeme'))}
         />
       </div>
     )
@@ -103,20 +104,20 @@ export function Form(p: Props) {
   const soru = SORULAR[ad]
   const altSoru = ad === 'nizam' && (taslak.nizam === 'bitisik' || taslak.nizam === 'kosede')
   const eksik = altSoru && taslak.katSeviyesi === undefined ? KAT_SEVIYESI : soru
-  const sonAdim = adim === ADIMLAR.length - 1
+  const sonAdim = adim === liste.length - 1
 
   return (
     <form className="flex flex-1 flex-col gap-4" onSubmit={ileri} noValidate>
       {ust}
       <div>
         <p className="text-label text-muted-foreground tabular-nums">
-          Soru {adim + 1} / {ADIMLAR.length}
+          Soru {adim + 1} / {liste.length}
           {istegeBagli(ad) && ' · isteğe bağlı'}
         </p>
         <div className="mt-2 h-1 rounded-full bg-border" aria-hidden="true">
           <div
             className="h-full rounded-full bg-primary"
-            style={{ width: `${((adim + 1) / ADIMLAR.length) * 100}%` }}
+            style={{ width: `${((adim + 1) / liste.length) * 100}%` }}
           />
         </div>
       </div>

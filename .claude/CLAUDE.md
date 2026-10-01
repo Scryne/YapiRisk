@@ -21,6 +21,8 @@ değiştirilmez. Kanonik roadmap `docs/Roadmap.md` dışında bir dosyaysa `stat
 - `docs/Proje-Fikri.md` — fikir, kapsam, bitti tanımı, K-1…K-11 (denetlendi)
 - `docs/arastirma/` — 2026-09-29 derin araştırması (veri, yöntem/mevzuat, pazar, teknik), kaynaklı ham raporlar
 - `docs/Final-Dokuman.md` — nihai kararlar (teknoloji stack, mimari, riskler)
+- Yöntemler: betonarme `src/yontem/ryteie.ts`, yığma (Faz 10) `src/yontem/yigma.ts`; form adımları malzemeye göre
+  `adimlar(taslak)` (yığmada 20 adım), sabit adım listesi kullanma
 - `docs/Roadmap.md` — fazlı yol haritası; her faz "Durum" sütunuyla takip edilir, hook bunu
   otomatik okur
 - `DESIGN.md` (proje kökünde) — bu projeye özel frontend kimliği. Kesin değerler
@@ -34,7 +36,8 @@ değiştirilmez. Kanonik roadmap `docs/Roadmap.md` dışında bir dosyaysa `stat
   Python sürümü (Faz 2'de TS portunun eşdeğerlik referansı). `spike/S3,S4/veri/` git dışında (S3: NC/ND lisanslı Gaziantep verisi); `spike/S1/veri/` ESHM20 (CC BY) izleniyor, testler okur. Kaynaklar README'lerdeki
   kaynaklardan yeniden indirilebilir.
 - **Birincil kaynaklar (git dışı, yerel):** `docs/arastirma/kaynak/` — RYTEİE Resmî Gazete eki (taranmış;
-  Ek-A s. 30–35, Şekil A.1 s. 32–33, yığma s. 35–36; metin katmanı yok, sayfa görüntüsü olarak oku) ve ÇŞB 2025
+  Ek-A s. 30–35, Şekil A.1 s. 32–33, yığma s. 35–41 (Şekil A.2 s. 37–38, Tablo A.5–A.10 s. 39–41); metin katmanı yok,
+  sayfa görüntüsü olarak oku: `uv run --with pymupdf` ile PNG'ye çevir, Read'in PDF okuması pdftoppm ister, bu makinede yok) ve ÇŞB 2025
   hızlı yöntemler rehberi.
 - **Git:** yerel kimlik noreply (`218348029+Scryne@users.noreply.github.com`) ayarlı; remote
   `github.com/Scryne/YapiRisk` (**private**), varsayılan dal `main`. Public'e geçiş yalnız Faz 7'de Scryne'ın açık onayıyla.

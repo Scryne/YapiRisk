@@ -3,14 +3,16 @@
 import type { Secim } from '@/harita/tipler'
 import type { BinaCokgeni } from '@/veri/parca'
 import { KUSURLAR } from '@/yontem/ryteie'
-import { ADIMLAR, bosTaslak, type Taslak } from './taslak'
+import tablo from '@/yontem/ryteie-2019-yigma.json'
+import { YIGMA_ALANLARI, type YigmaAlani } from '@/yontem/yigma'
+import { adimlar, bosTaslak, type Taslak, type YigmaTaslagi } from './taslak'
 
 export const KAYIT_ANAHTARI = 'yapirisk:degerlendirme:v1'
 
 export interface Kayit {
   secim: Secim | null
   taslak: Taslak
-  /** ADIMLAR içindeki konum; ADIMLAR.length = özet. */
+  /** adimlar(taslak) içindeki konum; uzunluğu = özet. */
   adim: number
   /** Kullanıcının girdiği AFAD TDTH S_S değeri (seçili konum için); yoksa null. */
   tdthSs: number | null
@@ -33,6 +35,15 @@ const alanlar = {
 } as const
 const varYok = secenek(true, false)
 
+/** Yığma alanlarının izinli değerleri: tablodaki seçenekler, var/yok alanlarda true/false. */
+const yigmaAlanlari = Object.fromEntries(
+  YIGMA_ALANLARI.map((a) => {
+    if (a === 'tur') return [a, secenek('donatisiz', 'kusatilmis', 'donatili', 'karma')]
+    if (a === 'mevcutHasar' || a === 'cepheKatFarki' || a === 'yumusakKat') return [a, varYok]
+    return [a, secenek(...Object.keys(tablo.tabloA6[a]))]
+  }),
+) as Record<YigmaAlani, (x: unknown) => unknown>
+
 const nesne = (x: unknown): Record<string, unknown> =>
   typeof x === 'object' && x !== null && !Array.isArray(x) ? (x as Record<string, unknown>) : {}
 
@@ -50,6 +61,13 @@ export function taslakDogrula(x: unknown): Taslak {
     const d = varYok(kusurlar[k])
     if (d !== undefined) t.kusurlar[k] = d
   }
+  const yigma = nesne(ham.yigma)
+  const y: YigmaTaslagi = {}
+  for (const a of YIGMA_ALANLARI) {
+    const d = yigmaAlanlari[a](yigma[a])
+    if (d !== undefined) Object.assign(y, { [a]: d })
+  }
+  if (Object.keys(y).length) t.yigma = y
   return t
 }
 
@@ -82,12 +100,14 @@ export function kayitOku(): Kayit | null {
     const metin = depo()?.getItem(KAYIT_ANAHTARI)
     if (!metin) return null
     const ham = nesne(JSON.parse(metin))
-    const adim = Number.isInteger(ham.adim) ? Math.min(Math.max(ham.adim as number, 0), ADIMLAR.length) : 0
+    const taslak = taslakDogrula(ham.taslak)
+    const son = adimlar(taslak).length
+    const adim = Number.isInteger(ham.adim) ? Math.min(Math.max(ham.adim as number, 0), son) : 0
     const tdthSs =
       typeof ham.tdthSs === 'number' && ham.tdthSs > 0 && ham.tdthSs <= 4 && secimDogrula(ham.secim)
         ? ham.tdthSs
         : null
-    return { secim: secimDogrula(ham.secim), taslak: taslakDogrula(ham.taslak), adim, tdthSs }
+    return { secim: secimDogrula(ham.secim), taslak, adim, tdthSs }
   } catch {
     return null
   }

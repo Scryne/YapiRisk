@@ -1,8 +1,11 @@
 // Formun yarım kalabilen hali (taslak) ve motor girdisine çevrimi. Soru sırası Roadmap Faz 5: kapsam ayıklama
 // (malzeme, kat) → sistem → kusurlar (yumuşak kat önce, K-6) → nizam → zemin → isteğe bağlı yapım dönemi (K-10).
+// Yığma binada (Faz 10) sistem ve kusurların yerine Şekil A.2'nin soruları gelir; ortak sorular aynı kalır.
 import type { Cevap, FormCevaplari, NizamCevabi } from '@/yontem/aralik'
+import type { Yontem } from '@/yontem/degerlendir'
 import { KUSURLAR, type Kalite, type KatSeviyesi, type Kusur, type Sistem } from '@/yontem/ryteie'
 import type { ZeminCevabi } from '@/yontem/tehlike'
+import { YIGMA_ALANLARI, type YigmaAlani, type YigmaAlanlari, type YigmaCevaplari } from '@/yontem/yigma'
 
 export type Malzeme = 'betonarme' | 'yigma' | 'celik' | 'prefabrik'
 /** Şekil A.1 "Yapı nizamı": bitişik = iki yanı komşu (orta), köşede bitişik = tek yanı (kenar). */
@@ -11,6 +14,7 @@ export type NizamSecimi = 'ayrik' | 'bitisik' | 'kosede'
 export type Donem = 'once-1975' | '1975-1997' | '1998-2006' | '2007-2018' | '2019-sonra'
 /** 1–7 serbest kat ya da kapsam dışı "8 veya daha fazla". */
 export type KatCevabi = number | '8+'
+export type YigmaTaslagi = Partial<{ [A in YigmaAlani]: Cevap<YigmaAlanlari[A]> }>
 
 export interface Taslak {
   malzeme?: Cevap<Malzeme>
@@ -23,15 +27,18 @@ export interface Taslak {
   katSeviyesi?: Cevap<KatSeviyesi>
   zemin?: ZeminCevabi
   donem?: Cevap<Donem>
+  /** Yalnız yığma binada sorulanlar. */
+  yigma?: YigmaTaslagi
 }
 
 export const bosTaslak = (): Taslak => ({ kusurlar: {} })
 
 export const bosMu = (t: Taslak) =>
   Object.keys(t.kusurlar).length === 0 &&
-  Object.entries(t).every(([k, v]) => k === 'kusurlar' || v === undefined)
+  Object.keys(t.yigma ?? {}).length === 0 &&
+  Object.entries(t).every(([k, v]) => k === 'kusurlar' || k === 'yigma' || v === undefined)
 
-export const ADIMLAR = [
+export const BETONARME_ADIMLARI = [
   'malzeme',
   'kat',
   'sistem',
@@ -46,28 +53,50 @@ export const ADIMLAR = [
   'zemin',
   'donem',
 ] as const
-export type Adim = (typeof ADIMLAR)[number]
+
+export type YigmaAdimi = `yigma.${YigmaAlani}`
+export const YIGMA_ADIMLARI = [
+  'malzeme',
+  'kat',
+  ...YIGMA_ALANLARI.map((a) => `yigma.${a}` as const),
+  'nizam',
+  'zemin',
+  'donem',
+] as const satisfies readonly (YigmaAdimi | (typeof BETONARME_ADIMLARI)[number])[]
+
+export type Adim = (typeof BETONARME_ADIMLARI)[number] | YigmaAdimi
+
+/** Bina yığmaysa Şekil A.2'nin soruları; değilse (malzeme bilinmiyorsa da) betonarme. */
+export const yontem = (t: Taslak): Yontem => (t.malzeme === 'yigma' ? 'yigma' : 'betonarme')
+
+export const adimlar = (t: Taslak): readonly Adim[] =>
+  yontem(t) === 'yigma' ? YIGMA_ADIMLARI : BETONARME_ADIMLARI
 
 const kusurMu = (a: Adim): a is Kusur => (KUSURLAR as readonly string[]).includes(a)
+export const yigmaAlani = (a: Adim): YigmaAlani | null =>
+  a.startsWith('yigma.') ? (a.slice('yigma.'.length) as YigmaAlani) : null
 
 /** İsteğe bağlı adımlar cevapsız geçilebilir. */
 export const istegeBagli = (a: Adim) => a === 'donem'
 
 export function cevaplandi(t: Taslak, a: Adim): boolean {
   if (kusurMu(a)) return t.kusurlar[a] !== undefined
+  const y = yigmaAlani(a)
+  if (y) return t.yigma?.[y] !== undefined
   if (a === 'nizam')
     return (
       t.nizam !== undefined &&
       (t.nizam === 'ayrik' || t.nizam === 'bilmiyorum' || t.katSeviyesi !== undefined)
     )
-  return t[a] !== undefined
+  return t[a as Exclude<Adim, Kusur | YigmaAdimi | 'nizam'>] !== undefined
 }
 
-export type KapsamDisi = 'yigma' | 'celik' | 'prefabrik' | 'kat'
+export type KapsamDisi = 'celik' | 'prefabrik' | 'kat' | 'yigmaKat'
 
-/** K-8: RYTEİE Ek-A betonarme yöntemi yalnız betonarme ve 1–7 serbest kat içindir. */
+/** K-8: RYTEİE Ek-A betonarme 1–7, yığma (Ek-A.2.2) 1–5 serbest kat içindir; çelik ve prefabrik için yöntem yok. */
 export function kapsamDisi(t: Taslak): KapsamDisi | null {
-  if (t.malzeme === 'yigma' || t.malzeme === 'celik' || t.malzeme === 'prefabrik') return t.malzeme
+  if (t.malzeme === 'celik' || t.malzeme === 'prefabrik') return t.malzeme
+  if (t.malzeme === 'yigma' && (t.kat === '8+' || (typeof t.kat === 'number' && t.kat > 5))) return 'yigmaKat'
   if (t.kat === '8+') return 'kat'
   return null
 }
@@ -82,8 +111,7 @@ function nizamCevabi(t: Taslak): Cevap<NizamCevabi> {
   }
 }
 
-export interface TamCevaplar {
-  cevaplar: FormCevaplari
+interface OrtakCevaplar {
   zemin: ZeminCevabi
   /** Malzeme "bilmiyorum": betonarme varsayılarak değerlendirildi, sonuçta yazılır. */
   malzemeVarsayildi: boolean
@@ -91,11 +119,30 @@ export interface TamCevaplar {
   donem?: Cevap<Donem>
 }
 
+export type TamCevaplar = OrtakCevaplar &
+  ({ yontem: 'betonarme'; cevaplar: FormCevaplari } | { yontem: 'yigma'; cevaplar: YigmaCevaplari })
+
 /** Zorunlu sorular cevaplanmış ve bina kapsamdaysa motor girdisi; değilse null. */
 export function tamCevaplar(t: Taslak): TamCevaplar | null {
-  if (kapsamDisi(t) || !ADIMLAR.every((a) => istegeBagli(a) || cevaplandi(t, a))) return null
+  if (kapsamDisi(t) || !adimlar(t).every((a) => istegeBagli(a) || cevaplandi(t, a))) return null
   if (typeof t.kat !== 'number') return null
+  const ortak = { zemin: t.zemin!, malzemeVarsayildi: t.malzeme === 'bilmiyorum', donem: t.donem }
+  if (yontem(t) === 'yigma')
+    return {
+      ...ortak,
+      yontem: 'yigma',
+      cevaplar: {
+        kat: t.kat,
+        nizam: nizamCevabi(t),
+        ...(Object.fromEntries(YIGMA_ALANLARI.map((a) => [a, t.yigma![a]])) as Omit<
+          YigmaCevaplari,
+          'kat' | 'nizam'
+        >),
+      },
+    }
   return {
+    ...ortak,
+    yontem: 'betonarme',
     cevaplar: {
       kat: t.kat,
       sistem: t.sistem!,
@@ -103,14 +150,11 @@ export function tamCevaplar(t: Taslak): TamCevaplar | null {
       kusurlar: Object.fromEntries(KUSURLAR.map((k) => [k, t.kusurlar[k]!])) as Record<Kusur, Cevap<boolean>>,
       nizam: nizamCevabi(t),
     },
-    zemin: t.zemin!,
-    malzemeVarsayildi: t.malzeme === 'bilmiyorum',
-    donem: t.donem,
   }
 }
 
 /** İlk cevapsız zorunlu adım; hepsi cevaplıysa null. */
 export function ilkEksik(t: Taslak): number | null {
-  const i = ADIMLAR.findIndex((a) => !istegeBagli(a) && !cevaplandi(t, a))
+  const i = adimlar(t).findIndex((a) => !istegeBagli(a) && !cevaplandi(t, a))
   return i < 0 ? null : i
 }

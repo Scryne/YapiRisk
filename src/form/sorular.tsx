@@ -1,7 +1,9 @@
 // Formun soruları: metin, seçenekler ve Şekil A.1 çizimleri. Tanımlar RYTEİE Ek-A.2.1.1 maddelerinden ve Şekil A.1'den
-// (ek s. 30, 32–33) sade dile çevrildi. Seçenek değerleri taslağa `oku`/`yaz` ile bağlanır.
+// (ek s. 30, 32–33) sade dile çevrildi. Yığma soruları Ek-A.2.2.3 maddelerinden ve Şekil A.2'den (ek s. 35–38).
+// Seçenek değerleri taslağa `oku`/`yaz` ile bağlanır.
 import type { ComponentType } from 'react'
 import type { Kusur } from '@/yontem/ryteie'
+import type { YigmaAlani } from '@/yontem/yigma'
 import * as C from './cizimler'
 import type { Adim, Taslak } from './taslak'
 
@@ -53,6 +55,19 @@ const kusur = (k: Kusur) => ({
   yaz: (t: Taslak, d: string) => ({
     ...t,
     kusurlar: { ...t.kusurlar, [k]: d === BILMIYORUM ? BILMIYORUM : d === 'var' },
+  }),
+})
+
+/** Yığma alanı; var/yok alanlarda "var" → true, "yok" → false. */
+const yigma = (a: YigmaAlani, varYok = false) => ({
+  oku: (t: Taslak) => {
+    const c = t.yigma?.[a]
+    if (c === undefined || c === BILMIYORUM || !varYok) return c as string | undefined
+    return c ? 'var' : 'yok'
+  },
+  yaz: (t: Taslak, d: string) => ({
+    ...t,
+    yigma: { ...t.yigma, [a]: varYok && d !== BILMIYORUM ? d === 'var' : d },
   }),
 })
 
@@ -278,6 +293,308 @@ export const SORULAR: Record<Adim, Soru> = {
       },
     ],
     ...kusur('kisaKolon'),
+  },
+
+  // ——— Yığma (RYTEİE Ek-A.2.2) ———
+
+  'yigma.tur': {
+    adim: 'yigma.tur',
+    kisa: 'Yığma bina türü',
+    soru: 'Duvarların çevresinde beton kolon ve hatıl, içinde demir var mı?',
+    ipucu:
+      'Yığma binada yükü duvarlar taşır. Duvar köşelerinde ince beton kolonlar, kat hizasında beton kuşaklar varsa duvar kuşatılmıştır. Sıvalı duvarda bunlar çoğunlukla sıvasız bir köşeden ya da sıva çatlaklarından görünür.',
+    secenekler: [
+      {
+        deger: 'donatisiz',
+        etiket: 'Yalnız duvar',
+        aciklama: 'Donatısız yığma. Tuğla, taş ya da briket duvar; içinde demir, çevresinde beton yok.',
+        cizim: C.YigmaDonatisiz,
+      },
+      {
+        deger: 'kusatilmis',
+        etiket: 'Duvarlar beton kolon ve hatılla çevrili',
+        aciklama: 'Kuşatılmış yığma. Duvar parçaları ince betonarme kolon ve kuşakların arasında kalıyor.',
+        cizim: C.YigmaKusatilmis,
+      },
+      {
+        deger: 'donatili',
+        etiket: 'Duvarların içinde demir var',
+        aciklama:
+          'Donatılı yığma. Delikli blokların içinden düşey ve yatay demir geçer; dışarıdan nadiren görünür, yapım belgesinde yazar.',
+        cizim: C.YigmaDonatili,
+      },
+      {
+        deger: 'karma',
+        etiket: 'Bir kısmı betonarme çerçeve',
+        aciklama: 'Karma. Taşıyıcıların bir kısmı betonarme kolon ve kiriş, bir kısmı yığma duvar.',
+        cizim: C.YigmaKarma,
+      },
+    ],
+    bilmiyorum: 'Yalnız duvar (donatısız) esas alınır; bu tür ek puan almaz.',
+    ...yigma('tur'),
+  },
+
+  'yigma.yumusakKat': {
+    adim: 'yigma.yumusakKat',
+    kisa: 'Yumuşak ya da zayıf kat',
+    soru: 'Zemin katta duvarların yerini geniş boşluklar mı almış?',
+    ipucu:
+      'Zemin katta duvarların yerinde geniş dükkân vitrinleri ya da garaj kapıları varsa, ya da zemin kat diğerlerinden belirgin yüksekse zemin kat üst katlardan zayıf kalır. Tek katlı binada bu soru puanı değiştirmez.',
+    secenekler: [
+      {
+        deger: 'yok',
+        etiket: 'Hayır',
+        aciklama: 'Zemin kat da üst katlar gibi duvarlı.',
+        cizim: C.YigmaYumusakYok,
+      },
+      {
+        deger: 'var',
+        etiket: 'Evet',
+        aciklama: 'Zemin katın büyük kısmı açık ya da zemin kat belirgin yüksek.',
+        cizim: C.YigmaYumusakVar,
+      },
+    ],
+    ...yigma('yumusakKat', true),
+  },
+
+  'yigma.mevcutHasar': {
+    adim: 'yigma.mevcutHasar',
+    kisa: 'Mevcut hasar',
+    soru: 'Taşıyıcı duvarlarda hasar var mı?',
+    ipucu:
+      'Duvarlarda çapraz ya da boydan boya çatlaklara, köşelerde ayrılmaya, dökülen taş ya da tuğlaya, sarkan döşemeye bakın. Sıvadaki ince kılcal çatlaklar hasar sayılmaz.',
+    secenekler: [
+      { deger: 'yok', etiket: 'Hayır', aciklama: 'Belirgin çatlak, ayrılma ya da dökülme yok.' },
+      {
+        deger: 'var',
+        etiket: 'Evet',
+        aciklama: 'Duvarda çapraz ya da derin çatlak, köşede ayrılma ya da dökülen parça var.',
+      },
+    ],
+    ...yigma('mevcutHasar', true),
+  },
+
+  'yigma.malzemeKalitesi': {
+    adim: 'yigma.malzemeKalitesi',
+    kisa: 'Duvar malzemesinin kalitesi',
+    soru: 'Duvardaki taş, tuğla ya da briketlerin durumu nasıl?',
+    ipucu:
+      'Sıvasız bir yerden, bodrumdan ya da dış cepheden bakın: parçalar bütün mü, ufalanıyor ya da nemden dağılıyor mu?',
+    secenekler: [
+      { deger: 'iyi', etiket: 'İyi', aciklama: 'Parçalar bütün ve düzgün; ufalanma ya da kırık yok.' },
+      { deger: 'orta', etiket: 'Orta', aciklama: 'Yer yer kırık, aşınmış ya da nemlenmiş parçalar var.' },
+      {
+        deger: 'kotu',
+        etiket: 'Kötü',
+        aciklama: 'Parçalar ufalanıyor ya da dağılıyor; çok sayıda kırık ya da eksik parça var.',
+      },
+    ],
+    ...yigma('malzemeKalitesi'),
+  },
+
+  'yigma.duvarIsciligi': {
+    adim: 'yigma.duvarIsciligi',
+    kisa: 'Duvar işçiliği',
+    soru: 'Duvar örgüsü düzgün mü?',
+    ipucu:
+      'Taşların ya da tuğlaların sıralar halinde dizilip dizilmediğine, derzlerin üst üste gelmeden şaşırtmalı gidip gitmediğine, araların harçla dolu olup olmadığına bakın.',
+    secenekler: [
+      { deger: 'iyi', etiket: 'İyi', aciklama: 'Sıralar düzgün, derzler şaşırtmalı, aralar harçla dolu.' },
+      { deger: 'orta', etiket: 'Orta', aciklama: 'Sıralar yer yer bozuk; bazı derzler üst üste ya da boş.' },
+      {
+        deger: 'kotu',
+        etiket: 'Kötü',
+        aciklama: 'Örgü düzensiz; parçalar gelişigüzel yığılmış, aralar boş ya da toprakla doldurulmuş.',
+      },
+    ],
+    ...yigma('duvarIsciligi'),
+  },
+
+  'yigma.harc': {
+    adim: 'yigma.harc',
+    kisa: 'Harç',
+    soru: 'Taş ya da tuğlaların arasındaki harç ne?',
+    ipucu:
+      'Derzlere bakın. Çimento harcı gri ve serttir, tırnakla kazınmaz. Kireç harcı beyazımsıdır ve kolay ufalanır. Çamur harç toprak renklidir.',
+    secenekler: [
+      { deger: 'cimento', etiket: 'Çimento' },
+      { deger: 'kirec', etiket: 'Kireç' },
+      { deger: 'camur', etiket: 'Çamur' },
+      { deger: 'yok', etiket: 'Harç yok', aciklama: 'Taşlar harçsız, kuru örülmüş.' },
+    ],
+    ...yigma('harc'),
+  },
+
+  'yigma.plan': {
+    adim: 'yigma.plan',
+    kisa: 'Planda düzensizlik',
+    soru: 'Binanın kuşbakışı şekli düzgün mü?',
+    ipucu: 'Haritadaki bina çizimine ve binanın çevresine bakın.',
+    secenekler: [
+      {
+        deger: 'duzenli',
+        etiket: 'Düzenli',
+        aciklama: 'Dikdörtgen ya da hafif girintili.',
+        cizim: C.PlanDuzenli,
+      },
+      { deger: 'duzensiz', etiket: 'Düzensiz', aciklama: 'Yamuk ya da L biçimli.', cizim: C.PlanYamukL },
+      {
+        deger: 'asiriDuzensiz',
+        etiket: 'Aşırı düzensiz',
+        aciklama: 'Çok sayıda girinti ve çıkıntı.',
+        cizim: C.PlanCokGirintili,
+      },
+    ],
+    ...yigma('plan'),
+  },
+
+  'yigma.duvarMiktari': {
+    adim: 'yigma.duvarMiktari',
+    kisa: 'Duvar miktarı',
+    soru: 'Zemin katın dış duvarlarında kapı ve pencereler ne kadar yer kaplıyor?',
+    ipucu:
+      'Binanın ön ve yan cephesine zemin katta bakın. Kapı ve pencere genişliklerinin toplamını cephenin uzunluğuyla karşılaştırın. Boşluk azaldıkça depremi taşıyan duvar artar.',
+    secenekler: [
+      {
+        deger: 'cok',
+        etiket: 'Üçte birinden az',
+        aciklama: 'Duvar çok: boşluklar cephe uzunluğunun üçte birinden azını kaplıyor.',
+        cizim: C.DuvarCok,
+      },
+      {
+        deger: 'orta',
+        etiket: 'Üçte biri ile üçte ikisi arası',
+        aciklama: 'Duvar orta.',
+        cizim: C.DuvarOrta,
+      },
+      {
+        deger: 'az',
+        etiket: 'Üçte ikisinden fazla',
+        aciklama: 'Duvar az: cephenin çoğu kapı, pencere ya da vitrin.',
+        cizim: C.DuvarAz,
+      },
+    ],
+    ...yigma('duvarMiktari'),
+  },
+
+  'yigma.boslukDuzeni': {
+    adim: 'yigma.boslukDuzeni',
+    kisa: 'Pencerelerin düşey düzeni',
+    soru: 'Pencere ve kapılar katlar boyunca alt alta mı?',
+    ipucu:
+      'Cepheye bakın: üst kattaki pencereler alttakilerin tam üstündeyse aralarındaki duvarlar temele kadar kesintisiz iner.',
+    secenekler: [
+      { deger: 'duzenli', etiket: 'Düzenli', aciklama: 'Hepsi alt alta.', cizim: C.BoslukDuzenli },
+      {
+        deger: 'azDuzenli',
+        etiket: 'Az düzenli',
+        aciklama: 'Biri ikisi kaymış, çoğu alt alta.',
+        cizim: C.BoslukAzDuzenli,
+      },
+      {
+        deger: 'duzensiz',
+        etiket: 'Düzensiz',
+        aciklama: 'Katlarda farklı yerlerde, alt alta gelmiyor.',
+        cizim: C.BoslukDuzensiz,
+      },
+    ],
+    ...yigma('boslukDuzeni'),
+  },
+
+  'yigma.yatayHatil': {
+    adim: 'yigma.yatayHatil',
+    kisa: 'Yatay hatıl',
+    soru: 'Duvarları kat boyunca saran yatay beton kuşak (hatıl) var mı?',
+    ipucu:
+      'Hatıl, duvarın üstünden ya da pencerelerin üst hizasından binayı çepeçevre dolaşan betonarme kuşaktır. Dış cephede taş ya da tuğladan farklı, yatay bir bant olarak görünür.',
+    secenekler: [
+      { deger: 'pencereUstu', etiket: 'Pencerelerin üst hizasında', cizim: C.HatilPencereUstu },
+      { deger: 'duvarUstu', etiket: 'Duvarın üstünde, döşeme hizasında', cizim: C.HatilDuvarUstu },
+      { deger: 'yok', etiket: 'Yok', cizim: C.HatilYok },
+    ],
+    ...yigma('yatayHatil'),
+  },
+
+  'yigma.cepheKatFarki': {
+    adim: 'yigma.cepheKatFarki',
+    kisa: 'Cepheye göre kat farkı',
+    soru: 'Binanın bir cephesinde diğerlerinden fazla kat mı görünüyor?',
+    ipucu:
+      'Eğimli arazideki ya da bir yanı toprağa gömülü binalarda alçak taraftan bir kat fazla görünür. Binanın etrafında dolaşıp her yandan katları sayın.',
+    secenekler: [
+      {
+        deger: 'yok',
+        etiket: 'Hayır',
+        aciklama: 'Her cephede aynı sayıda kat görünüyor.',
+        cizim: C.CepheKatFarkiYok,
+      },
+      {
+        deger: 'var',
+        etiket: 'Evet',
+        aciklama: 'Bir yanı toprağa gömülü; bir cephede daha fazla kat görünüyor.',
+        cizim: C.CepheKatFarkiVar,
+      },
+    ],
+    ...yigma('cepheKatFarki', true),
+  },
+
+  'yigma.doseme': {
+    adim: 'yigma.doseme',
+    kisa: 'Döşeme',
+    soru: 'Katların arasındaki döşeme ne?',
+    ipucu:
+      'İçeriden tavana bakın. Betonarme döşeme düz ve tek parçadır. Ahşap döşemede kirişler ve tahtalar görünür. Volto, demir kirişlerin arasına örülmüş küçük tuğla kemerlerdir.',
+    secenekler: [
+      { deger: 'betonarme', etiket: 'Betonarme', aciklama: 'Düz, tek parça beton tavan.' },
+      { deger: 'ahsap', etiket: 'Ahşap', aciklama: 'Ahşap kirişler ve tahta.' },
+      { deger: 'volto', etiket: 'Volto', aciklama: 'Demir kirişler arasında tuğla kemerler.' },
+    ],
+    ...yigma('doseme'),
+  },
+
+  'yigma.duvarDuvar': {
+    adim: 'yigma.duvarDuvar',
+    kisa: 'Duvarların birbirine bağlantısı',
+    soru: 'Duvarlar köşelerde ve birleştikleri yerlerde birbirine sıkı bağlı mı?',
+    ipucu:
+      'Binanın köşelerine ve iç duvarların dış duvara değdiği yerlere bakın. Taş ya da tuğlalar köşede birbirine geçmeli; birleşimde düşey bir çatlak ya da ayrılma bağlantının zayıf olduğunu gösterir.',
+    secenekler: [
+      { deger: 'iyi', etiket: 'Sıkı bağlı', aciklama: 'Köşelerde parçalar birbirine geçiyor; ayrılma yok.' },
+      {
+        deger: 'kotu',
+        etiket: 'Zayıf',
+        aciklama: 'Birleşimde düşey çatlak ya da ayrılma var, ya da duvarlar yalnız yan yana konmuş.',
+      },
+    ],
+    ...yigma('duvarDuvar'),
+  },
+
+  'yigma.duvarDoseme': {
+    adim: 'yigma.duvarDoseme',
+    kisa: 'Döşemenin duvara bağlantısı',
+    soru: 'Döşeme duvarlara sıkı bağlı mı?',
+    ipucu:
+      'Döşemenin duvara oturduğu yere bakın. Duvarın üstünde bir hatıl varsa ve birleşimde çatlak yoksa bağlantı iyidir. Döşeme kirişleri duvara yalnız dayanıyorsa ya da birleşim çatlaksa zayıftır.',
+    secenekler: [
+      { deger: 'iyi', etiket: 'Sıkı bağlı', aciklama: 'Duvar üstünde hatıl var, birleşimde çatlak yok.' },
+      { deger: 'kotu', etiket: 'Zayıf', aciklama: 'Hatıl yok ya da birleşimde çatlak var.' },
+    ],
+    ...yigma('duvarDoseme'),
+  },
+
+  'yigma.cati': {
+    adim: 'yigma.cati',
+    kisa: 'Çatı',
+    soru: 'Çatı neyle örtülü?',
+    ipucu:
+      'Toprak dam, ahşap kirişlerin üstüne kalın toprak serilmiş düz çatıdır. Çok ağırdır; depremde duvarları zorlar.',
+    secenekler: [
+      { deger: 'kiremit', etiket: 'Kiremit' },
+      { deger: 'sac', etiket: 'Sac' },
+      { deger: 'beton', etiket: 'Beton', aciklama: 'Düz beton teras.' },
+      { deger: 'toprak', etiket: 'Toprak dam' },
+    ],
+    ...yigma('cati'),
   },
 
   nizam: {

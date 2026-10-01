@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 import { SonucKarti } from '@/sonuc/SonucKarti'
 import type { Sonuc } from '@/sonuc/sonuc'
 import { cevapEtiketi, KAT_SEVIYESI, SORULAR } from './sorular'
-import { ADIMLAR, ilkEksik, istegeBagli, type Taslak } from './taslak'
+import { adimlar, ilkEksik, istegeBagli, type Taslak } from './taslak'
 
 interface Props {
   taslak: Taslak
@@ -22,7 +22,7 @@ interface Props {
 export function Ozet({ taslak, sonuc, merkez, baslikRef, onGit, onHaritaya, onTdth, onYazdir }: Props) {
   const eksik = ilkEksik(taslak)
 
-  const satirlar = ADIMLAR.flatMap((ad, i) => {
+  const satirlar = adimlar(taslak).flatMap((ad, i) => {
     const soru = SORULAR[ad]
     const satir = { soru, adim: i, deger: soru.oku(taslak) }
     return ad === 'nizam' && (taslak.nizam === 'bitisik' || taslak.nizam === 'kosede')

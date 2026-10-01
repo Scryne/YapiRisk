@@ -1,7 +1,7 @@
 ---
 proje: YapiRisk
 created: 2026-09-29
-modified: 2026-09-30
+modified: 2026-10-01
 type: roadmap
 status: aktif
 ---
@@ -25,7 +25,7 @@ Tahmin ~22 iş günü; her fazın sonunda "Notlar" doldurulur ve sonraki fazlar 
 | 7 | Yayın | ⏳ Bekliyor | Faz 6.5 bitti (Scryne'ın kararı, 2026-09-30: yalnız Manisa'yı gösteren site yayına çıkmaz). `yayin-oncesi` çıkış 0 ya da her bulgu kararlı; `fixing-metadata` geçti; Scryne'ın açık onayıyla repo public ve GitHub Pages'te canlı; canlı adreste 10 S1 noktasından biriyle uçtan uca rapor alındı |
 | 8 | Gerçek kullanım | ⏳ Bekliyor | Proje-Fikri'deki "bitti = kullanıldı" cümlesi gerçekleşti (Scryne'ın seçtiği ≥ 5 kişi yardımsız rapor aldı, sonucu öncelik olarak doğru okudu); bulgular roadmap'e işlendi |
 | 9 | TDTH ızgarası entegrasyonu (tetiklemeli) | ⏳ Bekliyor | Tetik: AFAD CIMER başvurusu olumlu döner. Resmî grid paketlenir, K-5 bandı Manisa'da kalkar, S1 karşılaştırması yeniden koşulur |
-| 10 | Yığma binalar, RYTEİE Ek-A.2.2 (koşullu) | ⏳ Bekliyor | Koşul: Faz 8'de kapsam dışı mesajı kullanıcıların önemli bir kısmını geri çeviriyor. Yığma yöntemi motor + form + test olarak eklendi |
+| 10 | Yığma binalar, RYTEİE Ek-A.2.2 | ✅ Tamamlandı | Koşul (Faz 8 kanıtı) Scryne'ın kararıyla kaldırıldı, 2026-10-01. Yığma yöntemi motor + form + test olarak eklendi; Tablo A.5–A.10 hücreleri JSON'dan bağımsız testte; e2e yığma akışı motorla aynı PP'yi veriyor; isabet Gaziantep yığma verisinde ölçülüp Yöntem sayfasına yazıldı |
 | 11 | B2B talep testi (koşullu) | ⏳ Bekliyor | Koşul: v1 bitti. Manisa/Ege'de 3–5 değerleme/dönüşüm ofisiyle görüşme notları; talep varsa v2 kapsamı yazıldı, yoksa proje v1'de kapandı |
 
 ## Faz Detayları
@@ -250,5 +250,38 @@ Faz 9–11 olaya bağlıdır; hook bunları "sıradaki iş" saymaz.
 
 ### Faz 9–11 (olaya bağlı)
 - **Faz 9:** CIMER başvurusu Scryne'ın kararı (`docs/cimer-dilekce-taslak.md`).
-- **Faz 10:** yığma yöntemi Ek-A.2.2 (1–5 kat, Tablo A.5 ve sonrası) Resmî Gazete ekinde s. 35–36.
+- **Faz 10:** tamamlandı, aşağıda.
+
+### Faz 10: Yığma binalar (2026-10-01)
+- **Neden şimdi:** Scryne yayını ve kullanıcı görüşmelerini erteledi, ürünü geliştirmek istedi; Faz 8 koşulu kaldırıldı.
+- **Notlar:**
+  - Kaynak: Resmî Gazete 30688 ek s. 35–41 (A.2.2 metni s. 35–36, Şekil A.2 formu s. 37–38, Tablo A.5–A.10 s. 39–41).
+    ÇŞB'nin 2019-07-05 konsolide Ek-2 metniyle (metin katmanlı) karşılaştırıldı: değerler aynı. RG 30808
+    (21.06.2019) değişikliği Ek-A'ya dokunmuyor.
+  - Motor: `src/yontem/yigma.ts` + `ryteie-2019-yigma.json`. PP = TP (A.5) + YSP (A.2.2.4: donatısız/karma 0,
+    kuşatılmış 30, donatılı 60) + Σ Oᵢ·OPᵢ (A.6–A.10) + düzlem dışı (11–14 toplamı ≥ 3 → −10) + toprak dam (−10).
+  - Kararlar (yorum, Yöntem sayfasında yazılı): (1) A.5 sütunu Tablo A.2 bölgesinden (A.2.2.2 ve A.2.2.3-12 zemine
+    bağlı diyor; başlıktaki SDS sınırları zayıf zemin satırı), II ve III aynı sütun. (2) Tablo A.8'in beş satırında
+    başlık basılmamış (RG ve ÇŞB metninde de); satırlar A.5/A.9 gibi 1–5 kat okundu. İkincil kaynakta teyit bulunamadı.
+    (3) Yığma türü "bilmiyorum" → donatısız, iki uçta (A.2.1.1'in benzeri). (4) Diğer "bilmiyorum"lar iki uca;
+    belirsiz listesi yalnız puanı gerçekten değiştirenleri sayar (1 katta yumuşak kat 0 puan, düzlem dışı eşiği
+    bilinenlerle aşılamıyorsa listeye girmez). (5) K-12 bant sınırları iki yöntemde aynı; yığmada kusursuz en
+    elverişsiz bina 70, "PP < 50" anlamı korunuyor. (6) Taşıyıcı duvar tipi (tuğla, kerpiç…) yöntemde puanlanmıyor,
+    sorulmuyor.
+  - Form: malzeme "Yığma" → 20 adım (Şekil A.2 soruları, ortak sorular: kat, nizam, zemin, dönem). Kat seçenekleri
+    aynı; yığmada 6+ kat kapsam dışı (`yigmaKat`). Malzeme "Bilmiyorum" hâlâ betonarme. Kayıt anahtarı v1 kaldı:
+    yeni `taslak.yigma` alanı isteğe bağlı, eski kayıtlar olduğu gibi okunuyor.
+  - Çizimler: Şekil A.2'den 19 yeni SVG (yığma türü 4, plan 2, duvar miktarı 3 (BO oranı çizimde gerçek), düşey
+    boşluk 3, hatıl 3, cephe kat farkı 2, yumuşak kat 2). Döşeme, harç, bağlantı, çatı metinle (şekilde çizim yok).
+  - İsabet (S3 ek, `spike/S3/gaziantep_yigma.py`): Gaziantep 414 yığma bina, ağır+ 72. Taban puanı AUC 0,708 (kötü
+    uç) / 0,676 (ham), kat 0,515, ESHM20 S_S 0,762. Ayırmayı tehlike yapıyor (Nurdağı %55, Nizip %8). Kusursuz
+    sayılınca 411/414 "düşük öncelik", o grupta ağır %17; Yöntem sayfasında "Dikkat" notuyla. Veri NC/ND: yalnız
+    toplu sayılar `Yontem.tsx`'te sabit, boru hattına girmedi.
+  - Paylaşım görseli: alt başlık "betonarme binalar" yerine "binalar" (görsel yönteme bağlı kalmasın), meta
+    açıklamaları "betonarme ve yığma".
+  - Doğrulama: Vitest 216 (yığma tablo hücreleri, mutasyonla 2 bozuk hücre yakalandı; taslak/kayıt; e2e cevap
+    setinin motor değeri 50–70 orta); Playwright 28/28 (yığma akışı uçtan uca); 390 px iki temada her adımın ekran
+    görüntüsü, konsol hatası ve taşma yok; Yöntem sayfası 4 genişlikte taşmasız; yığma raporu A4'te 2 sayfa.
+  - Açık: TS 7'ye geçildi (Dependabot #1, aynı gün; CI ve `tsc` hata yakalama denendi). Zemin seçeneklerinde eski
+    "Sağlam kaya" ifadesi DESIGN.md dil kuralına takılıyor (Faz 5'ten kalma), dokunulmadı.
 - **Faz 11:** talep yoksa v2 yapılmaz; proje v1'de "tamamlandi" olur.
