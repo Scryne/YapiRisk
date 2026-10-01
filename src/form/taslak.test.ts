@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { degerlendir, degerlendirYigma } from '@/yontem/degerlendir'
 import { bilineer, type Izgara } from '@/yontem/tehlike'
 import { KUSURLAR } from '@/yontem/ryteie'
+import yigmaTablo from '@/yontem/ryteie-2019-yigma.json'
 import { YIGMA_ALANLARI } from '@/yontem/yigma'
 import { KAYIT_ANAHTARI, kayitOku, kayitSil, kayitYaz, taslakDogrula } from './kayit'
 import {
@@ -14,6 +15,7 @@ import {
   ilkEksik,
   kapsamDisi,
   tamCevaplar,
+  TEK_KATTA_ATLANAN,
   YIGMA_ADIMLARI,
   type Taslak,
   type YigmaTaslagi,
@@ -174,6 +176,21 @@ describe('yığma taslağı (Faz 10)', () => {
     expect(c.yontem).toBe('yigma')
     expect(c.cevaplar).not.toHaveProperty('sistem')
     expect(c.cevaplar).not.toHaveProperty('kusurlar')
+  })
+
+  it('tek katlı yığmada puanı değiştirmeyen iki soru atlanır, nötr değerle girer', () => {
+    const tek = yigmaDolu({ yumusakKat: undefined, boslukDuzeni: undefined }, { kat: 1 })
+    expect(adimlar(tek)).toHaveLength(YIGMA_ADIMLARI.length - 2)
+    expect(adimlar(tek)).not.toContain('yigma.yumusakKat')
+    expect(adimlar(tek)).not.toContain('yigma.boslukDuzeni')
+    expect(ilkEksik(tek)).toBeNull()
+    const c = tamCevaplar(tek)
+    if (c?.yontem !== 'yigma') throw new Error('yığma bekleniyordu')
+    expect([c.cevaplar.yumusakKat, c.cevaplar.boslukDuzeni]).toEqual([false, 'duzenli'])
+    // Atlamanın dayanağı: 1 katta bu iki kalemin puanı (OPᵢ) 0.
+    for (const a of Object.keys(TEK_KATTA_ATLANAN) as (keyof typeof TEK_KATTA_ATLANAN)[])
+      expect(yigmaTablo.tabloA9[a]['1']).toBe(0)
+    expect(adimlar(yigmaDolu({}, { kat: 2 }))).toBe(YIGMA_ADIMLARI)
   })
 
   it('yığma cevabı olan taslak boş sayılmaz', () => {

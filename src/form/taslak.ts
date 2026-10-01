@@ -69,8 +69,18 @@ export type Adim = (typeof BETONARME_ADIMLARI)[number] | YigmaAdimi
 /** Bina yığmaysa Şekil A.2'nin soruları; değilse (malzeme bilinmiyorsa da) betonarme. */
 export const yontem = (t: Taslak): Yontem => (t.malzeme === 'yigma' ? 'yigma' : 'betonarme')
 
+/**
+ * Tek katlı yığmada puanı hiç değiştirmeyen sorular (Tablo A.9, 1 kat: boşluk düzeni ve yumuşak kat OPᵢ = 0).
+ * Sorulmaz; cevap yoksa bu nötr değerle motora girer.
+ */
+export const TEK_KATTA_ATLANAN = {
+  yumusakKat: false,
+  boslukDuzeni: 'duzenli',
+} as const satisfies YigmaTaslagi
+const TEK_KAT_YIGMA_ADIMLARI = YIGMA_ADIMLARI.filter((a) => !(a.slice('yigma.'.length) in TEK_KATTA_ATLANAN))
+
 export const adimlar = (t: Taslak): readonly Adim[] =>
-  yontem(t) === 'yigma' ? YIGMA_ADIMLARI : BETONARME_ADIMLARI
+  yontem(t) === 'betonarme' ? BETONARME_ADIMLARI : t.kat === 1 ? TEK_KAT_YIGMA_ADIMLARI : YIGMA_ADIMLARI
 
 const kusurMu = (a: Adim): a is Kusur => (KUSURLAR as readonly string[]).includes(a)
 export const yigmaAlani = (a: Adim): YigmaAlani | null =>
@@ -134,10 +144,13 @@ export function tamCevaplar(t: Taslak): TamCevaplar | null {
       cevaplar: {
         kat: t.kat,
         nizam: nizamCevabi(t),
-        ...(Object.fromEntries(YIGMA_ALANLARI.map((a) => [a, t.yigma![a]])) as Omit<
-          YigmaCevaplari,
-          'kat' | 'nizam'
-        >),
+        ...(Object.fromEntries(
+          YIGMA_ALANLARI.map((a) => [
+            a,
+            t.yigma?.[a] ??
+              (t.kat === 1 ? TEK_KATTA_ATLANAN[a as keyof typeof TEK_KATTA_ATLANAN] : undefined),
+          ]),
+        ) as Omit<YigmaCevaplari, 'kat' | 'nizam'>),
       },
     }
   return {

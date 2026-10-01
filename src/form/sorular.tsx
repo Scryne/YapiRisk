@@ -339,7 +339,7 @@ export const SORULAR: Record<Adim, Soru> = {
     kisa: 'Yumuşak ya da zayıf kat',
     soru: 'Zemin katta duvarların yerini geniş boşluklar mı almış?',
     ipucu:
-      'Zemin katta duvarların yerinde geniş dükkân vitrinleri ya da garaj kapıları varsa, ya da zemin kat diğerlerinden belirgin yüksekse zemin kat üst katlardan zayıf kalır. Tek katlı binada bu soru puanı değiştirmez.',
+      'Zemin katta duvarların yerinde geniş dükkân vitrinleri ya da garaj kapıları varsa, ya da zemin kat diğerlerinden belirgin yüksekse zemin kat üst katlardan zayıf kalır.',
     secenekler: [
       {
         deger: 'yok',
@@ -652,8 +652,8 @@ export const SORULAR: Record<Adim, Soru> = {
     ipucu:
       'Zemin sınıfı (ZA–ZE) binanın zemin etüdü raporunda ya da ruhsat ekinde yazar. Çoğu kişi bilmez; bilmiyorsanız yöntem ZC, ZD ve ZE arasından sonucu en çok etkileyeni kullanır.',
     secenekler: [
-      { deger: 'ZA', etiket: 'ZA', aciklama: 'Sağlam, sert kaya.' },
-      { deger: 'ZB', etiket: 'ZB', aciklama: 'Az ayrışmış, orta sağlam kaya.' },
+      { deger: 'ZA', etiket: 'ZA', aciklama: 'Sert, ayrışmamış kaya.' },
+      { deger: 'ZB', etiket: 'ZB', aciklama: 'Az ayrışmış, orta sertlikte kaya.' },
       { deger: 'ZC', etiket: 'ZC', aciklama: 'Çok sıkı kum, çakıl, sert kil ya da çatlaklı zayıf kaya.' },
       { deger: 'ZD', etiket: 'ZD', aciklama: 'Orta sıkı kum, çakıl ya da çok katı kil.' },
       { deger: 'ZE', etiket: 'ZE', aciklama: 'Gevşek kum, çakıl ya da yumuşak kil.' },
