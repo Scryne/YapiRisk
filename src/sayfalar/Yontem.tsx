@@ -50,6 +50,7 @@ const TEHLIKE_OLCUMU = [
   { il: 'Manisa', ort: 0.89, enAz: 0.72, enCok: 1.25, kayan: 3 },
   { il: 'İzmir', ort: 0.98, enAz: 0.81, enCok: 1.34, kayan: 1 },
   { il: 'Aydın', ort: 0.76, enAz: 0.52, enCok: 0.97, kayan: 4 },
+  { il: 'Denizli', ort: 0.98, enAz: 0.76, enCok: 1.14, kayan: 1 },
 ] as const
 
 const iki = ondalik(2)
@@ -149,9 +150,9 @@ export function Yontem() {
           olarak Avrupa modelini (ESHM20) kullanır.
         </p>
         <p>
-          İki modeli her ilde 10 ilçe merkezinde, toplam 30 noktada karşılaştırdık. ESHM20’nin S<sub>S</sub>{' '}
+          İki modeli her ilde 10 ilçe merkezinde, toplam 40 noktada karşılaştırdık. ESHM20’nin S<sub>S</sub>{' '}
           değerinin AFAD’ınkine oranı ilden ile belirgin değişiyor; Aydın’da ESHM20 tehlikeyi en çok yarıya
-          yakın düşük gösterdi. Yalnız ESHM20’ye bakılsaydı 30 noktanın 8’inde tehlike bölgesi AFAD’a göre
+          yakın düşük gösterdi. Yalnız ESHM20’ye bakılsaydı 40 noktanın 9’unda tehlike bölgesi AFAD’a göre
           daha düşük tehlikeli bir bölgeye düşerdi.
         </p>
         <Tablo
@@ -171,7 +172,7 @@ export function Yontem() {
           On nokta ilin en elverişsiz yerini kaçırabileceği için aralığın elverişsiz ucu hiçbir ilde{' '}
           <Sayi>{iki.format(GUVENSIZ_YON_TAVANI)}</Sayi>’den dar tutulmaz. Ölçüm yapılmamış bir ilde bütün
           ölçümlerin birleşimi kullanılır (<Sayi>{iki.format(S1_BANDI.altOran)}</Sayi>–
-          <Sayi>{iki.format(S1_BANDI.ustOran)}</Sayi>). 30 noktanın hepsinde AFAD’ın değeri aralığın içinde
+          <Sayi>{iki.format(S1_BANDI.ustOran)}</Sayi>). 40 noktanın hepsinde AFAD’ın değeri aralığın içinde
           kaldı. AFAD raporundaki S<sub>S</sub> değerini girerseniz aralık kalkar.
         </p>
         <p>

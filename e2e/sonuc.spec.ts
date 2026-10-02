@@ -183,7 +183,7 @@ test('üçüncü il: Aydın mahallesi aranıyor, tehlike Aydın ızgarası ve Ay
   expect(hatalar).toEqual([])
 })
 
-test('dördüncü il: Denizli aranıyor; AFAD farkı henüz ölçülmediği için bant bütün ölçümlerin birleşimi', async ({
+test('dördüncü il: Denizli aranıyor, tehlike Denizli ızgarası ve Denizli bandıyla', async ({
   page,
   baseURL,
 }) => {
@@ -200,14 +200,14 @@ test('dördüncü il: Denizli aranıyor; AFAD farkı henüz ölçülmediği içi
   await page.getByRole('button', { name: 'Sorulara başla' }).click()
   await doldur(page, KUSURSUZ_4_KAT)
   await expect(page.getByTestId('sonuc-karti')).toContainText(
-    'Bu ilde AFAD’la karşılaştırma henüz yapılmadı; aralık Aydın, İzmir ve Manisa’da ölçülen farktan geliyor',
+    'AFAD’ın resmî değeriyle farkı Denizli’de 10 noktada ölçüldü ve aralığa katıldı',
   )
-  // Ölçülmemiş il: birleşik bant 0,52–1,34.
+  // Denizli bandı: ölçülen 0,75–1,14, alt sınır en fazla 0,72 → 0,72–1,14.
   const [alt, ust] = (await page.getByTestId('ss-kullanilan').innerText())
     .replace(' g', '')
     .split(' – ')
     .map((x) => Number(x.replace(',', '.')))
-  expect(ust / alt).toBeCloseTo(1.34 / 0.52, 2)
+  expect(ust / alt).toBeCloseTo(1.14 / 0.72, 2)
 
   expect(yabanci).toEqual([])
   expect(hatalar).toEqual([])

@@ -65,7 +65,7 @@ en iyi/en kötü) → PP aralığı → bant (kötü durum) → sonuç ve rapor.
 `bolgeler.json` kaydı. Yeni il = boru hattını o il için çalıştırmak.
 
 **Hesap sözleşmesi (K-9, K-12):**
-- Tehlike: SS_TDTH ∈ [SS_ESHM20 / üst ; SS_ESHM20 / alt], bant il il (K-5 revize 2026-10-02): Manisa 0,72–1,25, İzmir 0,72–1,34 (ölçülen alt 0,80, tavan 0,72), Aydın 0,52–0,97; ölçülmemiş il 0,52–1,34 (30 nokta); kullanıcı TDTH raporundaki S_S'i girerse bu adım atlanır (K-17).
+- Tehlike: SS_TDTH ∈ [SS_ESHM20 / üst ; SS_ESHM20 / alt], bant il il (K-5 revize 2026-10-02): Manisa 0,72–1,25, İzmir 0,72–1,34 (ölçülen alt 0,80, tavan 0,72), Aydın 0,52–0,97, Denizli 0,72–1,14 (ölçülen 0,75); ölçülmemiş il 0,52–1,34 (40 nokta); kullanıcı TDTH raporundaki S_S'i girerse bu adım atlanır (K-17).
 - Zemin "bilmiyorum": bölge için ZC/ZD/ZE grubu; SDS için ZC, ZD, ZE Fs'lerinden en büyüğü.
 - Sistem "bilmiyorum": BAÇ (A.2.1.1); yığma türü "bilmiyorum": donatısız (Faz 10). Diğer kusurlarda "bilmiyorum": var/yok iki uç hesaplanır.
 - PP aralığı [PP_min, PP_max]; bant PP_min ile belirlenir, aralık iki banda yayılıyorsa sonuç kartında yazar.

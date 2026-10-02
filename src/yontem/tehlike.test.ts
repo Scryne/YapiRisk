@@ -250,6 +250,7 @@ const S1_OKUMALARI = [
   ['manisa', 'spike/S1/tdth-okumalar.csv'],
   ['izmir', 'spike/S1/izmir-tdth-okumalar.csv'],
   ['aydin', 'spike/S1/aydin-tdth-okumalar.csv'],
+  ['denizli', 'spike/S1/denizli-tdth-okumalar.csv'],
 ] as const
 
 describe.each(S1_OKUMALARI)(

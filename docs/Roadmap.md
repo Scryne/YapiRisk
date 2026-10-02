@@ -24,7 +24,7 @@ Tahmin ~22 iş günü; her fazın sonunda "Notlar" doldurulur ve sonraki fazlar 
 | 6.5 | İkinci il paketi | ✅ Tamamlandı | İl Scryne'la seçildi; boru hattı o il için paketi üretiyor (iki kez aynı sha256); S1 benzeri TDTH karşılaştırması o ilde ≥ 5 noktada yapıldı ve bant (0,72–1,25) geçerli ya da yeniden ölçüldü; uygulama il seçiyor, arama ve harita iki ilde çalışıyor; Manisa'ya özgü metinler bölgeden okunuyor |
 | 6.6 | Üçüncü il paketi (Aydın) | ✅ Tamamlandı | Boru hattı Aydın paketini üretiyor (iki kez aynı sha256); uygulama üç ilde arıyor ve haritada gösteriyor; Scryne'dan ≥ 5 TDTH okumasıyla S1 bandı (0,72–1,34) Aydın'da geçerli ya da yeniden ölçüldü, `tdthNokta` dolduruldu |
 | 6.7 | Sahada kullanım (çevrimdışı) | ✅ Tamamlandı | Uygulama bir kez açıldıktan sonra bağlantı kesilince yeniden açılıyor; daha önce bakılan konumda değerlendirme ve rapor çevrimdışı tamamlanıyor; bilgi sayfaları çevrimdışı açılıyor; ana ekrana eklenebiliyor (manifest + ikonlar); "Temizle" gezilen bölgenin önbelleğini de siliyor; e2e kanıtı |
-| 6.8 | Dördüncü il paketi (Denizli) | 🔄 Devam Ediyor | Boru hattı Denizli paketini üretiyor (iki kez aynı sha256); uygulama dört ilde arıyor; Scryne'dan ≥ 5 TDTH okumasıyla Denizli bandı ölçüldü, `tdthOran` dolduruldu |
+| 6.8 | Dördüncü il paketi (Denizli) | ✅ Tamamlandı | Boru hattı Denizli paketini üretiyor (iki kez aynı sha256); uygulama dört ilde arıyor; Scryne'dan ≥ 5 TDTH okumasıyla Denizli bandı ölçüldü, `tdthOran` dolduruldu |
 | 7 | Yayın | ⏳ Bekliyor | Faz 6.5 bitti (Scryne'ın kararı, 2026-09-30: yalnız Manisa'yı gösteren site yayına çıkmaz). `yayin-oncesi` çıkış 0 ya da her bulgu kararlı; `fixing-metadata` geçti; Scryne'ın açık onayıyla repo public ve GitHub Pages'te canlı; canlı adreste 10 S1 noktasından biriyle uçtan uca rapor alındı |
 | 8 | Gerçek kullanım | ⏳ Bekliyor | Proje-Fikri'deki "bitti = kullanıldı" cümlesi gerçekleşti (Scryne'ın seçtiği ≥ 5 kişi yardımsız rapor aldı, sonucu öncelik olarak doğru okudu); bulgular roadmap'e işlendi |
 | 9 | TDTH ızgarası entegrasyonu (tetiklemeli) | ⏳ Bekliyor | Tetik: AFAD CIMER başvurusu olumlu döner. Resmî grid paketlenir, K-5 bandı kapsanan illerde kalkar, S1 karşılaştırması yeniden koşulur |
@@ -271,7 +271,10 @@ Faz 9–11 olaya bağlıdır; hook bunları "sıradaki iş" saymaz.
   - Okuma bekleyene kadar bant birleşik 0,52–1,34 (`S1_BANDI`), notta "Bu ilde AFAD'la karşılaştırma henüz yapılmadı".
   - Paylaşım görseli il listesinden bağımsız ("Binanız için deprem riski ön değerlendirmesi"); il listesi meta
     açıklamalarında.
-  - **Bekleyen:** Scryne'ın 10 TDTH okuması (`spike/S1/denizli-tdth-okumalar.csv`, yol `spike/S1/README.md`).
+  - TDTH (Scryne, 10 rapor, 2026-10-02): okumalar SDS/SD1 tutarlılığıyla denetlendi (±0,0005). ESHM20/TDTH oranı
+    **0,76–1,14 (ort. 0,98)**, İzmir'e benziyor; 1/10 noktada bölge güvensiz yönde kayıyor (Acıpayam: AFAD I,
+    ESHM20 II). Bant 0,72–1,14 (ölçülen alt 0,75, tavan kuralıyla 0,72); birleşik bant değişmedi (0,52–1,34).
+    Toplam 40 noktada AFAD değeri kendi ilinin aralığında; 9/40 noktada ESHM20 bölgeyi güvensiz yönde kaydırırdı.
 
 ### Faz 7: Yayın (~1 gün)
 - **İşler:** MapTiler anahtarı GitHub Actions değişkeni `VITE_MAPTILER_ANAHTARI` olarak derlemeye; MapTiler

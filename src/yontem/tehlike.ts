@@ -17,8 +17,8 @@ export interface S1Bandi {
 }
 
 /**
- * S1: oran il il ölçüldü (10'ar ilçe merkezi): Manisa 0,72 … 1,25, İzmir 0,80 … 1,34, Aydın 0,52 … 0,97. Fark ile
- * değişiyor (ortalama 0,89 / 0,98 / 0,76), bu yüzden her ilde kendi bandı kullanılır. Ölçülmemiş ilde bütün
+ * S1: oran il il ölçüldü (10'ar ilçe merkezi): Manisa 0,72 … 1,25, İzmir 0,80 … 1,34, Aydın 0,52 … 0,97, Denizli
+ * 0,75 … 1,14. Fark ile değişiyor (ortalama 0,89 / 0,98 / 0,76 / 0,98), bu yüzden her ilde kendi bandı kullanılır. Ölçülmemiş ilde bütün
  * ölçümlerin birleşimi: bu sabit.
  */
 export const S1_BANDI: S1Bandi = { altOran: 0.52, ustOran: 1.34 }
