@@ -83,6 +83,7 @@ export default defineConfig({
         index: 'index.html',
         yontem: 'yontem.html',
         veri: 'veri.html',
+        inceleme: 'inceleme.html',
         hakkinda: 'hakkinda.html',
       },
     },

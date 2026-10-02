@@ -1,13 +1,14 @@
-// Bilgi sayfalarının ortak kabuğu (Yöntem ve isabet, Veri ve lisanslar, Hakkında). Harita yok; DESIGN.md gereği
+// Bilgi sayfalarının ortak kabuğu (Yöntem ve isabet, Veri ve lisanslar, Profesyonel inceleme, Hakkında). Harita yok; DESIGN.md gereği
 // arkaplan hafif gradient mesh, gezinme çubuğu cam. Uzun metin düz zeminde, satır boyu ~65 karakter.
 import type { ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 
-export type SayfaAdi = 'yontem' | 'veri' | 'hakkinda'
+export type SayfaAdi = 'yontem' | 'veri' | 'inceleme' | 'hakkinda'
 
 const SAYFALAR: { ad: SayfaAdi; etiket: string }[] = [
   { ad: 'yontem', etiket: 'Yöntem ve isabet' },
   { ad: 'veri', etiket: 'Veri ve lisanslar' },
+  { ad: 'inceleme', etiket: 'Profesyonel inceleme' },
   { ad: 'hakkinda', etiket: 'Hakkında' },
 ]
 

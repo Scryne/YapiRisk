@@ -232,3 +232,36 @@ test('tehlike belirsizliği önceliği değiştiriyorsa resmî değer çağrıs�
   await expect(page.getByTestId('pp-araligi')).toHaveText('70')
   await expect(page.getByTestId('bant')).toContainText('Orta öncelik')
 })
+
+test('sonraki adım: binanın ilindeki müdürlük gösteriliyor; süreç sayfası açılıyor', async ({
+  page,
+  baseURL,
+}) => {
+  const { yabanci, hatalar } = istekleriIzle(page, baseURL!)
+  await page.goto('/#konum=38.614,27.4303') // Manisa merkezi
+  await page.getByRole('button', { name: 'Sorulara başla' }).click()
+  await doldur(page, KUSURSUZ_4_KAT)
+  const kart = page.getByTestId('sonuc-karti')
+  await expect(kart).toContainText('Kentsel Dönüşüm Başkanlığının lisans verdiği kuruluşlar')
+  await expect(kart).toContainText(
+    'Manisa Çevre, Şehircilik ve İklim Değişikliği İl Müdürlüğü’nden (0236 233 26 70)',
+  )
+  await page.emulateMedia({ media: 'print' })
+  await expect(page.getByRole('article')).toContainText('(0236 233 26 70)')
+  await page.emulateMedia({ media: 'screen' })
+
+  await kart.getByRole('link', { name: /Süreç adım adım/ }).click()
+  await expect(page.getByRole('heading', { level: 1, name: 'Profesyonel inceleme' })).toBeVisible()
+  await expect(page.getByRole('link', { name: 'Profesyonel inceleme' })).toHaveAttribute(
+    'aria-current',
+    'page',
+  )
+  const tablo = page.getByRole('table', { name: /İl Müdürlükleri/ })
+  await expect(tablo.getByRole('row')).toHaveCount(5) // başlık + 4 il
+  await expect(tablo).toContainText('0258 268 00 04')
+  await expect(
+    page.getByRole('link', { name: /Riskli Yapı Tespiti \(yeni sekmede/ }).first(),
+  ).toHaveAttribute('href', 'https://www.turkiye.gov.tr/csb-riskli-yapi-tespiti-4609')
+  expect(yabanci).toEqual([])
+  expect(hatalar).toEqual([])
+})

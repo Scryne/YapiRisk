@@ -16,6 +16,9 @@ class Bolge:
     tdth_nokta: int = 0
     #: O noktalarda ölçülen SS_ESHM20 / SS_TDTH oranının en küçüğü ve en büyüğü (dışa yuvarlanmış); None = ölçülmedi.
     tdth_oran: tuple[float, float] | None = None
+    #: Çevre, Şehircilik ve İklim Değişikliği İl Müdürlüğü: (site, santral telefonu), müdürlüğün iletişim sayfasından
+    #: (2026-10-02). Sonuç kartı ve "Profesyonel inceleme" sayfası gösterir.
+    il_mudurlugu: tuple[str, str] | None = None
 
 
 BOLGELER = {
@@ -27,6 +30,7 @@ BOLGELER = {
         yakinlik=8.5,
         tdth_nokta=10,
         tdth_oran=(0.52, 0.97),
+        il_mudurlugu=("https://aydin.csb.gov.tr", "0256 219 57 70"),
     ),
     "denizli": Bolge(
         kimlik="denizli",
@@ -36,6 +40,7 @@ BOLGELER = {
         yakinlik=8.5,
         tdth_nokta=10,
         tdth_oran=(0.75, 1.14),
+        il_mudurlugu=("https://denizli.csb.gov.tr", "0258 268 00 04"),
     ),
     "izmir": Bolge(
         kimlik="izmir",
@@ -45,6 +50,7 @@ BOLGELER = {
         yakinlik=8.5,
         tdth_nokta=10,
         tdth_oran=(0.80, 1.34),
+        il_mudurlugu=("https://izmir.csb.gov.tr", "0232 341 68 00"),
     ),
     "manisa": Bolge(
         kimlik="manisa",
@@ -54,5 +60,6 @@ BOLGELER = {
         yakinlik=8.5,
         tdth_nokta=10,
         tdth_oran=(0.72, 1.25),
+        il_mudurlugu=("https://manisa.csb.gov.tr", "0236 233 26 70"),
     ),
 }

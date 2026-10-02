@@ -33,10 +33,16 @@ export function KapsamDisiEkrani({ neden, baslikRef, onDegistir }: Props) {
       </h2>
       <p className="text-body-md text-pretty">{NEDENLER[neden]}</p>
       <p className="text-body-sm text-pretty text-muted-foreground">
-        Binanızın profesyonel incelemesi için Çevre, Şehircilik ve İklim Değişikliği Bakanlığı’nın lisans
-        verdiği kuruluşlara başvurabilirsiniz. Bu kuruluşların listesini ilinizdeki Çevre, Şehircilik ve İklim
-        Değişikliği İl Müdürlüğü’nden öğrenebilirsiniz.
+        Binanızın profesyonel incelemesi için Kentsel Dönüşüm Başkanlığının lisans verdiği kuruluşlara riskli
+        yapı tespiti yaptırabilirsiniz. Bu kuruluşları ilinizdeki Çevre, Şehircilik ve İklim Değişikliği İl
+        Müdürlüğü’nden ya da ALO 181’den öğrenebilirsiniz.
       </p>
+      <a
+        href={`${import.meta.env.BASE_URL}inceleme.html`}
+        className="self-start text-body-sm text-primary underline-offset-4 hover:underline"
+      >
+        Süreç adım adım: başvuru, itiraz, haklar
+      </a>
       <Button variant="outline" className="h-11 justify-start" onClick={onDegistir}>
         <ArrowLeft data-icon="inline-start" />
         Cevabımı değiştir

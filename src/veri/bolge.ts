@@ -15,6 +15,8 @@ export interface BolgeKaydi {
   tdthNokta: number
   /** O noktalarda ölçülen SS_ESHM20 / SS_TDTH oranının en küçüğü ve en büyüğü; null = ölçülmedi. */
   tdthOran: [number, number] | null
+  /** Çevre, Şehircilik ve İklim Değişikliği İl Müdürlüğü; null = kayıtta yok. */
+  ilMudurlugu: { site: string; telefon: string } | null
 }
 
 export interface TehlikePaketi {

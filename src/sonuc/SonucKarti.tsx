@@ -12,6 +12,7 @@ import {
   BANT_SINIRI,
   DONEM_NOTU,
   DONEM_UYARISI,
+  ilMudurluguNotu,
   ISABET_OZETI,
   ondalik,
   PARAMETRE_ADI,
@@ -255,6 +256,14 @@ export function SonucKarti({ sonuc, merkez, onTdth, onYazdir }: Props) {
           Sonraki adım
         </h3>
         <p className="text-body-sm text-pretty">{PROFESYONEL_YOL}</p>
+        <p className="text-body-sm text-pretty text-muted-foreground">{ilMudurluguNotu(sonuc.bolge)}</p>
+        <a
+          href={`${import.meta.env.BASE_URL}inceleme.html`}
+          className="inline-flex items-center gap-1 self-start text-body-sm text-primary underline-offset-4 hover:underline"
+        >
+          Süreç adım adım: başvuru, itiraz, haklar
+          <ArrowRight className="size-3.5" aria-hidden="true" />
+        </a>
         <Button className="h-11" onClick={onYazdir}>
           <Printer data-icon="inline-start" />
           Raporu yazdır ya da PDF kaydet

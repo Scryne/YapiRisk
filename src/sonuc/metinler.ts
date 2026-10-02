@@ -1,7 +1,7 @@
 // Sonuç kartı ve raporun ortak metinleri. Dil kuralı (DESIGN.md): "riskli", "güvenli", "sağlam", "çürük" yok;
 // sonuç bina hakkında hüküm değil, profesyonel inceleme önceliğidir (K-4, K-12).
 import type { Donem } from '@/form/taslak'
-import { adlarListesi, bulunma } from '@/veri/bolge'
+import { adlarListesi, bulunma, type BolgeKaydi } from '@/veri/bolge'
 import type { Bant } from '@/yontem/bant'
 import type { Yontem } from '@/yontem/degerlendir'
 import type { Parametre } from '@/yontem/ryteie'
@@ -134,7 +134,14 @@ export const TEKIL_BINA_KAYDI =
   'RYTEİE Ek-A.1.1: Bu yöntem binaların bölgesel dağılımını belirlemek içindir; tek bir binada risk değerlendirmesi amacıyla kullanılamaz.'
 
 export const PROFESYONEL_YOL =
-  "Binanızın durumunu kesin olarak öğrenmek için 6306 sayılı Kanun kapsamında Çevre, Şehircilik ve İklim Değişikliği Bakanlığı'nın lisans verdiği kuruluşlara başvurabilirsiniz. Kuruluşların listesini ilinizdeki Çevre, Şehircilik ve İklim Değişikliği İl Müdürlüğü'nden öğrenebilirsiniz."
+  'Binanızın durumunu kesin olarak öğrenmek için 6306 sayılı Kanun kapsamında riskli yapı tespiti yaptırabilirsiniz. Tespiti Kentsel Dönüşüm Başkanlığının lisans verdiği kuruluşlar yapar; başvuru e-Devlet’ten yapılır, ücreti malikler öder.'
+
+/** Binanın ilindeki müdürlük (bölge kaydından, K-3); kayıt yoksa genel yönlendirme. */
+export function ilMudurluguNotu(bolge: BolgeKaydi | null): string {
+  if (bolge?.ilMudurlugu)
+    return `İlinizdeki lisanslı kuruluşları ${bolge.ad} Çevre, Şehircilik ve İklim Değişikliği İl Müdürlüğü’nden (${bolge.ilMudurlugu.telefon}) ya da ALO 181’den öğrenebilirsiniz.`
+  return 'İlinizdeki lisanslı kuruluşları Çevre, Şehircilik ve İklim Değişikliği İl Müdürlüğü’nden ya da ALO 181’den öğrenebilirsiniz.'
+}
 
 export const tamsayi = new Intl.NumberFormat('tr-TR', { maximumFractionDigits: 0 })
 export const ondalik = (basamak: number) =>

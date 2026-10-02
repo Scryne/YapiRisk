@@ -133,6 +133,9 @@ def bolge_paketi(bolge: Bolge) -> dict:
         "yakinlik": bolge.yakinlik,
         "tdthNokta": bolge.tdth_nokta,
         "tdthOran": list(bolge.tdth_oran) if bolge.tdth_oran else None,
+        "ilMudurlugu": (
+            {"site": bolge.il_mudurlugu[0], "telefon": bolge.il_mudurlugu[1]} if bolge.il_mudurlugu else None
+        ),
         "sinirKutusu": [round(v, 4) for v in kutu],
     }
 

@@ -159,3 +159,28 @@ Oran ortalaması 0,98 (0,76–1,14). Okuma denetimi: 10 raporda SDS ve SD1 TBDY 
 CSV'yle birebir. Bant 0,72–1,14 (`tdth_oran` 0,75–1,14, alt sınır tavan kuralıyla 0,72). Dört ilde 40 nokta: oran
 ortalaması il il 0,76–0,98; ESHM20'nin en çok saptığı yer Aydın'ın güneyi ve kıyısı.
 
+## İl bandı mı, konuma göre bant mı? (2026-10-02, `mekansal.py`, `sonuc-mekansal.csv`)
+
+Soru: 40 noktayla ESHM20 → TDTH oranını konuma göre (yakın noktalara ağırlık vererek) tahmin etmek bandı daraltır mı?
+Yöntem: birini dışarıda bırak; bant kalan noktalardan kurulur, dışarıdaki noktanın gerçek oranı banda düştü mü bakılır.
+B'nin genişliği iç içe LOO artıklarından (dışarıdaki noktayı görmeden).
+
+| Bant | Alt (güvensiz yön) kapsama | Üst kapsama | Üst/alt (ort.) |
+| --- | --- | --- | --- |
+| A il bandı, alt en fazla 0,72 (uygulama) | 39/40 | 36/40 | ×1,72 |
+| A' il bandı, tavansız | 36/40 | 36/40 | ×1,64 |
+| B mekânsal, L = 15 km | 39/40 | 40/40 | ×1,98 |
+| B mekânsal, L = 40 km | 39/40 | 40/40 | ×2,08 |
+| B mekânsal, L = 100 km | 39/40 | 40/40 | ×2,68 |
+
+**Okuma:**
+- Mekânsal bant daraltmıyor, genişletiyor: oran yakın noktalar arasında da sıçrıyor (Aydın'da Söke 0,72 ↔ Didim 0,52,
+  ~42 km). **Karar:** il bandı kalır; mekânsal düzeltme uygulanmaz.
+- 0,72 tavanı ölçümle doğrulandı: tavansız il bandı 4 noktayı güvensiz yönde kaçırırdı (Demirci, Torbalı, Didim,
+  Acıpayam), tavanla yalnız Didim kaçıyor.
+- Didim, ilin en uç noktası; kalan 39 noktadan kurulan hiçbir bant onu yakalamıyor. Yeni bir konumda güvensiz yönde
+  kaçma olasılığı kabaca 1/40 mertebesinde; sonuç kartındaki AFAD değeri çağrısı (tehlike önceliği değiştirebildiğinde)
+  bu riski kapatan yol.
+- Üst taraftaki kaçmalar (4/40) yalnız aralığın elverişli ucunu etkiler, öncelik kötü uçtan seçildiği için sonucu
+  değiştirmez.
+

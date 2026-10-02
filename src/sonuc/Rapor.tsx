@@ -11,6 +11,7 @@ import {
   BANT_SINIRI,
   DONEM_NOTU,
   DONEM_UYARISI,
+  ilMudurluguNotu,
   ISABET_RAPORU,
   ondalik,
   PARAMETRE_ADI,
@@ -175,7 +176,9 @@ export function Rapor({ sonuc, secim, taslak, bolgeAdi }: Props) {
       <Baslik>Bu sonucu nasıl okumalı</Baslik>
       <p>{ISABET_RAPORU[d.yontem]}</p>
       <p className="mt-1">{TEKIL_BINA_KAYDI}</p>
-      <p className="mt-1">{PROFESYONEL_YOL}</p>
+      <p className="mt-1">
+        {PROFESYONEL_YOL} {ilMudurluguNotu(sonuc.bolge)} Süreç: YapiRisk “Profesyonel inceleme” sayfası.
+      </p>
 
       <Baslik>Kaynaklar</Baslik>
       <ul className="list-disc pl-4 text-[8.5pt]">
