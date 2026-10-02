@@ -265,3 +265,45 @@ test('sonraki adım: binanın ilindeki müdürlük gösteriliyor; süreç sayfas
   expect(yabanci).toEqual([])
   expect(hatalar).toEqual([])
 })
+
+test('paylaşım: bağlantı boş tarayıcıda aynı sonucu açıyor; kendi taslağı olan tarayıcıda önce soruyor', async ({
+  page,
+  context,
+  browser,
+}) => {
+  test.setTimeout(60_000)
+  // Sistemin paylaşım menüsü yerine panoya kopya yolu sınanır.
+  await context.addInitScript(() => Object.defineProperty(navigator, 'share', { value: undefined }))
+  await context.grantPermissions(['clipboard-read', 'clipboard-write'])
+  await page.goto('/#konum=38.614,27.4303')
+  await page.getByRole('button', { name: 'Sorulara başla' }).click()
+  await doldur(page, KUSURSUZ_4_KAT)
+  const pp = await page.getByTestId('pp-araligi').innerText()
+  await page.getByRole('button', { name: 'Komşularınızla paylaşın' }).click()
+  await expect(page.getByRole('button', { name: 'Bağlantı kopyalandı' })).toBeVisible()
+  const adres = await page.evaluate(() => navigator.clipboard.readText())
+  expect(adres).toMatch(/#paylas=[A-Za-z0-9_-]+$/)
+
+  // Boş tarayıcı: sonuç doğrudan açılır, adres temizlenir.
+  const yeni = await browser.newContext()
+  const komsu = await yeni.newPage()
+  await komsu.goto(adres)
+  await expect(komsu.getByRole('heading', { name: 'Sonuç', exact: true })).toBeVisible()
+  await expect(komsu.getByTestId('pp-araligi')).toHaveText(pp)
+  await expect.poll(() => komsu.evaluate(() => window.location.hash)).toBe('')
+
+  // Kendi taslağı olan tarayıcı: önce sorulur; vazgeçince kendi cevapları kalır.
+  await komsu.getByRole('button', { name: 'Değiştir : Taşıyıcı malzeme' }).click()
+  await komsu.getByRole('radio', { name: /^Yığma/ }).check()
+  await komsu.goto(adres)
+  const onay = komsu.getByRole('alertdialog', { name: 'Paylaşılan değerlendirme açılsın mı?' })
+  await onay.getByRole('button', { name: 'Kendi değerlendirmemde kal' }).click()
+  await expect(onay).toBeHidden()
+  const kayit = await komsu.evaluate(() => JSON.parse(localStorage.getItem('yapirisk:degerlendirme:v1')!))
+  expect(kayit.taslak.malzeme).toBe('yigma')
+
+  await komsu.goto(adres)
+  await komsu.getByRole('alertdialog').getByRole('button', { name: 'Paylaşılanı aç' }).click()
+  await expect(komsu.getByTestId('pp-araligi')).toHaveText(pp)
+  await yeni.close()
+})

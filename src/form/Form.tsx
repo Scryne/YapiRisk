@@ -24,6 +24,8 @@ interface Props {
   onTemizle: () => void
   onTdth: (ss: number | null) => void
   onYazdir: () => void
+  /** Değerlendirmeyi taşıyan bağlantı (#paylas); seçim yoksa null. */
+  paylasimAdresi: string | null
 }
 
 export function Form(p: Props) {
@@ -97,6 +99,7 @@ export function Form(p: Props) {
           onHaritaya={onHaritaya}
           onTdth={p.onTdth}
           onYazdir={p.onYazdir}
+          paylasimAdresi={p.paylasimAdresi}
         />
       </div>
     )

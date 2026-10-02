@@ -46,6 +46,11 @@ export function Hakkinda() {
           tarayıcının önbelleğinde tutulur. “Temizle” düğmesi cevaplarınızı ve baktığınız bölgenin önbelleğini
           siler. Hesap yok, çerez yok, ziyaret istatistiği tutulmaz. Rapor da tarayıcınızda üretilir.
         </p>
+        <p>
+          Sonucu paylaşırsanız bağlantı binanın konumunu ve cevaplarınızı içerir. Bağlantıyı kime
+          gönderdiğinize siz karar verirsiniz; YapiRisk onu hiçbir yere kaydetmez, bağlantının bu bölümü
+          sunucuya da gönderilmez.
+        </p>
         <p>Tarayıcınızın bizim dışımızda istek gönderdiği yerler:</p>
         <ul className="list-disc pl-5">
           <li>

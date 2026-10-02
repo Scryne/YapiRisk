@@ -25,6 +25,7 @@ import {
   ZEMIN_ADI,
 } from './metinler'
 import { katkiSatirlari, type Sonuc } from './sonuc'
+import { PaylasDugmesi } from './PaylasDugmesi'
 import { TdthGirisi } from './TdthGirisi'
 
 const g3 = ondalik(3)
@@ -35,9 +36,11 @@ interface Props {
   merkez: [number, number]
   onTdth: (ss: number | null) => void
   onYazdir: () => void
+  /** Değerlendirmeyi taşıyan bağlantı; yoksa paylaşım düğmesi görünmez. */
+  paylasimAdresi?: string | null
 }
 
-export function SonucKarti({ sonuc, merkez, onTdth, onYazdir }: Props) {
+export function SonucKarti({ sonuc, merkez, onTdth, onYazdir, paylasimAdresi }: Props) {
   const { d, tam } = sonuc
   const { bant, yayilim } = d.bant
   const satirlar = katkiSatirlari(d)
@@ -268,6 +271,7 @@ export function SonucKarti({ sonuc, merkez, onTdth, onYazdir }: Props) {
           <Printer data-icon="inline-start" />
           Raporu yazdır ya da PDF kaydet
         </Button>
+        {paylasimAdresi && <PaylasDugmesi adres={paylasimAdresi} />}
       </section>
     </div>
   )

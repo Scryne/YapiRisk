@@ -17,9 +17,20 @@ interface Props {
   onHaritaya: () => void
   onTdth: (ss: number | null) => void
   onYazdir: () => void
+  paylasimAdresi: string | null
 }
 
-export function Ozet({ taslak, sonuc, merkez, baslikRef, onGit, onHaritaya, onTdth, onYazdir }: Props) {
+export function Ozet({
+  taslak,
+  sonuc,
+  merkez,
+  baslikRef,
+  onGit,
+  onHaritaya,
+  onTdth,
+  onYazdir,
+  paylasimAdresi,
+}: Props) {
   const eksik = ilkEksik(taslak)
 
   const satirlar = adimlar(taslak).flatMap((ad, i) => {
@@ -42,7 +53,13 @@ export function Ozet({ taslak, sonuc, merkez, baslikRef, onGit, onHaritaya, onTd
           Sonuç
         </h2>
         {sonuc && merkez ? (
-          <SonucKarti sonuc={sonuc} merkez={merkez} onTdth={onTdth} onYazdir={onYazdir} />
+          <SonucKarti
+            sonuc={sonuc}
+            merkez={merkez}
+            onTdth={onTdth}
+            onYazdir={onYazdir}
+            paylasimAdresi={paylasimAdresi}
+          />
         ) : eksik !== null ? (
           <div className="flex flex-col gap-2">
             <p className="text-body-sm text-pretty">Sonuç için bazı sorular cevapsız.</p>

@@ -7,6 +7,8 @@ import { kayitOku, kayitSil, kayitYaz } from '@/form/kayit'
 import { TemizleDugmesi } from '@/form/TemizleDugmesi'
 import { useCevrimici } from '@/lib/cevrimici'
 import { gezintiOnbelleginiSil } from '@/servis-calisani'
+import { paylasimOku, paylasimParcasi, type Paylasim } from '@/form/paylasim'
+import { PaylasimOnayi } from '@/form/PaylasimOnayi'
 import { adimlar, bosMu, bosTaslak, type Taslak } from '@/form/taslak'
 import { cn } from '@/lib/utils'
 import { Rapor } from '@/sonuc/Rapor'
@@ -125,10 +127,37 @@ export default function App() {
   const mahalleler = useMemo(() => paketler?.flatMap((p) => p.mahalleler) ?? [], [paketler])
   const adlar = useMemo(() => paketler?.map((p) => p.kayit.ad) ?? [], [paketler])
 
-  // Adresteki #konum / #harita: açılışta ve sonradan değişince.
+  // Paylaşılan değerlendirme (#paylas): açılınca sonuç gösterilir; adres temizlenir ki yenileyince yeniden açılmasın.
+  const taslakRef = useRef(taslak)
+  const paylasimiAcRef = useRef<(p: Paylasim) => void>(() => {})
+  const [bekleyenPaylasim, setBekleyenPaylasim] = useState<Paylasim | null>(null)
+  const paylasimiAc = (p: Paylasim) => {
+    setSecim(p.secim)
+    setTaslak(p.taslak)
+    setAdim(adimlar(p.taslak).length)
+    setTdth(p.tdthSs ? { ss: p.tdthSs, anahtar: konumAnahtari(p.secim) } : null)
+    setHedef((h) => ({ merkez: p.secim.merkez, yakinlik: KONUM_YAKINLIGI, sira: (h?.sira ?? 0) + 1 }))
+    setFormda(true)
+    setBekleyenPaylasim(null)
+  }
+  // Adres dinleyicisi güncel taslağı ve işleyiciyi görsün (dinleyici yalnız veri hazır olunca bir kez kurulur).
+  useEffect(() => {
+    taslakRef.current = taslak
+    paylasimiAcRef.current = paylasimiAc
+  })
+
+  // Adresteki #paylas / #konum / #harita: açılışta ve sonradan değişince.
   useEffect(() => {
     if (!hazir) return
     const oku = () => {
+      const p = paylasimOku(window.location.hash)
+      if (p) {
+        history.replaceState(null, '', window.location.pathname + window.location.search)
+        if (bosMu(taslakRef.current) || JSON.stringify(taslakRef.current) === JSON.stringify(p.taslak))
+          paylasimiAcRef.current(p)
+        else setBekleyenPaylasim(p)
+        return
+      }
       const b = baglantiOku(window.location.hash)
       if (!b) return
       if (b.tip === 'konum') {
@@ -231,8 +260,11 @@ export default function App() {
           aria-label={formda ? 'Değerlendirme' : 'Bina bulma'}
           className={cn(
             'absolute inset-x-0 bottom-0 z-10 overflow-y-auto rounded-t-lg border border-b-0 border-border bg-surface px-4 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] supports-[backdrop-filter]:bg-glass supports-[backdrop-filter]:backdrop-blur-md md:top-4 md:bottom-auto md:left-4 md:max-h-[calc(100dvh-2rem)] md:w-[23rem] md:rounded-lg md:border-b',
-            // Telefonda form sabit yükseklikte: adımlar arasında panel ve harita merkezi zıplamasın.
-            formda ? 'flex h-[78dvh] flex-col pb-0 md:h-auto' : 'max-h-[48dvh]',
+            // Telefonda form sabit yükseklikte: adımlar arasında panel ve harita merkezi zıplamasın. Bina bulma
+            // panelinin en az yüksekliği yüklenmiş içeriğe yakın: veri gelince panel alttan uzayıp kaymasın (CLS).
+            formda
+              ? 'flex h-[78dvh] flex-col pb-0 md:h-auto'
+              : 'max-h-[48dvh] min-h-[min(48dvh,20rem)] md:min-h-0',
           )}
         >
           <header className="flex items-baseline justify-between gap-3">
@@ -273,6 +305,11 @@ export default function App() {
                 onTemizle={temizle}
                 onTdth={(ss) => setTdth(ss === null ? null : { ss, anahtar: konumAnahtari(secim) })}
                 onYazdir={() => window.print()}
+                paylasimAdresi={
+                  secim
+                    ? `${window.location.origin}${window.location.pathname}${paylasimParcasi({ secim, taslak, tdthSs })}`
+                    : null
+                }
               />
             </div>
           )}
@@ -375,6 +412,11 @@ export default function App() {
           )}
         </aside>
       </main>
+      <PaylasimOnayi
+        acik={bekleyenPaylasim !== null}
+        onAc={() => bekleyenPaylasim && paylasimiAc(bekleyenPaylasim)}
+        onVazgec={() => setBekleyenPaylasim(null)}
+      />
       {sonuc && secim && secimBolgesi && (
         <Rapor sonuc={sonuc} secim={secim} taslak={taslak} bolgeAdi={secimBolgesi.kayit.ad} />
       )}
