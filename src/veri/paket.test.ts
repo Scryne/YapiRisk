@@ -84,8 +84,8 @@ describe('bütün bölge paketleri', () => {
     bolgeler: { kimlik: string; sinirKutusu: [number, number, number, number] }[]
   }
 
-  it('kayıtta Aydın, İzmir ve Manisa var', () => {
-    expect(bolgeler.map((b) => b.kimlik).sort()).toEqual(['aydin', 'izmir', 'manisa'])
+  it('kayıtta Aydın, Denizli, İzmir ve Manisa var', () => {
+    expect(bolgeler.map((b) => b.kimlik).sort()).toEqual(['aydin', 'denizli', 'izmir', 'manisa'])
   })
 
   it.each(bolgeler.map((b) => [b.kimlik, b] as const))(

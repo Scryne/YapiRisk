@@ -28,6 +28,7 @@ BOLGELER = {
         tdth_nokta=10,
         tdth_oran=(0.52, 0.97),
     ),
+    "denizli": Bolge(kimlik="denizli", ad="Denizli", osm_iliski=223169, merkez=(29.3, 37.65), yakinlik=8.5),
     "izmir": Bolge(
         kimlik="izmir",
         ad="İzmir",

@@ -1,7 +1,7 @@
 ---
 version: alpha
 name: YapiRisk
-description: Aydın, İzmir ve Manisa'daki betonarme ve yığma binalar için RYTEİE 2019 Ek-A tabanlı, sunucusuz deprem riski ön değerlendirme aracı; sonucu hüküm değil "profesyonel inceleme önceliği" olarak gösterir.
+description: Aydın, Denizli, İzmir ve Manisa'daki betonarme ve yığma binalar için RYTEİE 2019 Ek-A tabanlı, sunucusuz deprem riski ön değerlendirme aracı; sonucu hüküm değil "profesyonel inceleme önceliği" olarak gösterir.
 colors:
   primary: "#4CC3E0"
   on-primary: "#051A21"

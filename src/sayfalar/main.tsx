@@ -3,6 +3,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import '../index.css'
 import { Hakkinda } from './Hakkinda'
+import { servisCalisaniKaydet } from '@/servis-calisani'
 import type { SayfaAdi } from './Sayfa'
 import { Veri } from './Veri'
 import { Yontem } from './Yontem'
@@ -15,3 +16,5 @@ createRoot(document.getElementById('root')!).render(
     <Icerik />
   </StrictMode>,
 )
+
+servisCalisaniKaydet()

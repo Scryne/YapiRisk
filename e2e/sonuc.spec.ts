@@ -1,26 +1,6 @@
 import { readFileSync } from 'node:fs'
-import { expect, test, type Page } from '@playwright/test'
-import { gorunenMerkez, hazirBekle, istekleriIzle, ornekBina } from './yardim.ts'
-
-/**
- * Formu fareyle doldurur: her adımda ilk soru grubunun `sira`'ncı seçeneği; nizam bitişikse ikinci grup da.
- * 12 cevap verilirse isteğe bağlı 13. adım atlanır.
- */
-async function doldur(page: Page, siralar: number[], dosemeSirasi = 0) {
-  for (const [i, sira] of siralar.entries()) {
-    await expect(page.getByText(`Soru ${i + 1} / 13`)).toBeVisible()
-    await page.locator('fieldset').first().getByRole('radio').nth(sira).check()
-    if ((await page.locator('fieldset').count()) > 1)
-      await page.locator('fieldset').nth(1).getByRole('radio').nth(dosemeSirasi).check()
-    await page.getByRole('button', { name: /İleri|Atla|gözden geçir/ }).click()
-  }
-  // İsteğe bağlı yapım dönemi cevapsız geçilir.
-  if (siralar.length < 13) await page.getByRole('button', { name: 'Cevapları gözden geçir' }).click()
-  await expect(page.getByRole('heading', { name: 'Sonuç', exact: true })).toBeFocused()
-}
-
-// Betonarme, 4 kat, perde yok, kusursuz, iyi kalite, ayrık, düz, ZC, dönem atlanır.
-const KUSURSUZ_4_KAT = [0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2]
+import { expect, test } from '@playwright/test'
+import { doldur, gorunenMerkez, hazirBekle, istekleriIzle, KUSURSUZ_4_KAT, ornekBina } from './yardim.ts'
 
 test('duman: mahalle → bina → form → sonuç → TDTH → rapor', async ({ page, baseURL }) => {
   const { yabanci, hatalar } = istekleriIzle(page, baseURL!)
@@ -198,6 +178,36 @@ test('üçüncü il: Aydın mahallesi aranıyor, tehlike Aydın ızgarası ve Ay
   expect(ust / alt).toBeCloseTo(0.97 / 0.52, 2)
   await page.emulateMedia({ media: 'print' })
   await expect(page.getByRole('article')).toContainText('Aydın')
+
+  expect(yabanci).toEqual([])
+  expect(hatalar).toEqual([])
+})
+
+test('dördüncü il: Denizli aranıyor; AFAD farkı henüz ölçülmediği için bant bütün ölçümlerin birleşimi', async ({
+  page,
+  baseURL,
+}) => {
+  const { yabanci, hatalar } = istekleriIzle(page, baseURL!)
+  await page.goto('/')
+  await hazirBekle(page)
+  const arama = page.getByRole('combobox', { name: 'Mahalle ya da köy ara' })
+  await arama.fill('akkonak')
+  await page.getByRole('option', { name: /Akkonak.*Merkezefendi/ }).click()
+  await expect(arama).toHaveValue('Akkonak, Merkezefendi')
+
+  await page.goto('/#konum=37.7844,29.0842') // Merkezefendi
+  await expect(page.getByTestId('ss-degeri')).toBeVisible()
+  await page.getByRole('button', { name: 'Sorulara başla' }).click()
+  await doldur(page, KUSURSUZ_4_KAT)
+  await expect(page.getByTestId('sonuc-karti')).toContainText(
+    'Bu ilde AFAD’la karşılaştırma henüz yapılmadı; aralık Aydın, İzmir ve Manisa’da ölçülen farktan geliyor',
+  )
+  // Ölçülmemiş il: birleşik bant 0,52–1,34.
+  const [alt, ust] = (await page.getByTestId('ss-kullanilan').innerText())
+    .replace(' g', '')
+    .split(' – ')
+    .map((x) => Number(x.replace(',', '.')))
+  expect(ust / alt).toBeCloseTo(1.34 / 0.52, 2)
 
   expect(yabanci).toEqual([])
   expect(hatalar).toEqual([])

@@ -41,9 +41,10 @@ export function Hakkinda() {
       <Bolum id="aydinlatma" baslik="Verileriniz nereye gider">
         <p>
           YapiRisk’in bir sunucusu yok. Seçtiğiniz bina, cevaplarınız ve girdiğiniz değerler yalnız bu
-          tarayıcıda saklanır; yeniden açtığınızda kaldığınız yerden devam edebilesiniz diye. “Temizle”
-          düğmesi hepsini siler. Hesap yok, çerez yok, ziyaret istatistiği tutulmaz. Rapor da tarayıcınızda
-          üretilir.
+          tarayıcıda saklanır; yeniden açtığınızda kaldığınız yerden devam edebilesiniz diye. Bağlantı olmadan
+          da çalışsın diye uygulama dosyaları ve baktığınız bölgenin harita ve bina parçaları da bu
+          tarayıcının önbelleğinde tutulur. “Temizle” düğmesi cevaplarınızı ve baktığınız bölgenin önbelleğini
+          siler. Hesap yok, çerez yok, ziyaret istatistiği tutulmaz. Rapor da tarayıcınızda üretilir.
         </p>
         <p>Tarayıcınızın bizim dışımızda istek gönderdiği yerler:</p>
         <ul className="list-disc pl-5">

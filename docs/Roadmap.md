@@ -23,6 +23,8 @@ Tahmin ~22 iş günü; her fazın sonunda "Notlar" doldurulur ve sonraki fazlar 
 | 6 | Sonuç, rapor ve bilgi sayfaları | ✅ Tamamlandı | Sonuç kartı (bant, aralık, kalem kalem katkı, belirsizlik, isabet notu); TDTH SDS girişi adım adım rehberle; yazdırma görünümü A4'te okunur PDF; Yöntem ve isabet, Veri ve lisanslar, Hakkında/feragat sayfaları; `gorsel-dogrulama` 4 genişlik × tema çıkış 0; Playwright duman testi uçtan uca geçiyor |
 | 6.5 | İkinci il paketi | ✅ Tamamlandı | İl Scryne'la seçildi; boru hattı o il için paketi üretiyor (iki kez aynı sha256); S1 benzeri TDTH karşılaştırması o ilde ≥ 5 noktada yapıldı ve bant (0,72–1,25) geçerli ya da yeniden ölçüldü; uygulama il seçiyor, arama ve harita iki ilde çalışıyor; Manisa'ya özgü metinler bölgeden okunuyor |
 | 6.6 | Üçüncü il paketi (Aydın) | ✅ Tamamlandı | Boru hattı Aydın paketini üretiyor (iki kez aynı sha256); uygulama üç ilde arıyor ve haritada gösteriyor; Scryne'dan ≥ 5 TDTH okumasıyla S1 bandı (0,72–1,34) Aydın'da geçerli ya da yeniden ölçüldü, `tdthNokta` dolduruldu |
+| 6.7 | Sahada kullanım (çevrimdışı) | ✅ Tamamlandı | Uygulama bir kez açıldıktan sonra bağlantı kesilince yeniden açılıyor; daha önce bakılan konumda değerlendirme ve rapor çevrimdışı tamamlanıyor; bilgi sayfaları çevrimdışı açılıyor; ana ekrana eklenebiliyor (manifest + ikonlar); "Temizle" gezilen bölgenin önbelleğini de siliyor; e2e kanıtı |
+| 6.8 | Dördüncü il paketi (Denizli) | 🔄 Devam Ediyor | Boru hattı Denizli paketini üretiyor (iki kez aynı sha256); uygulama dört ilde arıyor; Scryne'dan ≥ 5 TDTH okumasıyla Denizli bandı ölçüldü, `tdthOran` dolduruldu |
 | 7 | Yayın | ⏳ Bekliyor | Faz 6.5 bitti (Scryne'ın kararı, 2026-09-30: yalnız Manisa'yı gösteren site yayına çıkmaz). `yayin-oncesi` çıkış 0 ya da her bulgu kararlı; `fixing-metadata` geçti; Scryne'ın açık onayıyla repo public ve GitHub Pages'te canlı; canlı adreste 10 S1 noktasından biriyle uçtan uca rapor alındı |
 | 8 | Gerçek kullanım | ⏳ Bekliyor | Proje-Fikri'deki "bitti = kullanıldı" cümlesi gerçekleşti (Scryne'ın seçtiği ≥ 5 kişi yardımsız rapor aldı, sonucu öncelik olarak doğru okudu); bulgular roadmap'e işlendi |
 | 9 | TDTH ızgarası entegrasyonu (tetiklemeli) | ⏳ Bekliyor | Tetik: AFAD CIMER başvurusu olumlu döner. Resmî grid paketlenir, K-5 bandı kapsanan illerde kalkar, S1 karşılaştırması yeniden koşulur |
@@ -242,6 +244,34 @@ Faz 9–11 olaya bağlıdır; hook bunları "sıradaki iş" saymaz.
     0,97 / 0,52 kat geniş.
   - Testler: S1 testleri üç ilde (`describe.each`): okuma tutarlılığı, kayıttaki aralık ölçümü kapsıyor (≤ 0,01
     geniş), her noktada AFAD bölgesi kötü ve iyi uç arasında; `ilBandi` ve birleşim; e2e Aydın bandının oranı.
+
+### Faz 6.7: Sahada kullanım (çevrimdışı, 2026-10-02)
+- **Neden:** Kullanıcı formu binanın önünde, telefonla dolduruyor; çekim zayıf olabilir. Scryne'ın devrettiği iş.
+- **Notlar:**
+  - Bağımlılık eklenmedi: elle yazılmış servis çalışanı `sw/sw.js`; `vite.config.ts` eklentisi derleme sonunda
+    (`generateBundle`, `order: 'post'`: Vite'ın HTML eklentisi boş giriş parçalarını önce siliyor) çıktı listesini ve
+    içerik özetinden sürümü yazar, `dist/sw.js` üretir. Kayıt yalnız üretim derlemesinde (`src/servis-calisani.ts`).
+  - Önbellek: kabuk (JS/CSS/woff2, 4 HTML, ikonlar, il paketlerinin küçük dosyaları; 47 dosya, 2,9 MB sıkıştırmasız)
+    önceden; bina parçaları (en çok 1.500, il paketlerinin `kaynak.json` özetiyle sürümlü) ve OpenFreeMap karoları
+    (en çok 2.500) kullanıldıkça. Sayfalar ve `bolgeler.json` önce ağdan. MapTiler uydu karoları önbelleğe
+    alınmaz. `.woff` yedekleri önceden alınmaz.
+  - Tuzak: `vite preview` yanıtlara `Vary: Origin` ekliyor; modül betikleri Origin başlığıyla istendiği için önceden
+    alınan kopya eşleşmiyordu (çevrimdışı beyaz sayfa) → önbellek aramaları `ignoreVary`.
+  - İlk ziyarette servis çalışanı devreye girmeden inen parçalar önbelleğe girmez; ikinci ziyaretten itibaren girer.
+  - Gizlilik (K-1): önbellek yalnız tarayıcıda; karolar ve parçalar bakılan bölgeyi gösterdiği için "Temizle" onları da
+    siler (kabuk kalır); Hakkında metni güncellendi. Panelde çevrimdışıyken durum notu (`role=status`).
+  - Doğrulama: `e2e/cevrimdisi.spec.ts` (iki cihaz, 4 tekrar kararlı): denetim başladıktan sonra bina ölçeğinde bakılır →
+    bağlantı kesilir → yeniden yükleme → değerlendirme sonuna kadar → Yöntem sayfası → bağlantı gelir → Temizle eski
+    parçaları ve karoları siler, kabuk kalır.
+
+### Faz 6.8: Dördüncü il paketi (Denizli, 2026-10-02)
+- **Notlar:**
+  - OSM il ilişkisi 223169 (Nominatim). 19 ilçe, 699 mahalle/köy, 362.998 bina (2.972 parça), ESHM20 ızgarası 20×18.
+    İki kez üretildi, bütün dosyaların sha256'sı aynı; diğer paketler değişmedi.
+  - Okuma bekleyene kadar bant birleşik 0,52–1,34 (`S1_BANDI`), notta "Bu ilde AFAD'la karşılaştırma henüz yapılmadı".
+  - Paylaşım görseli il listesinden bağımsız ("Binanız için deprem riski ön değerlendirmesi"); il listesi meta
+    açıklamalarında.
+  - **Bekleyen:** Scryne'ın 10 TDTH okuması (`spike/S1/denizli-tdth-okumalar.csv`, yol `spike/S1/README.md`).
 
 ### Faz 7: Yayın (~1 gün)
 - **İşler:** MapTiler anahtarı GitHub Actions değişkeni `VITE_MAPTILER_ANAHTARI` olarak derlemeye; MapTiler

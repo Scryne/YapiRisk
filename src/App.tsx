@@ -1,10 +1,12 @@
-import { Crosshair, LoaderCircle, MousePointerClick, Satellite } from 'lucide-react'
+import { Crosshair, LoaderCircle, MousePointerClick, Satellite, WifiOff } from 'lucide-react'
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { MahalleArama } from '@/arama/MahalleArama'
 import { Button } from '@/components/ui/button'
 import { Form } from '@/form/Form'
 import { kayitOku, kayitSil, kayitYaz } from '@/form/kayit'
 import { TemizleDugmesi } from '@/form/TemizleDugmesi'
+import { useCevrimici } from '@/lib/cevrimici'
+import { gezintiOnbelleginiSil } from '@/servis-calisani'
 import { adimlar, bosMu, bosTaslak, type Taslak } from '@/form/taslak'
 import { cn } from '@/lib/utils'
 import { Rapor } from '@/sonuc/Rapor'
@@ -109,6 +111,7 @@ export default function App() {
 
   const temizle = () => {
     kayitSil()
+    void gezintiOnbelleginiSil()
     setSecim(null)
     setTaslak(bosTaslak())
     setAdim(0)
@@ -117,6 +120,7 @@ export default function App() {
   }
 
   const paketler = yukleme.durum === 'hazir' ? yukleme.paketler : null
+  const cevrimici = useCevrimici()
   const hazir = paketler !== null
   const mahalleler = useMemo(() => paketler?.flatMap((p) => p.mahalleler) ?? [], [paketler])
   const adlar = useMemo(() => paketler?.map((p) => p.kayit.ad) ?? [], [paketler])
@@ -245,6 +249,14 @@ export default function App() {
           {yukleme.durum === 'hata' && (
             <p className="mt-4 text-body-sm text-pretty text-error" role="alert">
               Bölge verisi yüklenemedi. Bağlantınızı kontrol edip sayfayı yenileyin. ({yukleme.mesaj})
+            </p>
+          )}
+
+          {!cevrimici && (
+            <p className="mt-4 flex gap-2 text-body-sm text-pretty text-muted-foreground" role="status">
+              <WifiOff className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
+              Bağlantı yok. Sorular ve sonuç çalışmaya devam eder; daha önce açmadığınız harita bölümleri ve
+              binalar görünmez.
             </p>
           )}
 

@@ -60,3 +60,23 @@ export function ornekBina(): [number, number] {
   const enBuyuk = uygun.reduce((a, b) => (alan(b[0]) > alan(a[0]) ? b : a))
   return cokgenMerkezi(enBuyuk[0])
 }
+
+/**
+ * Formu fareyle doldurur: her adımda ilk soru grubunun `sira`'ncı seçeneği; nizam bitişikse ikinci grup da.
+ * 12 cevap verilirse isteğe bağlı 13. adım atlanır.
+ */
+export async function doldur(page: Page, siralar: number[], dosemeSirasi = 0) {
+  for (const [i, sira] of siralar.entries()) {
+    await expect(page.getByText(`Soru ${i + 1} / 13`)).toBeVisible()
+    await page.locator('fieldset').first().getByRole('radio').nth(sira).check()
+    if ((await page.locator('fieldset').count()) > 1)
+      await page.locator('fieldset').nth(1).getByRole('radio').nth(dosemeSirasi).check()
+    await page.getByRole('button', { name: /İleri|Atla|gözden geçir/ }).click()
+  }
+  // İsteğe bağlı yapım dönemi cevapsız geçilir.
+  if (siralar.length < 13) await page.getByRole('button', { name: 'Cevapları gözden geçir' }).click()
+  await expect(page.getByRole('heading', { name: 'Sonuç', exact: true })).toBeFocused()
+}
+
+// Betonarme, 4 kat, perde yok, kusursuz, iyi kalite, ayrık, düz, ZC, dönem atlanır.
+export const KUSURSUZ_4_KAT = [0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2]

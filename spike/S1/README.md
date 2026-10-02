@@ -133,3 +133,10 @@ Oran ortalaması 0,76 (0,52–0,97). Okuma denetimi: 10 raporda SDS ve SD1, SS v
 `tdthOran`). Not: ESHM20 güneyde ve kıyıda (Didim) AFAD'dan en çok sapıyor; 0,1° ızgara Büyük Menderes grabenini
 ve yarımadayı kaba çözüyor olabilir.
 
+## Denizli (Roadmap Faz 6.8, 2026-10-02): okuma bekliyor
+
+Dördüncü il Denizli. 10 ilçe merkezi (`denizli-tdth-okumalar.csv`; OSM `admin_centre` düğümleri, Pamukkale için ilçe
+etiketi): merkez (Merkezefendi, Pamukkale), batı (Sarayköy, Buldan, Babadağ), kuzeydoğu (Çal, Çivril), güney
+(Acıpayam, Tavas, Çameli); on noktanın hepsi il sınırı içinde. Okuma akışı Aydın'daki gibi (DD-2, ZC). Okumalar
+gelince oran aralığı `bolgeler.py` `tdth_oran`'a yazılır, S1 testleri (`describe.each`) Denizli'yi de kapsar.
+
