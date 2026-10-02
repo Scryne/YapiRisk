@@ -12,13 +12,15 @@ const g3 = ondalik(3)
 const TDTH_ADRESI = 'https://tdth.afad.gov.tr'
 
 interface Props {
+  /** Sonuç kartındaki çağrının açıp odaklayabilmesi için. */
+  id?: string
   merkez: [number, number]
   ssEshm20: number
   tdthSs: number | null
   onTdth: (ss: number | null) => void
 }
 
-export function TdthGirisi({ merkez, ssEshm20, tdthSs, onTdth }: Props) {
+export function TdthGirisi({ id: disId, merkez, ssEshm20, tdthSs, onTdth }: Props) {
   const id = useId()
   const [metin, setMetin] = useState('')
   const [hata, setHata] = useState(false)
@@ -83,7 +85,7 @@ export function TdthGirisi({ merkez, ssEshm20, tdthSs, onTdth }: Props) {
     )
 
   return (
-    <details className="group rounded-md border border-border">
+    <details id={disId} className="group rounded-md border border-border">
       <summary
         ref={ozetRef}
         className="flex min-h-11 cursor-pointer items-center px-3 text-body-sm font-medium marker:text-muted-foreground"
@@ -93,7 +95,7 @@ export function TdthGirisi({ merkez, ssEshm20, tdthSs, onTdth }: Props) {
       <div className="flex flex-col gap-3 px-3 pb-3">
         <p className="text-body-sm text-pretty text-muted-foreground">
           AFAD’ın Türkiye Deprem Tehlike Haritası binanızın konumu için resmî S<sub>S</sub> değerini verir.
-          Değeri girerseniz tehlike aralığı kalkar. Yaklaşık 5 dakika sürer.
+          Değeri girerseniz tehlike aralığı kalkar. e-Devlet girişinden sonra bir dakikadan kısa sürer.
         </p>
         <ol className="flex list-decimal flex-col gap-2 pl-5 text-body-sm text-pretty marker:text-muted-foreground">
           <li>

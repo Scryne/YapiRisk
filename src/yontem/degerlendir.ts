@@ -1,6 +1,6 @@
 // Hesap sözleşmesi (Final-Doküman): tehlike aralığı × "bilmiyorum" uçları → PP aralığı → bant.
 import { belirsizParametreler, ucGirdisi, type FormCevaplari } from './aralik'
-import { bantSonucu, type BantSonucu } from './bant'
+import { bant, bantSonucu, type Bant, type BantSonucu } from './bant'
 import { puan, type Bolge, type Kalem, type Parametre } from './ryteie'
 import { tehlike, type TehlikeGirdisi, type TehlikeSonucu } from './tehlike'
 import { yigmaBelirsizParametreler, yigmaPuani, yigmaUcGirdisi, type YigmaCevaplari } from './yigma'
@@ -25,13 +25,20 @@ export interface Degerlendirme {
   bant: BantSonucu
   /** Puanı iki uca açan "bilmiyorum" cevapları. */
   belirsiz: Parametre[]
+  /**
+   * Yalnız tehlike belirsizliğinin etkisi: cevapların elverişsiz hali sabitken tehlikenin iki ucundaki öncelik. İkisi
+   * farklıysa resmî (AFAD) değer önceliği değiştirebilir.
+   */
+  tehlikeyleOncelik: { kotu: Bant; iyi: Bant }
 }
 
 export function degerlendir(cevaplar: FormCevaplari, tehlikeGirdisi: TehlikeGirdisi): Degerlendirme {
   const t = tehlike(tehlikeGirdisi)
-  const kotu = puan(t.bolgeKotu, ucGirdisi(cevaplar, 'kotu'))
+  const kotuCevap = ucGirdisi(cevaplar, 'kotu')
+  const kotu = puan(t.bolgeKotu, kotuCevap)
   const iyi = puan(t.bolgeIyi, ucGirdisi(cevaplar, 'iyi'))
   return {
+    tehlikeyleOncelik: { kotu: bant(kotu.pp), iyi: bant(puan(t.bolgeIyi, kotuCevap).pp) },
     yontem: 'betonarme',
     tehlike: t,
     kotu,
@@ -43,9 +50,11 @@ export function degerlendir(cevaplar: FormCevaplari, tehlikeGirdisi: TehlikeGird
 
 export function degerlendirYigma(cevaplar: YigmaCevaplari, tehlikeGirdisi: TehlikeGirdisi): Degerlendirme {
   const t = tehlike(tehlikeGirdisi)
-  const kotu = yigmaPuani(t.bolgeKotu, yigmaUcGirdisi(cevaplar, 'kotu'))
+  const kotuCevap = yigmaUcGirdisi(cevaplar, 'kotu')
+  const kotu = yigmaPuani(t.bolgeKotu, kotuCevap)
   const iyi = yigmaPuani(t.bolgeIyi, yigmaUcGirdisi(cevaplar, 'iyi'))
   return {
+    tehlikeyleOncelik: { kotu: bant(kotu.pp), iyi: bant(yigmaPuani(t.bolgeIyi, kotuCevap).pp) },
     yontem: 'yigma',
     tehlike: t,
     kotu,

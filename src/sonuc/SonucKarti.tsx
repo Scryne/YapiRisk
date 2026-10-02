@@ -1,11 +1,13 @@
 // Sonuç kartı (DESIGN.md): önce bant, altında ne demek olduğu, sonra PP aralığı, sonra kalem kalem katkı.
 // Sayısal puan başlığa çıkmaz; sonuç animasyonsuz, sakin görünür.
 import { ArrowRight, Printer } from 'lucide-react'
+import { useId } from 'react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { BantRozeti } from './BantRozeti'
 import {
   aralik,
+  BANT_ADI,
   BANT_ANLAMI,
   BANT_SINIRI,
   DONEM_NOTU,
@@ -38,6 +40,17 @@ export function SonucKarti({ sonuc, merkez, onTdth, onYazdir }: Props) {
   const { d, tam } = sonuc
   const { bant, yayilim } = d.bant
   const satirlar = katkiSatirlari(d)
+  const tdthId = useId()
+  // Tehlike belirsizliği tek başına önceliği değiştiriyorsa resmî değer çağrısı öne çıkar (ESHM20 kaynaklıyken).
+  const tehlikeKararsiz =
+    d.tehlike.kaynak === 'eshm20' && d.tehlikeyleOncelik.kotu !== d.tehlikeyleOncelik.iyi
+  const tdthAc = () => {
+    const kutu = document.getElementById(tdthId) as HTMLDetailsElement | null
+    if (!kutu) return
+    kutu.open = true
+    kutu.scrollIntoView({ block: 'start' })
+    kutu.querySelector('input')?.focus({ preventScroll: true })
+  }
   const ikiUc = d.kotu.pp !== d.iyi.pp
   const bolge =
     d.tehlike.bolgeKotu === d.tehlike.bolgeIyi
@@ -67,6 +80,22 @@ export function SonucKarti({ sonuc, merkez, onTdth, onYazdir }: Props) {
           <p className="text-body-sm text-pretty text-uncertainty">
             Puan aralığı {yayilim.length} önceliğe yayılıyor; öncelik aralığın elverişsiz ucundan seçildi.
           </p>
+        )}
+        {tehlikeKararsiz && (
+          <div
+            className="flex flex-col gap-2 rounded-md border border-uncertainty/50 p-3"
+            data-testid="tdth-cagrisi"
+          >
+            <p className="text-body-sm text-pretty">
+              Bu konumun deprem tehlikesi tahminden geliyor ve sonucu belirsiz bırakıyor: resmî değerle sonuç{' '}
+              {BANT_ADI[d.tehlikeyleOncelik.kotu].toLocaleLowerCase('tr')} ya da{' '}
+              {BANT_ADI[d.tehlikeyleOncelik.iyi].toLocaleLowerCase('tr')} olabilir. AFAD’ın değerini girerek
+              kesinleştirin; e-Devlet girişinden sonra bir dakikadan kısa sürer.
+            </p>
+            <Button variant="outline" className="h-11 self-start" onClick={tdthAc}>
+              Resmî değeri gir
+            </Button>
+          </div>
         )}
       </section>
 
@@ -187,7 +216,13 @@ export function SonucKarti({ sonuc, merkez, onTdth, onYazdir }: Props) {
             değildir.
           </p>
         )}
-        <TdthGirisi merkez={merkez} ssEshm20={sonuc.ssEshm20} tdthSs={sonuc.tdthSs} onTdth={onTdth} />
+        <TdthGirisi
+          id={tdthId}
+          merkez={merkez}
+          ssEshm20={sonuc.ssEshm20}
+          tdthSs={sonuc.tdthSs}
+          onTdth={onTdth}
+        />
       </section>
 
       <section aria-labelledby="okuma-baslik" className="flex flex-col gap-2">

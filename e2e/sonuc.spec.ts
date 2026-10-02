@@ -212,3 +212,23 @@ test('dördüncü il: Denizli aranıyor, tehlike Denizli ızgarası ve Denizli b
   expect(yabanci).toEqual([])
   expect(hatalar).toEqual([])
 })
+
+test('tehlike belirsizliği önceliği değiştiriyorsa resmî değer çağrısı çıkıyor; değer girilince kalkıyor', async ({
+  page,
+}) => {
+  // Didim: ESHM20 AFAD'ın yaklaşık yarısı (S1); Aydın bandıyla bölge I–III, kusursuz 4 katlı BAÇ orta ile düşük arası.
+  await page.goto('/#konum=37.3756,27.2667')
+  await expect(page.getByTestId('ss-degeri')).toBeVisible()
+  await page.getByRole('button', { name: 'Sorulara başla' }).click()
+  await doldur(page, KUSURSUZ_4_KAT)
+  const cagri = page.getByTestId('tdth-cagrisi')
+  await expect(cagri).toContainText('orta öncelik ya da düşük öncelik olabilir')
+  await cagri.getByRole('button', { name: 'Resmî değeri gir' }).click()
+  const alan = page.getByLabel('TDTH raporundaki SS (g)')
+  await expect(alan).toBeFocused()
+  await alan.fill('0,846') // spike/S1/aydin-tdth-okumalar.csv, Didim
+  await page.getByRole('button', { name: 'Değeri kullan' }).click()
+  await expect(cagri).toBeHidden()
+  await expect(page.getByTestId('pp-araligi')).toHaveText('70')
+  await expect(page.getByTestId('bant')).toContainText('Orta öncelik')
+})

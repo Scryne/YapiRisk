@@ -126,3 +126,21 @@ describe('degerlendir(): uçtan uca', () => {
     expect(() => degerlendir(cevap({ kat: 8 }), { kaynak: 'tdth', sds: 1, zemin: 'ZC' })).toThrow(/1–7/)
   })
 })
+
+describe('tehlikeyleOncelik: resmî değer önceliği değiştirebilir mi', () => {
+  it('Didim (ESHM20 düşük, Aydın bandı): kusursuz 4 katlı BAÇ bölge I–III → orta ile düşük arası', () => {
+    const d = degerlendir(cevap(), {
+      kaynak: 'eshm20',
+      ss: 0.44,
+      zemin: 'ZC',
+      bant: { altOran: 0.52, ustOran: 0.97 },
+    })
+    expect([d.tehlike.bolgeKotu, d.tehlike.bolgeIyi]).toEqual(['I', 'III'])
+    expect(d.tehlikeyleOncelik).toEqual({ kotu: 'orta', iyi: 'dusuk' })
+  })
+  it('tehlike tek bölgedeyse iki uç aynı; "bilmiyorum" yayılımı buna karışmaz', () => {
+    const d = degerlendir(hepsiBilinmiyor(), { kaynak: 'tdth', sds: 1.2, zemin: 'ZC' })
+    expect(d.bant.yayilim.length).toBeGreaterThan(1)
+    expect(d.tehlikeyleOncelik.kotu).toBe(d.tehlikeyleOncelik.iyi)
+  })
+})

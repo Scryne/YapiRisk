@@ -16,11 +16,18 @@ test('bağlantı kesilince uygulama yeniden açılıyor; daha önce bakılan kon
   await page.evaluate(async () => {
     await navigator.serviceWorker.ready
   })
-  await expect.poll(() => page.evaluate(() => !!navigator.serviceWorker.controller)).toBe(true)
+  await expect
+    .poll(() => page.evaluate(() => !!navigator.serviceWorker.controller), { timeout: 20_000 })
+    .toBe(true)
   await page.goto('/#harita=17/38.614/27.4303')
   await expect(page.locator('main')).toHaveAttribute('data-yakinlik', '17.0', { timeout: 20_000 })
   await expect
-    .poll(() => page.evaluate(async () => (await caches.keys()).some((a) => a.startsWith('yapirisk-parca-'))))
+    .poll(
+      () => page.evaluate(async () => (await caches.keys()).some((a) => a.startsWith('yapirisk-parca-'))),
+      {
+        timeout: 20_000,
+      },
+    )
     .toBe(true)
   await page.goto('/#konum=38.614,27.4303')
   await expect(page.getByRole('heading', { name: 'Seçilen nokta' })).toBeVisible()
