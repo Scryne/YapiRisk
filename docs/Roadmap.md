@@ -25,6 +25,7 @@ Tahmin ~22 iş günü; her fazın sonunda "Notlar" doldurulur ve sonraki fazlar 
 | 6.6 | Üçüncü il paketi (Aydın) | ✅ Tamamlandı | Boru hattı Aydın paketini üretiyor (iki kez aynı sha256); uygulama üç ilde arıyor ve haritada gösteriyor; Scryne'dan ≥ 5 TDTH okumasıyla S1 bandı (0,72–1,34) Aydın'da geçerli ya da yeniden ölçüldü, `tdthNokta` dolduruldu |
 | 6.7 | Sahada kullanım (çevrimdışı) | ✅ Tamamlandı | Uygulama bir kez açıldıktan sonra bağlantı kesilince yeniden açılıyor; daha önce bakılan konumda değerlendirme ve rapor çevrimdışı tamamlanıyor; bilgi sayfaları çevrimdışı açılıyor; ana ekrana eklenebiliyor (manifest + ikonlar); "Temizle" gezilen bölgenin önbelleğini de siliyor; e2e kanıtı |
 | 6.8 | Dördüncü il paketi (Denizli) | ✅ Tamamlandı | Boru hattı Denizli paketini üretiyor (iki kez aynı sha256); uygulama dört ilde arıyor; Scryne'dan ≥ 5 TDTH okumasıyla Denizli bandı ölçüldü, `tdthOran` dolduruldu |
+| 6.9 | Kullanılabilirlik turu | ✅ Tamamlandı | Tehlike belirsizliği önceliği değiştirdiğinde resmî değer çağrısı; "Profesyonel inceleme" sayfası (yalnız birincil kaynakta doğrulanan bilgi) ve binanın ilindeki müdürlük; konuma göre bant LOO ile denendi, karar kaydedildi; mobil Lighthouse ölçüldü, CLS ve erişilebilirlik düzeltildi; paylaşım bağlantısı; her biri e2e ile |
 | 7 | Yayın | ⏳ Bekliyor | Faz 6.5 bitti (Scryne'ın kararı, 2026-09-30: yalnız Manisa'yı gösteren site yayına çıkmaz). `yayin-oncesi` çıkış 0 ya da her bulgu kararlı; `fixing-metadata` geçti; Scryne'ın açık onayıyla repo public ve GitHub Pages'te canlı; canlı adreste 10 S1 noktasından biriyle uçtan uca rapor alındı |
 | 8 | Gerçek kullanım | ⏳ Bekliyor | Proje-Fikri'deki "bitti = kullanıldı" cümlesi gerçekleşti (Scryne'ın seçtiği ≥ 5 kişi yardımsız rapor aldı, sonucu öncelik olarak doğru okudu); bulgular roadmap'e işlendi |
 | 9 | TDTH ızgarası entegrasyonu (tetiklemeli) | ⏳ Bekliyor | Tetik: AFAD CIMER başvurusu olumlu döner. Resmî grid paketlenir, K-5 bandı kapsanan illerde kalkar, S1 karşılaştırması yeniden koşulur |
@@ -275,6 +276,34 @@ Faz 9–11 olaya bağlıdır; hook bunları "sıradaki iş" saymaz.
     **0,76–1,14 (ort. 0,98)**, İzmir'e benziyor; 1/10 noktada bölge güvensiz yönde kayıyor (Acıpayam: AFAD I,
     ESHM20 II). Bant 0,72–1,14 (ölçülen alt 0,75, tavan kuralıyla 0,72); birleşik bant değişmedi (0,52–1,34).
     Toplam 40 noktada AFAD değeri kendi ilinin aralığında; 9/40 noktada ESHM20 bölgeyi güvensiz yönde kaydırırdı.
+
+### Faz 6.9: Kullanılabilirlik turu (2026-10-02)
+- **Neden:** Scryne "projeyi daha iyi yapacak her şeyi yap" dedi; öneri sırası 2a → 1 → 2b → 4 → 3.
+- **Notlar:**
+  - **Resmî değer çağrısı:** motor `tehlikeyleOncelik` (cevapların elverişsiz hali sabit, tehlikenin iki ucundaki
+    öncelik). Farklıysa sonuç kartında rozetin altında çağrı, "Resmî değeri gir" alanı açıp odaklar. Didim'de kusursuz
+    4 katlı bina: orta ya da düşük → AFAD 0,846 ile orta (e2e). TDTH süresi metni ölçülene göre: 10 raporun oluşturulma
+    saatleri arası 14–20 sn → "e-Devlet girişinden sonra bir dakikadan kısa".
+  - **Profesyonel inceleme sayfası** (`inceleme.html`): araştırma ajanının bulguları birincil kaynakla tek tek
+    doğrulandı (6306 m.3 ve m.5 PDF'i pymupdf ile okundu: malik yaptırır ve öder, Kentsel Dönüşüm Başkanlığının
+    lisansladığı kuruluş; tutanak + e-Devlet + muhtarlıkta 15 gün ilan; itiraz 15 gün; yıkım için ≤ 90 gün; kira
+    yardımı, yapım yardımı, faiz desteği). e-Devlet hizmet adları ve il müdürlüklerinin telefonları kendi sayfalarından.
+    Doğrulanamayan ücret, kira yardımı tutarı ve kredi rakamları **yazılmadı**. "Bir malikin talebi yeterli" İzmir İl
+    Müdürlüğü'ne atıfla. Lisanslı kuruluş listesi sayfası (altyapi.csb.gov.tr) erişilemediği için bağlanmadı.
+  - Uygulamadaki "Bakanlığın lisans verdiği" ifadesi 7471 sonrası için eskimişti → "Kentsel Dönüşüm Başkanlığının".
+    İl müdürlüğü bilgisi il kaydında (`bolgeler.json` `ilMudurlugu`, K-3); sonuç kartı, rapor, kapsam dışı ekranı.
+  - **Konuma göre bant (2b):** `spike/S1/mekansal.py`, 40 noktada LOO. İl bandı alt kapsama 39/40 (×1,72), Gauss
+    çekirdekli mekânsal bant 39/40 ama ×1,98–2,68 geniş → **reddedildi**. 0,72 tavanı 3 güvensiz kaçmayı önlüyor;
+    Didim (en uç nokta) hiçbir yöntemle yakalanmıyor, çağrı bu riski kapatıyor.
+  - **Mobil performans (Lighthouse 12, yavaşlatılmış mobil):** ana sayfa performans 59–67, FCP ~2,1 sn, LCP 4,0–4,9 sn,
+    TBT 600–1000 ms (harita kütüphanesi ~1 sn + uygulama ~0,9 sn betik); CLS 0,11 → 0,003 (telefonda bina bulma
+    paneline `min-h-[min(48dvh,20rem)]`: veri gelince panel alttan uzayıp kayıyordu); erişilebilirlik 94 → 100 (cmdk
+    girişinin `aria-controls`'u DOM'da olmayan listeyi gösteriyordu). Bilgi sayfaları performans 97, erişilebilirlik
+    100. TBT'yi daha fazla düşürmek haritayı kullanıcı etkileşimine kadar ertelemeyi gerektirir; yapılmadı.
+  - **Paylaşım:** `src/form/paylasim.ts` — `#paylas=` (base64url JSON: sürüm, konum 6 ondalık, taslak, TDTH S_S);
+    bina çizimi değil nokta. Okunan bağlantı kayıt gibi doğrulanır. Açan tarayıcıda kendi taslağı varsa onay
+    (`PaylasimOnayi`); sonra adres temizlenir. Telefonda sistem paylaşım menüsü, değilse panoya kopya. K-1: # parçası
+    sunucuya gitmez; Hakkında metni güncellendi.
 
 ### Faz 7: Yayın (~1 gün)
 - **İşler:** MapTiler anahtarı GitHub Actions değişkeni `VITE_MAPTILER_ANAHTARI` olarak derlemeye; MapTiler
