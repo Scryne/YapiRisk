@@ -1,6 +1,7 @@
 {
   "proje_adi": "YapiRisk",
-  "asama": "uygulama",
-  "guncellendi": "2026-10-01",
-  "roadmap": "docs/Roadmap.md"
+  "asama": "donduruldu",
+  "guncellendi": "2026-10-06",
+  "roadmap": "docs/Roadmap.md",
+  "not": "2026-10-06 DONDURULDU (gecici): Scryne 'su anda onu gelistirmiycem' dedi. Kalinan yer: Faz 1-6.9 ve 10 tamam (12/16); siradaki Faz 7 yayin (repo public + Pages, Scryne onayi), sonra Faz 8 gercek kullanim. Donuste asama 'uygulama'ya alinir."
 }
