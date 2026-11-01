@@ -407,6 +407,10 @@ export default function App() {
                     {etiket}
                   </a>
                 ))}
+                <p className="basis-full pb-1 text-body-sm text-pretty text-muted-foreground">
+                  Resmî RYTEİE 2019 Ek-A yöntemi; 2023 depreminin hasar kayıtlarıyla sınandı. Sonuç hüküm
+                  değil, inceleme önceliğidir.
+                </p>
               </nav>
             </div>
           )}

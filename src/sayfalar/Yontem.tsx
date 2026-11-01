@@ -6,7 +6,7 @@ import { ondalik, TEKIL_BINA_KAYDI } from '@/sonuc/metinler'
 import type { Bant } from '@/yontem/bant'
 import { GUVENSIZ_YON_TAVANI, S1_BANDI } from '@/yontem/tehlike'
 import { useJson } from './json'
-import { Bolum, Sayfa, Tablo } from './Sayfa'
+import { Bolum, Kisaca, Sayfa, Tablo } from './Sayfa'
 
 interface BantOrani {
   bant: Bant
@@ -90,6 +90,21 @@ export function Yontem() {
           (RYTEİE 2019 Ek-A) binaya dışarıdan bakılarak cevaplanabilen sorularla uygular. Bu sayfa hesabın
           nasıl yapıldığını ve 2023 depreminde ne kadar tuttuğunu anlatır.
         </p>
+      }
+      kisaca={
+        d.durum === 'hazir' ? (
+          <Kisaca
+            ogeler={[
+              { deger: 'Ek-A', etiket: 'RYTEİE 2019 resmî hızlı değerlendirme yöntemi' },
+              { deger: d.veri.nKapsam, etiket: '2023 depreminde sınanan betonarme bina' },
+              {
+                deger: uc.format(d.veri.auc.ryteie_ortalama),
+                etiket: `Ayırma gücü (AUC); yalnız kat sayısı ${uc.format(d.veri.auc.kat_sayisi)}`,
+              },
+              { deger: YIGMA_OLCUMU.n, etiket: 'Ayrıca sınanan yığma bina' },
+            ]}
+          />
+        ) : undefined
       }
     >
       <Bolum id="ne-olcuyor" baslik="Ne ölçüyor">
