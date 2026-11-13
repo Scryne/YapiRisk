@@ -1,13 +1,22 @@
 import { expect, test } from '@playwright/test'
-import { doldur, hazirBekle, KUSURSUZ_4_KAT } from './yardim.ts'
+import { doldur, hazirBekle, KUSURSUZ_4_KAT, TABAN_HARITA } from './yardim.ts'
 
 // Sahada kullanım: uygulama bir kez açıldıktan sonra bağlantı kesilse de açılır ve değerlendirme sonuna kadar yapılır.
 test('bağlantı kesilince uygulama yeniden açılıyor; daha önce bakılan konumda değerlendirme yapılıyor', async ({
   page,
   context,
 }) => {
+  // Uzun senaryo (önbelleğe alma, çevrimdışı form, geri bağlanma, temizleme): 30 sn'lik varsayılan bütçe dar.
+  test.slow()
   const hatalar: string[] = []
   page.on('pageerror', (e) => hatalar.push(e.message))
+  // Taban harita karoları dış sunucudan (OpenFreeMap) gelir ve yavaş olabilir. "Temizle"den önce yoldaki karolar
+  // bitmeli: yoksa temizlemeden sonra inen karolar önbelleği yeniden doldurur ve "karolar azaldı" sınaması tutmaz.
+  let bekleyenKaro = 0
+  const karoMu = (u: string) => u.startsWith(TABAN_HARITA)
+  page.on('request', (r) => karoMu(r.url()) && bekleyenKaro++)
+  page.on('requestfinished', (r) => karoMu(r.url()) && bekleyenKaro--)
+  page.on('requestfailed', (r) => karoMu(r.url()) && bekleyenKaro--)
 
   await page.goto('/')
   await hazirBekle(page)
@@ -62,6 +71,7 @@ test('bağlantı kesilince uygulama yeniden açılıyor; daha önce bakılan kon
       for (const a of await caches.keys()) sonuc[a] = (await (await caches.open(a)).keys()).map((r) => r.url)
       return sonuc
     })
+  await expect.poll(() => bekleyenKaro, { timeout: 30_000 }).toBe(0)
   const once = await icerik()
   const oncekiParcalar = Object.entries(once)
     .filter(([a]) => a.startsWith('yapirisk-parca-'))
