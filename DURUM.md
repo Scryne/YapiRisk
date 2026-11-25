@@ -3,7 +3,19 @@
 > **Ne bu dosya:** sertifika değil **envanter**. Ölçülen gerçek durum; "yok" yazan satır kusur değil, kayıt.
 > Faz durumu `docs/Roadmap.md`'de; bu dosya son ölçümü tutar.
 
-**Ölçüm tarihi:** 2026-11-13
+**Ölçüm tarihi:** 2026-11-25 (yayına hazır turu; önceki: 2026-11-13)
+
+**Yayına hazır karnesi (2026-11-25):** Kod ✅ · Ürün ✅ · Ön yüz ✅ (vitrin: siniyor) · Belge ✅ · Kapı ✅ (0 yüksek; "Manisa"
+kapsanan il, "Celal Bayar" Çeşme'de mahalle adı, TKGM resmî e-postası: kasıtlı) · Dış: Faz 7 yayın onayı (Pages iş akışı
+kapalı), AFAD/CIMER cevabı, ofis görüşmeleri. Bundan sonra bulunan "v2 fikirleri"ne girer.
+
+**2026-11-25 ölçümü:** Dependabot #13 (pipeline ruff 0.17.6) ve #14 (npm küçük grup, 8) yerelde birleştirildi. `npm run ci`:
+lint 0, tsc, design:lint, vitest 240/240, build. Boru hattı ruff + 14 pytest. Playwright 40/40 (masaüstü + Pixel 7, 1,9 dk;
+yeni Playwright sürümünün tarayıcısı indirildi). `npm audit --omit=dev` 0.
+
+**v2 fikirleri:** (yok; bulunan buraya)
+
+**Önceki ölçüm: 2026-11-13**
 **Tek cümle:** Aydın, Denizli, İzmir ve Manisa'da binayı haritada bulup RYTEİE 2019 Ek-A sorularıyla profesyonel
 inceleme önceliğini hesaplayan, sunucusuz ve çevrimdışı çalışan web uygulaması. Faz 1–6.9 ve 10 tamam; Faz 7 (yayın)
 Scryne'ın onayını bekliyor, proje geçici olarak dondurulmuş (`.claude/state.json`).
